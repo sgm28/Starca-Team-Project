@@ -7,16 +7,17 @@
 2. [Schema](#Schema)
 
 ## Overview
+
 ### Description
 Starca is a storage marketplace that allows users to either list their unusued space to make some extra income or look for listed places so they can store items that are taking up lots of space in their household.
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
-- **Category: P2P Marketplace**
+
+- **Category:** P2P Marketplace
 - **Mobile:**
 - **Story:**
-- **Market: Individuals that are looking to make some extra income by renting out unused space and those that need to clear up space in their house but don't want to pay the high prices for traditional storage facilities**
-- **Habit: This app is not meant to be used consistently. Renters and rentees can "set it and forget it"**
+- **Market:** Individuals that are looking to make some extra income by renting out unused space and those that need to clear up space in their house but don't want to pay the high prices for traditional storage facilities
+- **Habit:** This app is not meant to be used consistently. Renters and rentees can "set it and forget it"
 - **Scope:**
 
 ## Product Spec
