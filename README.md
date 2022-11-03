@@ -60,30 +60,30 @@ Starca is a storage marketplace that allows users to either list their unusued s
 
 **Tab Navigation** (Tab to Screen)
 
-* [Dashboard]
-* [Post]
-* [Message]
-* [Profile]
+* Dashboard
+* Post
+* Message
+* Profile
 
 **Flow Navigation** (Screen to Screen)
 
-* [Home]
-   * [Login - Bottom Nav]
-     * [Dashboard]
-   * [Register - Bottom Nav]
-     * [Dashboard]
-* [Dashboard + Search]
-  * [Search]
-    * [Details]
-  * [Details]
-  * [Post - Bottom Nav]
-    * [Post]
-  * [Message - Bottom Nav]
-    * [List of message]
-      * [Message]
-    * [Message]
-  * [Profile - Bottom Nav]
-    * [Settings]
+* Home
+   * Login - Bottom Nav
+     * Dashboard
+   * Register - Bottom Nav
+     * Dashboard
+* Dashboard + Search
+  * Search
+    * Details
+  * Details
+  * Post - Bottom Nav
+    * Post
+  * Message - Bottom Nav
+    * List of message
+      * Message
+    * Message
+  * Profile - Bottom Nav
+    * Settings
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
