@@ -14,11 +14,11 @@ Starca is a storage marketplace that allows users to either list their unusued s
 ### App Evaluation
 
 - **Category:** P2P Marketplace
-- **Mobile:**
-- **Story:**
+- **Mobile:** This app is being primarily developed for mobile but would perhaps be just as usable on a computer, similarly to Zillow, Apartments, etc. Mobile version would provide for better features and prove to be more convenient, as you would want to search/manage rental properties while not constricted to a computer.
+- **Story:** Allow landlords to post unused storage spaces for tenants to search for. Connects people looking to rent their storage space and people who are looking for a storage space at a rate best for them.
 - **Market:** Individuals that are looking to make some extra income by renting out unused space and those that need to clear up space in their house but don't want to pay the high prices for traditional storage facilities
 - **Habit:** This app is not meant to be used consistently. Renters and rentees can "set it and forget it"
-- **Scope:**
+- **Scope:** Start by allowing users to post their storage spaces for rent and allowing users to search for storage spaces. Provide a platform for these two user groups to connect.  
 
 ## Product Spec
 
@@ -26,12 +26,25 @@ Starca is a storage marketplace that allows users to either list their unusued s
 
 **Required Must-have Stories**
 
-* [fill in your required user stories here]
-* ...
+* Users will be able to register an account
+* Users will be able to log in to their account
+* Users will be able to view listings
+* Users will be able to view listings of storage places to rent nearby
+* Users will be able to view listings in other selected areas
+* Users will be able to view listings in other selected areas
+  * Users will be able to post pictures (implicit intent) for listings
+  * User will be able post details on their storage listing
+* Users will be able to update their profile
+* Users will have a dashboard to select listings/rentals they own
+* Users will be able to rate renters
+* Renter will be able to rate rentees
+* Users will be able to view previously rented storage listing
+* Users will be able to delete their account
+* Users will be able to chat with their prospective renters/rentees
 
 **Optional Nice-to-have Stories**
 
-* [fill in your required user stories here]
+* [fill in your optional user stories here]
 * ...
 
 ### 2. Screen Archetypes
