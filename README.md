@@ -54,7 +54,7 @@ Starca is a storage marketplace that allows users to either list their unusued s
 * Register
    * Users can register for an account
 * Dashboard (Maps)
-   * 
+   * Users will see a maps screen that displays nearby listings to their current location, and a list of the listings below it with some more details for each property.
 * Listing Creation
    * Users will be able to post listings to the app
    * Fragment 1
