@@ -31,7 +31,7 @@ Starca is a storage marketplace that allows users to either list their unusued s
 * Users will be able to view listings
 * Users will be able to view listings of storage places to rent nearby
 * Users will be able to view listings in other selected areas
-* Users will be able to view listings in other selected areas
+* Users will be able to post listings
   * Users will be able to post pictures (implicit intent) for listings
   * User will be able post details on their storage listing
 * Users will be able to update their profile
@@ -49,29 +49,65 @@ Starca is a storage marketplace that allows users to either list their unusued s
 
 ### 2. Screen Archetypes
 
-* [list first screen here]
-   * [list associated required story here]
-   * ...
-* [list second screen here]
-   * [list associated required story here]
-   * ...
+* Login
+   * Users can log into their account
+* Register
+   * Users can register for an account
+* Dashboard (Maps)
+   * Users will see a maps screen that displays nearby listings to their current location, and a list of the listings below it with some more details for each property.
+* Listing Creation
+   * Users will be able to post listings to the app
+   * Fragment 1
+      * Users upload pictures of their space
+   * Fragment 2
+      * Users enter details of the property (address
+   * Fragment 3
+      * Users enter more details (amenaties, etc) into the listing
+* Listing Detail
+   * Show property details for a listing (Zip Code, photos, amenaties)
+   * Show reviews for the property left by other users.
+* Messaging (Stream)
+   * Display all the users that have been messaged 
+* Messaging Detail Page
+   * Display the messages two users have sent to each other. Allow a user to send a message to another user.
+* Profile
+   * Users can add or change their profile photo
+   * Users can see reviews about them left by other users.
+* Settings
+   * Users can delete their account
+   * Users can log out of their account
+* OPTIONAL STRETCH Stream Page (Search)
+   * Users can search a zipcode to show all of the available storeage spaces in that zip code
+
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
-* [fill out your first tab]
-* [fill out your second tab]
-* [fill out your third tab]
+* Dashboard
+* Post
+* Message
+* Profile
 
 **Flow Navigation** (Screen to Screen)
 
-* [list first screen here]
-   * [list screen navigation here]
-   * ...
-* [list second screen here]
-   * [list screen navigation here]
-   * ...
+* Home
+   * Login - Bottom Nav
+     * Dashboard
+   * Register - Bottom Nav
+     * Dashboard
+* Dashboard + Search
+  * Search
+    * Details
+  * Details
+  * Post - Bottom Nav
+    * Post
+  * Message - Bottom Nav
+    * List of message
+      * Message
+    * Message
+  * Profile - Bottom Nav
+    * Settings
 
 ## Wireframes
 [Add picture of your hand sketched wireframes in this section]
