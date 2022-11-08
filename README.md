@@ -110,26 +110,25 @@ Starca is a storage marketplace that allows users to either list their unusued s
     * Settings
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
+
 <img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/HandSketched.jpg" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
 
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Login.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Register.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Dashboard.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Detail.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Creation01.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Creation02.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Creation03.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Messaging.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Conversation.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Profile.png" width=600>
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Settings.png" width=600>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Login.png" width=150> <img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Register.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Dashboard.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Detail.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Creation01.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Creation02.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Creation03.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Messaging.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Conversation.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Profile.png" width=150>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/Settings.png" width=150>
 
 ### [BONUS] Interactive Prototype
 
-<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/StarcaPrototype.gif" width=600>
+<img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/StarcaPrototype.gif" width=300>
 
 ## Schema 
 [This section will be completed in Unit 9]
