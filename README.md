@@ -135,6 +135,25 @@ Starca is a storage marketplace that allows users to either list their unusued s
 ### Models
 [Add table of models]
 ### Networking
+- Maps Screen
+  * (Read/GET) Query all posts where user is author
+```
+    query.findInBackground { posts, e ->
+        if (e != null) {
+            Log.e(TAG, "Error fetching posts.")
+        } else {
+            if (posts != null) {
+                for (post in posts) {
+                   // retrieve post and populate map markers + recyclerView date.
+                }
+                feedPosts.addAll(posts)
+                adapter.notifyDataSetChanged()
+            }
+        }
+        swipeContainer.isRefreshing = false
+    }
+```
+
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
