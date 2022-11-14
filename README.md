@@ -161,6 +161,15 @@ Starca is a storage marketplace that allows users to either list their unusued s
    - (Delete) Delete existing Message
  * Conversation
    - (Create/POST) Create a new message
+ * Detail
+   - (Read/GET) Query Post data/info
+ * Profile
+   - (Read/GET) Query Profile data 
+   - (Read/GET) Query Comments data
+ * Settings
+   - (Read/GET) Query Settings data 
+   - (Update/PUT) Modify Settings data
+   - (Delete) Delete Account data
 
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
