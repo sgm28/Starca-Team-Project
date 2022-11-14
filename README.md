@@ -169,6 +169,42 @@ Starca is a storage marketplace that allows users to either list their unusued s
 *TBD*
 
 ### Networking
+- Maps Screen
+  * (Read/GET) Query all warehouse location posts in database
+```
+    val query: ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
+    
+    query.addDescendingOrder("createdAt")
+    query.findInBackground { posts, e ->
+        if (e != null) {
+            Log.e(TAG, "Error fetching posts.")
+        } else {
+            if (posts != null) {
+                for (post in posts) {
+                   // retrieve post and populate map markers + recyclerView date.
+                }
+                feedPosts.addAll(posts)
+                adapter.notifyDataSetChanged()
+            }
+        }
+        swipeContainer.isRefreshing = false
+    }
+```
+ * Messaging
+   - (Read/GET) Query all Message requests addressed to user as well as their latest message.
+   - (Delete) Delete existing Message
+ * Conversation
+   - (Create/POST) Create a new message
+ * Detail
+   - (Read/GET) Query Post data/info
+ * Profile
+   - (Read/GET) Query Profile data 
+   - (Read/GET) Query Comments data
+ * Settings
+   - (Read/GET) Query Settings data 
+   - (Update/PUT) Modify Settings data
+   - (Delete) Delete Account data
+
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
