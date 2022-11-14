@@ -131,9 +131,43 @@ Starca is a storage marketplace that allows users to either list their unusued s
 <img src="https://github.com/Nova-Storage/starca/blob/master/wireframes/StarcaPrototype.gif" width=300>
 
 ## Schema 
-[This section will be completed in Unit 9]
 ### Models
 [Add table of models]
+
+**User**
+| Property      | Type    | Desecription                                           |
+|  :---         | :---    |     :---                                               |
+| objectID      | String  | Unique ID for the user                                 |
+| emailVerified | Boolean | Boolean indicating if the account was verified by user |
+| createdAt     | Date    | Date when user was created                             |
+| username      | String  | User's username created during registration            |
+| password      | String  | User's password created during registration            |
+| email         | String  | User's email                                           |
+| name          | String  | User's full name                                       |
+
+**Image**
+| Property      | Type               | Desecription                       |
+|  :---         | :---               |     :---                           |
+| objectID      | String             | Unique ID of the uploaded image    |
+| image         | File               | Image that the user uploaded       |
+| listingID     | Pointer to Listing | Listing the image was uploaded to  |
+
+**Listing**
+| Property      | Type               | Desecription                       |
+|  :---         | :---               |     :---                           |
+| objectID      | String             | Unique ID of the uploaded image    |
+| createdAt     | Date               | Date when user was created         |
+| userID        | Pointer to User    | User that created the Listing      |
+| addressStreet | String             | The street address of the listing  |
+| addressZip    | String             | The zip code of the address        |
+| addressState  | String             | The state of the address           |
+| addressCity   | String             | The city of the address            |
+| amenities     | String Array       | Array of all the amenities         |
+
+
+**Message**
+*TBD*
+
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
