@@ -136,8 +136,11 @@ Starca is a storage marketplace that allows users to either list their unusued s
 [Add table of models]
 ### Networking
 - Maps Screen
-  * (Read/GET) Query all posts where user is author
+  * (Read/GET) Query all warehouse location posts in database
 ```
+    val query: ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
+    
+    query.addDescendingOrder("createdAt")
     query.findInBackground { posts, e ->
         if (e != null) {
             Log.e(TAG, "Error fetching posts.")
@@ -153,6 +156,11 @@ Starca is a storage marketplace that allows users to either list their unusued s
         swipeContainer.isRefreshing = false
     }
 ```
+ * Messaging
+   - (Read/GET) Query all Message requests addressed to user as well as their latest message.
+   - (Delete) Delete existing Message
+ * Conversation
+   - (Create/POST) Create a new message
 
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
