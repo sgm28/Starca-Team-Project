@@ -143,7 +143,8 @@ Starca is a storage marketplace that allows users to either list their unusued s
 | username      | String  | User's username created during registration            |
 | password      | String  | User's password created during registration            |
 | email         | String  | User's email                                           |
-| name          | String  | User's full name                                       |
+| firstName     | String  | User's full name                                       |
+| lastName      | String  | User's full name                                       |
 
 **Image**
 | Property      | Type               | Desecription                       |
@@ -158,6 +159,8 @@ Starca is a storage marketplace that allows users to either list their unusued s
 | objectID      | String             | Unique ID of the uploaded image    |
 | createdAt     | Date               | Date when user was created         |
 | userID        | Pointer to User    | User that created the Listing      |
+| title         | String             | The title of the listing           |
+| description   | String             | The description of the listing     |
 | addressStreet | String             | The street address of the listing  |
 | addressZip    | String             | The zip code of the address        |
 | addressState  | String             | The state of the address           |
@@ -169,6 +172,110 @@ Starca is a storage marketplace that allows users to either list their unusued s
 *TBD*
 
 ### Networking
+- Login
+  *  (Read/GET) Query user
+	  ```Kotlin
+	  private fun loginUser(username: String, password: String) {
+		ParseUser.logInInBackground(username, password, ({ user, e ->
+			if (user != null) {
+				Log.i(TAG, "Successfully logged in user")
+				goToMainActivity()
+			} else {
+				e.printStackTrace()
+				Toast.makeText(this, "Error logging in", Toast.LENGTH_SHORT).show()
+			}
+		}))
+	  }
+	  ```
+- Register
+  *  (Create/POST) Create user
+	  ```Kotlin
+	  private fun registerUser(username: String, 
+					  password: String, 
+					  firstName: String, 
+					  lastName: String, 
+					  email: String) {
+
+		val user = ParseUser()
+
+		user.username = username
+		user.setPassword(password)
+		user.firstName = username
+		user.lastName = username
+		user.email = username
+
+		user.signUpInBackground { e ->
+			if (e == null) {
+				// User successfully created new account
+				Log.i(TAG, "User successfully registered")
+				goToMainActivity()
+			} else {
+				Toast.makeText(this, "Error registered", Toast.LENGTH_SHORT).show()
+				e.printStackTrace()
+			}
+		}
+	  }
+	  ```
+- Creation
+  * (Create/POST) Create a new listing
+	  ```Kotlin
+	  fun createListing(title: String, 
+				  description: String, 
+				  user: ParseUser, 
+				  file: File, 
+				  addressStreet: String, 
+				  addressCity: String, 
+				  addressState: String, 
+				  addressZip: String, 
+				  amenities: String) {
+
+		val post = Post()
+		post.setTitle(title)
+		post.setDescription(description)
+		post.setUser(user)
+		post.setAddressStreet(addressStreet)
+		post.setAddressCity(addressCity)
+		post.setAddressState(addressState)
+		post.setAddressZip(addressZip)
+		post.setImage(ParseFile(file))
+
+		post.saveInBackground { exception ->
+			if (exception != null) {
+				Log.e(MainActivity.TAG, "Error while saving post")
+				exception.printStackTrace()
+				Toast.makeText(requireContext(), "Couldn't save post", Toast.LENGTH_SHORT).show()
+			} else {
+				Log.i(MainActivity.TAG, "Successfully saved post")
+				progressBar?.visibility = View.GONE
+				etDescription.text.clear()
+				Toast.makeText(requireContext(), "Listing Created!", Toast.LENGTH_SHORT).show()
+			}
+		}
+	  }
+
+	  ```
+  * (Create/POST) Upload image for a listing
+	  ```Kotlin
+	  fun uploadImage(listingID: String, file: File) {
+
+		val image = Image()
+		post.setListingID(listingID)
+		post.setImage(ParseFile(file))
+
+		image.saveInBackground { exception ->
+			if (exception != null) {
+				Log.e(MainActivity.TAG, "Error while uploading image")
+				exception.printStackTrace()
+				Toast.makeText(requireContext(), "Couldn't upload Image", Toast.LENGTH_SHORT).show()
+			} else {
+				Log.i(MainActivity.TAG, "Successfully uploaded image")
+				progressBar?.visibility = View.GONE
+				etDescription.text.clear()
+				Toast.makeText(requireContext(), "Saved Image!", Toast.LENGTH_SHORT).show()
+			}
+		}
+	  }
+	  ```
 - Maps Screen
   * (Read/GET) Query all warehouse location posts in database
 ```
