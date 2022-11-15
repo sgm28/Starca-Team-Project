@@ -191,10 +191,10 @@ Starca is a storage marketplace that allows users to either list their unusued s
   *  (Create/POST) Create user
 	  ```Kotlin
 	  private fun registerUser(username: String, 
-							  password: String, 
-							  firstName: String, 
-							  lastName: String, 
-							  email: String) {
+					  password: String, 
+					  firstName: String, 
+					  lastName: String, 
+					  email: String) {
 
 		val user = ParseUser()
 
@@ -220,14 +220,14 @@ Starca is a storage marketplace that allows users to either list their unusued s
   * (Create/POST) Create a new listing
 	  ```Kotlin
 	  fun createListing(title: String, 
-					  description: String, 
-					  user: ParseUser, 
-					  file: File, 
-					  addressStreet: String, 
-					  addressCity: String, 
-					  addressState: String, 
-					  addressZip: String, 
-					  amenities: String) {
+				  description: String, 
+				  user: ParseUser, 
+				  file: File, 
+				  addressStreet: String, 
+				  addressCity: String, 
+				  addressState: String, 
+				  addressZip: String, 
+				  amenities: String) {
 
 		val post = Post()
 		post.setTitle(title)
