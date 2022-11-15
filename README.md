@@ -287,31 +287,151 @@ Starca is a storage marketplace that allows users to either list their unusued s
             Log.e(TAG, "Error fetching posts.")
         } else {
             if (posts != null) {
-                for (post in posts) {
-                   // retrieve post and populate map markers + recyclerView date.
-                }
+                // retrieve post and populate map markers + recyclerView date.
                 feedPosts.addAll(posts)
                 adapter.notifyDataSetChanged()
             }
         }
-        swipeContainer.isRefreshing = false
     }
 ```
  * Messaging
+```
+    val query: ParseQuery<Post> = ParseQuery.getQuery(MessageRequest::class.java)
+    
+    query.addDescendingOrder("createdAt")
+    query.findInBackground { message_requests, e ->
+        if (e != null) {
+            Log.e(TAG, "Error fetching posts.")
+        } else {
+            if (message_requests != null) {
+                // retrieve dm from dm history and populate rv
+                messages.addAll(message_requests)
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+```
    - (Read/GET) Query all Message requests addressed to user as well as their latest message.
+```
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("message_requests");
+
+    query.getInBackground("<PARSE_OBJECT_ID_ofMessage>", (object, e) -> {
+      if (e == null) {
+        object.deleteInBackground(error -> {
+            if(error==null){
+                //item delete. send confirmation info to user
+            }else{
+                //error deleting obj. send something to user.
+            }
+        });
+      }else{
+        //error. message doesn't exist. let user know
+      }
+    });
+```
    - (Delete) Delete existing Message
  * Conversation
+```
+    val query: ParseQuery<Post> = ParseQuery.getQuery(DirectMessage::class.java)
+    
+    query.addDescendingOrder("createdAt")
+    query.findInBackground { dms, e ->
+        if (e != null) {
+            Log.e(TAG, "Error fetching dms.")
+        } else {
+            if (dms != null) {
+                // retrieve dms and populate conversations rv
+                direct_messages.addAll(posts)
+                adapter.notifyDataSetChanged()
+            } else {
+                Log.e(TAG, "Error fetching dms.")
+            }
+        }
+    }
+```
    - (Create/POST) Create a new message
  * Detail
+```
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("posts");
+
+    query.getInBackground("<PARSE_OBJECT_ID_ofPost>", (post, e) -> {
+          if (e == null) {
+          //Object was successfully retrieved. display post data
+        } else {
+          // error. post with id doesn't exist.
+        }  
+    });
+```
    - (Read/GET) Query Post data/info
  * Profile
+```
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("profiles");
+
+    query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (profile, e) -> {
+          if (e == null) {
+          //Object was successfully retrieved. display profile info
+        } else {
+          // error. profile with id doesn't exist.
+        }  
+    });
+```
    - (Read/GET) Query Profile data 
    - (Read/GET) Query Comments data
  * Settings
-   - (Read/GET) Query Settings data 
+```
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("settings");
+
+    query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (profile, e) -> {
+        if (e == null) {
+          //Object was successfully retrieved. get settings info from profile.settings
+        } else {
+          // error. profile with id doesn't exist.
+        }  
+    });
+```
+   - (Read/GET) Query Settings data
+```
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("profiles");
+    
+    query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (settings, e) -> {
+      if (e == null) {
+        
+        settings.put("bio_description", "a string");
+        settings.put("username", "a string");
+        settings.put("email", "a string");
+        settings.put("phone number", "a string");
+        settings.put("email_promotions", "a boolean");
+        settings.put("email_dm_notifications", "a boolean");
+        settings.put("email_payment_reminders", "a boolean");
+  
+        //All other fields will remain the same
+        object.saveInBackground();
+  
+      } else {
+        //error. profile not found 
+      }  
+    });
+```
    - (Update/PUT) Modify Settings data
+```
+    ParseQuery<ParseObject> query = ParseQuery.getQuery("accounts");
+
+    query.getInBackground("<PARSE_OBJECT_ID_ofAccount>", (object, e) -> {
+      if (e == null) {
+        object.deleteInBackground(error -> {
+            if(error==null){
+                //item deleted. send confirmation info to user.
+            }else{
+                //error deleting obj. send something to user.
+            }
+        });
+      }else{
+        //error. account doesn't exist. let user know
+      }
+    });
+```
    - (Delete) Delete Account data
 
-- [Add list of network requests by screen ]
-- [Create basic snippets for each Parse network request]
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+   - [Add list of network requests by screen ]
+   - [Create basic snippets for each Parse network request]
+   - [OPTIONAL: List endpoints if using existing API such as Yelp]
