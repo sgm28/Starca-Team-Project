@@ -20,5 +20,7 @@ class CreateListingImageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //TODO: Implement logic
+        //TODO: Might need to use getChildFragmentManager
+        // Should add images AFTER initial details (title, description, etc)
     }
 }
