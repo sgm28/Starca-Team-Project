@@ -7,14 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.starca.R
 
-class DashboardFragment : Fragment() {
+
+class CreateListingSubmitFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        return inflater.inflate(R.layout.fragment_create_listing_submit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
