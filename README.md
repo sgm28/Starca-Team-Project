@@ -1,4 +1,8 @@
 # Starca
+![GitHub issues](https://img.shields.io/github/issues/Nova-Storage/starca?logo=GitHub&style=plastic)
+![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/Nova-Storage/starca?color=FF00&style=plastic)
+![GitHub repo size](https://img.shields.io/github/repo-size/Nova-Storage/starca?color=%2300&style=plastic)
+![GitHub last commit](https://img.shields.io/github/last-commit/Nova-Storage/starca?color=%2300&style=plastic)
 
 ## Table of Contents
 1. [Overview](#Overview)
@@ -28,24 +32,33 @@ Starca is a storage marketplace that allows users to either list their unusued s
 
 * Users will be able to register an account
 * Users will be able to log in to their account
-* Users will be able to view listings
 * Users will be able to view listings of storage places to rent nearby
 * Users will be able to view listings in other selected areas
 * Users will be able to post listings
   * Users will be able to post pictures (implicit intent) for listings
   * User will be able post details on their storage listing
 * Users will be able to update their profile
-* Users will have a dashboard to select listings/rentals they own
-* Users will be able to rate renters
-* Renter will be able to rate rentees
-* Users will be able to view previously rented storage listing
 * Users will be able to delete their account
+* User will be able to post multiple pictures for listings
+* Users will have a dashboard to select listings/rentals they own
+* Users will be able to rate each other
+* User will be able to click on a listing to view more details
 * Users will be able to chat with their prospective renters/rentees
+* User will be able to request to rent a listing
+* Owners will be prompted when a user wants to rent their listing
+* User will be prompted to accept the rental once the owner accepts a request
 
 **Optional Nice-to-have Stories**
 
-* [fill in your optional user stories here]
-* ...
+* User will be able to block other users
+* User will be able to view previously rented storage listing
+* PayPal payment
+* User will be able to click "forgot password" to recover their password
+* (Live Messaging) User will be able to see a message pop up automatically once it is received from another user
+* Highly rated users will have an icon denoting their high rating next to their profile pictures
+* User can disable maps in dashboard
+* User will have to verify their email address
+* User will see the average response time of the owners they are trying to rent from
 
 ### 2. Screen Archetypes
 
@@ -76,8 +89,6 @@ Starca is a storage marketplace that allows users to either list their unusued s
 * Settings
    * Users can delete their account
    * Users can log out of their account
-* OPTIONAL STRETCH Stream Page (Search)
-   * Users can search a zipcode to show all of the available storeage spaces in that zip code
 
 
 ### 3. Navigation
@@ -85,7 +96,7 @@ Starca is a storage marketplace that allows users to either list their unusued s
 **Tab Navigation** (Tab to Screen)
 
 * Dashboard
-* Post
+* Create Listing
 * Message
 * Profile
 
@@ -100,8 +111,8 @@ Starca is a storage marketplace that allows users to either list their unusued s
   * Search
     * Details
   * Details
-  * Post - Bottom Nav
-    * Post
+  * Create Listing - Bottom Nav
+    * Create Listing
   * Message - Bottom Nav
     * List of message
       * Message
@@ -132,7 +143,6 @@ Starca is a storage marketplace that allows users to either list their unusued s
 
 ## Schema 
 ### Models
-[Add table of models]
 
 **User**
 | Property      | Type    | Desecription                                           |
@@ -145,7 +155,9 @@ Starca is a storage marketplace that allows users to either list their unusued s
 | email         | String  | User's email                                           |
 | firstName     | String  | User's full name                                       |
 | lastName      | String  | User's full name                                       |
-| bio		| String  | User's self set bio                                    |
+| bio		    | String  | User's self set bio                                    |
+| rating        | Number  | User's rating based on other user reviews              |
+
 
 **Image**
 | Property      | Type               | Desecription                       |
@@ -175,111 +187,111 @@ Starca is a storage marketplace that allows users to either list their unusued s
 ### Networking
 - Login
   *  (Read/GET) Query user
-	  ```Kotlin
-	  private fun loginUser(username: String, password: String) {
-		ParseUser.logInInBackground(username, password, ({ user, e ->
-			if (user != null) {
-				Log.i(TAG, "Successfully logged in user")
-				goToMainActivity()
-			} else {
-				e.printStackTrace()
-				Toast.makeText(this, "Error logging in", Toast.LENGTH_SHORT).show()
-			}
-		}))
-	  }
-	  ```
+```Kotlin
+private fun loginUser(username: String, password: String) {
+	ParseUser.logInInBackground(username, password, ({ user, e ->
+		if (user != null) {
+			Log.i(TAG, "Successfully logged in user")
+			goToMainActivity()
+		} else {
+			e.printStackTrace()
+			Toast.makeText(this, "Error logging in", Toast.LENGTH_SHORT).show()
+		}
+	}))
+}
+```
 - Register
   *  (Create/POST) Create user
-	  ```Kotlin
-	  private fun registerUser(username: String, 
-					  password: String, 
-					  firstName: String, 
-					  lastName: String, 
-					  email: String) {
+```Kotlin
+private fun registerUser(username: String, 
+			  password: String, 
+			  firstName: String, 
+			  lastName: String, 
+			  email: String) {
 
-		val user = ParseUser()
+	val user = ParseUser()
 
-		user.username = username
-		user.setPassword(password)
-		user.firstName = username
-		user.lastName = username
-		user.email = username
+	user.username = username
+	user.setPassword(password)
+	user.firstName = username
+	user.lastName = username
+	user.email = username
 
-		user.signUpInBackground { e ->
-			if (e == null) {
-				// User successfully created new account
-				Log.i(TAG, "User successfully registered")
-				goToMainActivity()
-			} else {
-				Toast.makeText(this, "Error registered", Toast.LENGTH_SHORT).show()
-				e.printStackTrace()
-			}
+	user.signUpInBackground { e ->
+		if (e == null) {
+			// User successfully created new account
+			Log.i(TAG, "User successfully registered")
+			goToMainActivity()
+		} else {
+			Toast.makeText(this, "Error registered", Toast.LENGTH_SHORT).show()
+			e.printStackTrace()
 		}
-	  }
-	  ```
+	}
+}
+```
 - Creation
   * (Create/POST) Create a new listing
-	  ```Kotlin
-	  fun createListing(title: String, 
-				  description: String, 
-				  user: ParseUser, 
-				  file: File, 
-				  addressStreet: String, 
-				  addressCity: String, 
-				  addressState: String, 
-				  addressZip: String, 
-				  amenities: String) {
+```Kotlin
+fun createListing(title: String, 
+		  description: String, 
+		  user: ParseUser, 
+		  file: File, 
+		  addressStreet: String, 
+		  addressCity: String, 
+		  addressState: String, 
+		  addressZip: String, 
+		  amenities: String) {
 
-		val post = Post()
-		post.setTitle(title)
-		post.setDescription(description)
-		post.setUser(user)
-		post.setAddressStreet(addressStreet)
-		post.setAddressCity(addressCity)
-		post.setAddressState(addressState)
-		post.setAddressZip(addressZip)
-		post.setImage(ParseFile(file))
+	val post = Post()
+	post.setTitle(title)
+	post.setDescription(description)
+	post.setUser(user)
+	post.setAddressStreet(addressStreet)
+	post.setAddressCity(addressCity)
+	post.setAddressState(addressState)
+	post.setAddressZip(addressZip)
+	post.setImage(ParseFile(file))
 
-		post.saveInBackground { exception ->
-			if (exception != null) {
-				Log.e(MainActivity.TAG, "Error while saving post")
-				exception.printStackTrace()
-				Toast.makeText(requireContext(), "Couldn't save post", Toast.LENGTH_SHORT).show()
-			} else {
-				Log.i(MainActivity.TAG, "Successfully saved post")
-				progressBar?.visibility = View.GONE
-				etDescription.text.clear()
-				Toast.makeText(requireContext(), "Listing Created!", Toast.LENGTH_SHORT).show()
-			}
+	post.saveInBackground { exception ->
+		if (exception != null) {
+			Log.e(MainActivity.TAG, "Error while saving post")
+			exception.printStackTrace()
+			Toast.makeText(requireContext(), "Couldn't save post", Toast.LENGTH_SHORT).show()
+		} else {
+			Log.i(MainActivity.TAG, "Successfully saved post")
+			progressBar?.visibility = View.GONE
+			etDescription.text.clear()
+			Toast.makeText(requireContext(), "Listing Created!", Toast.LENGTH_SHORT).show()
 		}
-	  }
+	}
+}
 
-	  ```
-  * (Create/POST) Upload image for a listing
-	  ```Kotlin
-	  fun uploadImage(listingID: String, file: File) {
-
-		val image = Image()
-		post.setListingID(listingID)
-		post.setImage(ParseFile(file))
-
-		image.saveInBackground { exception ->
-			if (exception != null) {
-				Log.e(MainActivity.TAG, "Error while uploading image")
-				exception.printStackTrace()
-				Toast.makeText(requireContext(), "Couldn't upload Image", Toast.LENGTH_SHORT).show()
-			} else {
-				Log.i(MainActivity.TAG, "Successfully uploaded image")
-				progressBar?.visibility = View.GONE
-				etDescription.text.clear()
-				Toast.makeText(requireContext(), "Saved Image!", Toast.LENGTH_SHORT).show()
-			}
-		}
-	  }
-	  ```
-- Maps Screen
-  * (Read/GET) Query all warehouse location posts in database
 ```
+  * (Create/POST) Upload image for a listing
+```Kotlin
+fun uploadImage(listingID: String, file: File) {
+
+	val image = Image()
+	post.setListingID(listingID)
+	post.setImage(ParseFile(file))
+
+	image.saveInBackground { exception ->
+		if (exception != null) {
+			Log.e(MainActivity.TAG, "Error while uploading image")
+			exception.printStackTrace()
+			Toast.makeText(requireContext(), "Couldn't upload Image", Toast.LENGTH_SHORT).show()
+		} else {
+			Log.i(MainActivity.TAG, "Successfully uploaded image")
+			progressBar?.visibility = View.GONE
+			etDescription.text.clear()
+			Toast.makeText(requireContext(), "Saved Image!", Toast.LENGTH_SHORT).show()
+		}
+	}
+}
+```
+- Maps Screen
+  * (Read/GET) Query all listing location posts in database
+```Kotlin
     val query: ParseQuery<Post> = ParseQuery.getQuery(Post::class.java)
     
     query.addDescendingOrder("createdAt")
@@ -295,8 +307,9 @@ Starca is a storage marketplace that allows users to either list their unusued s
         }
     }
 ```
- * Messaging
-```
+- Messaging
+  * (Read/GET) Query all Message requests addressed to user as well as their latest message.
+```Kotlin
     val query: ParseQuery<Post> = ParseQuery.getQuery(MessageRequest::class.java)
     
     query.addDescendingOrder("createdAt")
@@ -312,126 +325,126 @@ Starca is a storage marketplace that allows users to either list their unusued s
         }
     }
 ```
-   - (Read/GET) Query all Message requests addressed to user as well as their latest message.
-```
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("message_requests");
+  * (Delete) Delete existing Message
+```Kotlin
+ParseQuery<ParseObject> query = ParseQuery.getQuery("message_requests");
 
-    query.getInBackground("<PARSE_OBJECT_ID_ofMessage>", (object, e) -> {
-      if (e == null) {
-        object.deleteInBackground(error -> {
-            if(error==null){
-                //item delete. send confirmation info to user
-            }else{
-                //error deleting obj. send something to user.
-            }
-        });
-      }else{
-        //error. message doesn't exist. let user know
-      }
-    });
+query.getInBackground("<PARSE_OBJECT_ID_ofMessage>", (object, e) -> {
+  if (e == null) {
+	object.deleteInBackground(error -> {
+		if(error==null){
+			//item delete. send confirmation info to user
+		}else{
+			//error deleting obj. send something to user.
+		}
+	});
+  }else{
+	//error. message doesn't exist. let user know
+  }
+});
 ```
-   - (Delete) Delete existing Message
- * Conversation
-```
-    val query: ParseQuery<Post> = ParseQuery.getQuery(DirectMessage::class.java)
-    
-    query.addDescendingOrder("createdAt")
-    query.findInBackground { dms, e ->
-        if (e != null) {
-            Log.e(TAG, "Error fetching dms.")
-        } else {
-            if (dms != null) {
-                // retrieve dms and populate conversations rv
-                direct_messages.addAll(posts)
-                adapter.notifyDataSetChanged()
-            } else {
-                Log.e(TAG, "Error fetching dms.")
-            }
-        }
-    }
-```
-   - (Create/POST) Create a new message
- * Detail
-```
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("posts");
+   
+- Conversation
+  * (Create/POST) Create a new message
+```Kotlin
+val query: ParseQuery<Post> = ParseQuery.getQuery(DirectMessage::class.java)
 
-    query.getInBackground("<PARSE_OBJECT_ID_ofPost>", (post, e) -> {
-          if (e == null) {
-          //Object was successfully retrieved. display post data
-        } else {
-          // error. post with id doesn't exist.
-        }  
-    });
+query.addDescendingOrder("createdAt")
+query.findInBackground { dms, e ->
+	if (e != null) {
+		Log.e(TAG, "Error fetching dms.")
+	} else {
+		if (dms != null) {
+			// retrieve dms and populate conversations rv
+			direct_messages.addAll(posts)
+			adapter.notifyDataSetChanged()
+		} else {
+			Log.e(TAG, "Error fetching dms.")
+		}
+	}
+}
 ```
-   - (Read/GET) Query Post data/info
- * Profile
-```
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("profiles");
+- Detail
+  * (Read/GET) Query Post data/info
+```Kotlin
+ParseQuery<ParseObject> query = ParseQuery.getQuery("posts");
 
-    query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (profile, e) -> {
-          if (e == null) {
-          //Object was successfully retrieved. display profile info
-        } else {
-          // error. profile with id doesn't exist.
-        }  
-    });
+query.getInBackground("<PARSE_OBJECT_ID_ofPost>", (post, e) -> {
+	  if (e == null) {
+	  //Object was successfully retrieved. display post data
+	} else {
+	  // error. post with id doesn't exist.
+	}  
+});
 ```
-   - (Read/GET) Query Profile data 
-   - (Read/GET) Query Comments data
- * Settings
-```
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("settings");
+- Profile
+  * (Read/GET) Query Profile data
+  * (Read/GET) Query Comments data
+```Kotlin
+ParseQuery<ParseObject> query = ParseQuery.getQuery("profiles");
 
-    query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (profile, e) -> {
-        if (e == null) {
-          //Object was successfully retrieved. get settings info from profile.settings
-        } else {
-          // error. profile with id doesn't exist.
-        }  
-    });
+query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (profile, e) -> {
+	  if (e == null) {
+	  //Object was successfully retrieved. display profile info
+	} else {
+	  // error. profile with id doesn't exist.
+	}  
+});
 ```
-   - (Read/GET) Query Settings data
-```
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("profiles");
-    
-    query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (settings, e) -> {
-      if (e == null) {
-        
-        settings.put("bio_description", "a string");
-        settings.put("username", "a string");
-        settings.put("email", "a string");
-        settings.put("phone number", "a string");
-        settings.put("email_promotions", "a boolean");
-        settings.put("email_dm_notifications", "a boolean");
-        settings.put("email_payment_reminders", "a boolean");
-  
-        //All other fields will remain the same
-        object.saveInBackground();
-  
-      } else {
-        //error. profile not found 
-      }  
-    });
-```
-   - (Update/PUT) Modify Settings data
-```
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("accounts");
+- Settings
+  * (Read/GET) Query Settings data
+```Kotlin
+ParseQuery<ParseObject> query = ParseQuery.getQuery("settings");
 
-    query.getInBackground("<PARSE_OBJECT_ID_ofAccount>", (object, e) -> {
-      if (e == null) {
-        object.deleteInBackground(error -> {
-            if(error==null){
-                //item deleted. send confirmation info to user.
-            }else{
-                //error deleting obj. send something to user.
-            }
-        });
-      }else{
-        //error. account doesn't exist. let user know
-      }
-    });
+query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (profile, e) -> {
+	if (e == null) {
+	  //Object was successfully retrieved. get settings info from profile.settings
+	} else {
+	  // error. profile with id doesn't exist.
+	}  
+});
 ```
-   - (Delete) Delete Account data
+   * (Update/PUT) Modify Settings data
+```Kotlin
+ParseQuery<ParseObject> query = ParseQuery.getQuery("profiles");
+
+query.getInBackground("<PARSE_OBJECT_ID_ofProfile>", (settings, e) -> {
+  if (e == null) {
+	
+	settings.put("bio_description", "a string");
+	settings.put("username", "a string");
+	settings.put("email", "a string");
+	settings.put("phone number", "a string");
+	settings.put("email_promotions", "a boolean");
+	settings.put("email_dm_notifications", "a boolean");
+	settings.put("email_payment_reminders", "a boolean");
+
+	//All other fields will remain the same
+	object.saveInBackground();
+
+  } else {
+	//error. profile not found 
+  }  
+});
+```
+   * (Delete) Delete Account data
+```Kotlin
+ParseQuery<ParseObject> query = ParseQuery.getQuery("accounts");
+
+query.getInBackground("<PARSE_OBJECT_ID_ofAccount>", (object, e) -> {
+  if (e == null) {
+	object.deleteInBackground(error -> {
+		if(error==null){
+			//item deleted. send confirmation info to user.
+		}else{
+			//error deleting obj. send something to user.
+		}
+	});
+  }else{
+	//error. account doesn't exist. let user know
+  }
+});
+```
 
    - [Add list of network requests by screen ]
    - [Create basic snippets for each Parse network request]
