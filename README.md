@@ -155,7 +155,9 @@ Starca is a storage marketplace that allows users to either list their unusued s
 | email         | String  | User's email                                           |
 | firstName     | String  | User's full name                                       |
 | lastName      | String  | User's full name                                       |
+| bio		    | String  | User's self set bio                                    |
 | rating        | Number  | User's rating based on other user reviews              |
+
 
 **Image**
 | Property      | Type               | Desecription                       |
