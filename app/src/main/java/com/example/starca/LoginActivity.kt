@@ -48,12 +48,4 @@ class LoginActivity : AppCompatActivity() {
         // TODO: finish setting up login
         // goToMainActivity()
     }
-
-    private fun goToMainActivity(){
-        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-        startActivity(intent)
-
-        // Finish activity we can't come back to the log in page by hitting back
-        finish()
-    }
 }

@@ -41,4 +41,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    // Parse (back4app) (Setup: https://www.back4app.com/docs/android/parse-android-sdk)
+    implementation 'com.github.parse-community.Parse-SDK-Android:parse:4.1.0'
 }

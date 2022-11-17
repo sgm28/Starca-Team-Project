@@ -1,7 +1,10 @@
 package com.example.starca
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -10,6 +13,7 @@ import com.example.starca.fragments.CreateListingImageFragment
 import com.example.starca.fragments.DashboardFragment
 import com.example.starca.fragments.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.parse.ParseUser
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,9 +53,30 @@ class MainActivity : AppCompatActivity() {
             // This true signifies we handled the user interaction
             true
         }
+
+        // Bottom navigation view listener for switching between fragments
+        findViewById<Toolbar>(R.id.toolbar).setOnMenuItemClickListener {
+                item ->
+
+            when (item.itemId) {
+                R.id.toolbar_logout -> {
+                    signOut()
+                    goToLoginActivity()
+                }
+            }
+            // This true signifies we handled the user interaction
+            true
+        }
     }
 
-    fun signOut(){
-        //TODO: Sign out parse user on toolbar logout button click
+    private fun signOut(){
+        Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
+        ParseUser.logOut()
+    }
+
+    private fun goToLoginActivity(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/username_et"
+            android:id="@+id/sign_in_username_et"
             style="@style/login_edit_text_fields"
             android:hint="Username" />
 
@@ -41,7 +41,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <EditText
-            android:id="@+id/password_et"
+            android:id="@+id/sign_in_password_et"
             style="@style/login_edit_text_fields"
             android:hint="Password" />
 
