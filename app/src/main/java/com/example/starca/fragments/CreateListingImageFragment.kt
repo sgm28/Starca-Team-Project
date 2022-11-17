@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.example.starca.R
 
 class CreateListingImageFragment : Fragment() {
@@ -19,8 +20,13 @@ class CreateListingImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //TODO: Implement logic
-        //TODO: Might need to use getChildFragmentManager
-        // Should add images AFTER initial details (title, description, etc)
+
+        view.findViewById<Button>(R.id.create_listing_image_next_button).setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_container, CreateListingSubmitFragment()).commit()
+        }
+
+        view.findViewById<Button>(R.id.create_listing_image_cancel_button).setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
+        }
     }
 }

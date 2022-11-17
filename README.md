@@ -1,8 +1,8 @@
 # Starca
-![GitHub issues](https://img.shields.io/github/issues/Nova-Storage/starca?logo=GitHub&style=plastic)
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/Nova-Storage/starca?color=FF00&style=plastic)
-![GitHub repo size](https://img.shields.io/github/repo-size/Nova-Storage/starca?color=%2300&style=plastic)
-![GitHub last commit](https://img.shields.io/github/last-commit/Nova-Storage/starca?color=%2300&style=plastic)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/1?color=yellow&style=plastic)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/2?color=yellow&style=plastic)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/3?color=yellow&style=plastic)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/4?color=yellow&style=plastic)
 
 ## Table of Contents
 1. [Overview](#Overview)
