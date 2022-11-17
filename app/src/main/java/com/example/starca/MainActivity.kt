@@ -21,12 +21,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val fragmentManager: FragmentManager = supportFragmentManager
-
-        // Displaying dashboard fragment once user has signed in
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
-
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.inflateMenu(R.menu.menu)
+
+        // Display dashboard fragment once user has signed in
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
 
         // Bottom navigation view listener for switching between fragments
         findViewById<BottomNavigationView>(R.id.bottom_nav_bar).setOnItemSelectedListener {
@@ -54,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // Bottom navigation view listener for switching between fragments
+        // Toolbar listener for listening to menu item clicks
         findViewById<Toolbar>(R.id.toolbar).setOnMenuItemClickListener {
                 item ->
 
@@ -64,7 +63,6 @@ class MainActivity : AppCompatActivity() {
                     goToLoginActivity()
                 }
             }
-            // This true signifies we handled the user interaction
             true
         }
     }
