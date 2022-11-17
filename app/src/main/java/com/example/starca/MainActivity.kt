@@ -8,10 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.example.starca.fragments.ConversationsFragment
-import com.example.starca.fragments.CreateListingImageFragment
-import com.example.starca.fragments.DashboardFragment
-import com.example.starca.fragments.ProfileFragment
+import com.example.starca.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.parse.ParseUser
 
@@ -37,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                     currentFragment = DashboardFragment()
                 }
                 R.id.bottom_nav_create -> {
-                    currentFragment = CreateListingImageFragment()
+                    currentFragment = CreateListingDetailsFragment()
                 }
                 R.id.bottom_nav_conversations -> {
                     currentFragment = ConversationsFragment()
