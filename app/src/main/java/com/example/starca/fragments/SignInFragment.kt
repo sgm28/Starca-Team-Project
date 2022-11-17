@@ -21,7 +21,7 @@ class SignInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.login_button).setOnClickListener {
+        view.findViewById<Button>(R.id.sign_in_button).setOnClickListener {
             //TODO: login button logic
         }
     }
