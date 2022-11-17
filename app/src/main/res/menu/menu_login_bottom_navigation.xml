@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Sign in"
+        android:id="@+id/login_bottom_nav_sign_in"
+        app:showAsAction="always" />
+
+    <item
+        android:title="Register"
+        android:id="@+id/login_bottom_nav_register"
+        app:showAsAction="always" />
+
+</menu>
