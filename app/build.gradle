@@ -3,6 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     namespace 'com.example.starca'
     compileSdk 32
@@ -15,6 +19,16 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Setting placeholders for the BuildConfig fields that need to be accessed in AndroidManifest
+        manifestPlaceholders += [ BACK4APP_SERVER_URL: "apikeyProperties['BACK4APP_SERVER_URL']" ]
+        manifestPlaceholders += [ BACK4APP_APP_ID: "apikeyProperties['BACK4APP_APP_ID']" ]
+        manifestPlaceholders += [ BACK4APP_CLIENT_KEY: "apikeyProperties['BACK4APP_CLIENT_KEY']" ]
+
+        // BuildConfig Fields (api keys, urls, etc)
+        buildConfigField("String", "BACK4APP_SERVER_URL", apikeyProperties['BACK4APP_SERVER_URL'])
+        buildConfigField("String", "BACK4APP_APP_ID", apikeyProperties['BACK4APP_APP_ID'])
+        buildConfigField("String", "BACK4APP_CLIENT_KEY", apikeyProperties['BACK4APP_CLIENT_KEY'])
     }
 
     buildTypes {
