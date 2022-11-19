@@ -66,6 +66,14 @@ class Listing : ParseObject() {
         put(KEY_ADDRESS_CITY, amenities)
     }
 
+    fun getDimensions(): String? {
+        return getString(KEY_DIMENSIONS)
+    }
+
+    fun setDimensions(dimensions: String) {
+        put(KEY_DIMENSIONS, dimensions)
+    }
+
     companion object {
         const val KEY_TITLE = "title"
         const val KEY_DESCRIPTION = "description"
@@ -74,5 +82,6 @@ class Listing : ParseObject() {
         const val KEY_ADDRESS_STATE = "addressState"
         const val KEY_ADDRESS_ZIP = "addressZip"
         const val KEY_AMENITIES = "amenities"
+        const val KEY_DIMENSIONS = "dimensions"
     }
 }
