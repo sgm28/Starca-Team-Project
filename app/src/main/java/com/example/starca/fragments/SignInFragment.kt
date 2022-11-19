@@ -1,5 +1,6 @@
 package com.example.starca.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -41,7 +42,7 @@ class SignInFragment : Fragment() {
                 goToMainActivity()
             } else {
                 e.printStackTrace()
-                Toast.makeText(requireContext(), "Error logging in", Toast.LENGTH_SHORT).show()
+                showAlert("Login Failed", e.message + " Please try again")
             }
         }))
     }
@@ -52,6 +53,17 @@ class SignInFragment : Fragment() {
 
         // Finish activity we can't come back to the log in page by hitting back
         activity?.finish()
+    }
+
+    private fun showAlert(title: String, message: String){
+        val builder = AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, which ->
+                dialog.cancel()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     companion object {
