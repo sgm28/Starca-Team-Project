@@ -17,38 +17,42 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.fragment.app.setFragmentResult
 
 import androidx.fragment.app.setFragmentResultListener
 
 import com.example.starca.R
 import com.parse.ParseFile
 import com.parse.ParseObject
-import com.parse.ParseUser
 import java.io.File
 
 
 class CreateListingImageFragment : Fragment() {
 
     val APP_TAG = "CreateListingImageFragment.kt"
-    val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
-    val photoFileName = "photo.jpg"
+    private val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
+    private val photoFileName = "photo.jpg"
     var photoFile: File? = null
-    var firstObject = ParseObject.create("Listing")
+    private var usersDataObject: ParseObject = ParseObject.create("Listing")
     private lateinit var ivPreview: ImageView
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setFragmentResultListener("requestKey") { key, bundle ->
-            // Any type can be passed via to the bundle
-            firstObject = bundle.getParcelable<ParseObject>("user")
-           // val result = bundle.getString("data")
+
+        //This function will receive the data from CreateListingImageFragment
+        //The function uses the requestKey to get the correct data
+        //The function will assign the data from CreateListingImageFragment to firstObject
+        setFragmentResultListener("1") { key, bundle ->
+
+            usersDataObject = bundle.getParcelable<ParseObject>("user")!!
+
+            //For testing purposes/////////////////////////////////////////////////////////////////
+            // val result = bundle.getString("data")
             // Do something with the result...
-            Log.v(APP_TAG, firstObject.getString("title").toString())
+            //Log.v(APP_TAG, usersDataObject.getString("addressZip").toString())
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +68,17 @@ class CreateListingImageFragment : Fragment() {
         view.findViewById<Button>(R.id.create_listing_image_next_button).setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, CreateListingSubmitFragment()).commit()
+
+
+            // creating a bundle object to hold the usersDataObject
+            val bundle = Bundle()
+            bundle.putParcelable("user", usersDataObject)
+
+            //passing the  bundle  to the Fragment manager
+            setFragmentResult("2", bundle)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CreateListingSubmitFragment()).commit()
+
         }
 
         view.findViewById<Button>(R.id.create_listing_image_cancel_button).setOnClickListener {
@@ -73,20 +88,25 @@ class CreateListingImageFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.uploadImageButton).setOnClickListener {
-            val user = ParseUser.getCurrentUser()
-
+            //val user = ParseUser.getCurrentUser()
             onLaunchCamera()
-            sumbitPost(user)
+            gatherPhotoData()
 
+            //For testing purpose//////////////////
+            //submitPost()
         }
-
-
 
 
     }
 
-    private fun sumbitPost(user: ParseUser) {
+    private fun gatherPhotoData() {
 
+        usersDataObject.put("PictureOfListing", ParseFile(photoFile))
+
+    }
+
+    //for testing purpose
+   private fun submitPost() {
 
 //        firstObject.put("userID", user)
 //        firstObject.put("username", user.username.toString())
@@ -98,17 +118,15 @@ class CreateListingImageFragment : Fragment() {
 //        firstObject.put("addressZip","07101")
 //        firstObject.put("dimensions","50X50")
         val listOfStrings = listOf("ab", "cd")
-        firstObject.put("amenities", listOfStrings)
-        firstObject.put("PictureOfListing", ParseFile(photoFile))
-        firstObject.saveInBackground {
-            if (it != null){
+        usersDataObject.put("amenities", listOfStrings)
+        //usersDataObject.put("addressZip","07101")
+        usersDataObject.saveInBackground {
+            if (it != null) {
                 it.localizedMessage?.let { message -> Log.e("MainActivity", message) }
-            }else{
-                Log.d("MainActivity","Object saved.")
+            } else {
+                Log.d("MainActivity", "Object saved.")
             }
         }
-
-
     }
 
     fun onLaunchCamera() {
@@ -122,7 +140,11 @@ class CreateListingImageFragment : Fragment() {
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
         if (photoFile != null) {
             val fileProvider: Uri =
-                FileProvider.getUriForFile(requireContext(), "com.codepath.fileprovider", photoFile!!)
+                FileProvider.getUriForFile(
+                    requireContext(),
+                    "com.codepath.fileprovider",
+                    photoFile!!
+                )
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
             // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
             // So as long as the result is not null, it's safe to use the intent.
@@ -169,11 +191,6 @@ class CreateListingImageFragment : Fragment() {
             }
         }
     }
-
-
-
-
-
 
 
 }

@@ -7,6 +7,25 @@
     tools:context=".fragments.CreateListingDetailsFragment">
 
 
+    <Button
+        android:id="@+id/create_listing_details_next_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/next"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/create_listing_details_cancel_button" />
+
+    <Button
+        android:id="@+id/create_listing_details_cancel_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <EditText
         android:id="@+id/editTextDimension"
         android:layout_width="match_parent"
@@ -15,24 +34,26 @@
         android:layout_marginRight="10dp"
         android:autofillHints="text"
         android:background="@drawable/rounded_edittext"
-        android:hint="20X40"
+        android:hint="@string/editTextDimensionHint"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDimension"
+        android:inputType="text"
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:inputType="number"
-        android:autofillHints="postalCode"
+
         android:id="@+id/editTextZipCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:autofillHints="postalCode"
         android:background="@drawable/rounded_edittext"
-        android:hint="90210"
+        android:hint="@string/editTextZipCodeHint"
+        android:inputType="number"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.526"
@@ -40,30 +61,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewZipCode"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/textViewZipCode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Zipcode"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.044"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
-        app:layout_constraintVertical_bias="0.817" />
-
     <EditText
-        android:inputType="text"
-        android:autofillHints="postalAddress"
         android:id="@+id/editTextState"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:autofillHints="postalAddress"
         android:background="@drawable/rounded_edittext"
-        android:hint="NJ"
+        android:hint="@string/editTextStateHint"
+        android:inputType="text"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.473"
@@ -71,50 +78,22 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewState"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/textViewState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="State"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
-        app:layout_constraintVertical_bias="0.603" />
-
     <EditText
-        android:inputType="text"
-        android:autofillHints="postalCity"
         android:id="@+id/editTextCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:autofillHints="postalCity"
         android:background="@drawable/rounded_edittext"
-        android:hint="Newark"
+        android:hint="@string/editTextCityHint"
+        android:inputType="textPostalAddress"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCity"
         tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textViewCity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="City"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
-        app:layout_constraintVertical_bias="0.41" />
 
     <EditText
         android:id="@+id/editTextAddress"
@@ -125,7 +104,7 @@
         android:layout_marginTop="8dp"
         android:autofillHints="postalAddress"
         android:background="@drawable/rounded_edittext"
-        android:hint="123 Nike Drive"
+        android:hint="@string/editTextAddressHint"
         android:inputType="text"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,11 +113,89 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewAddress"
         tools:ignore="MissingConstraints" />
 
+    <EditText
+        android:inputType="text"
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
+        android:autofillHints="text"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/editTextDescriptionHint"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:inputType="text"
+        android:id="@+id/editTextListing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
+        android:autofillHints="name"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/editTextGarageHint"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListing"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textViewZipCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/zipcode"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.044"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintVertical_bias="0.817" />
+
+    <TextView
+        android:id="@+id/textViewState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/state"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintVertical_bias="0.603" />
+
+    <TextView
+        android:id="@+id/textViewCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/city"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
+        app:layout_constraintVertical_bias="0.41" />
+
     <TextView
         android:id="@+id/textViewAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Address"
+        android:text="@string/address"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
@@ -148,11 +205,12 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
         app:layout_constraintVertical_bias="0.216" />
 
+
     <TextView
         android:id="@+id/textViewDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="@string/description"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
@@ -166,7 +224,7 @@
         android:id="@+id/textViewDimension"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deminsion"
+        android:text="@string/dimension"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
@@ -176,65 +234,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.396" />
 
-    <Button
-        android:id="@+id/create_listing_details_next_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/create_listing_details_cancel_button" />
-
-    <Button
-        android:id="@+id/create_listing_details_cancel_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="4dp"
-        android:autofillHints="text"
-        android:background="@drawable/rounded_edittext"
-        android:hint="Private garage"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:autofillHints="name"
-        android:id="@+id/editTextListing"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/rounded_edittext"
-        android:hint="Garage"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewListing"
-        tools:ignore="MissingConstraints" />
-
     <TextView
         android:id="@+id/textViewListing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Listing Title"
+        android:text="@string/listing_title"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
@@ -248,7 +252,7 @@
         android:id="@+id/textViewDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Details"
+        android:text="@string/details"
         android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="bold"

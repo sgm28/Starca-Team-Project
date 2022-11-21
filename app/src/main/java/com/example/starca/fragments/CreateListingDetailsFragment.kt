@@ -14,8 +14,6 @@ import com.parse.ParseUser
 
 class CreateListingDetailsFragment : Fragment() {
 
-    val firstObject = ParseObject.create("Listing")
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,38 +28,62 @@ class CreateListingDetailsFragment : Fragment() {
 
         view.findViewById<Button>(R.id.create_listing_details_next_button).setOnClickListener {
 
-
+            //Creating ParseObject to gather the user's inputted values.
+            val usersDataObject: ParseObject = ParseObject.create("Listing")
             val user = ParseUser.getCurrentUser()
-            firstObject.put("userID", user)
-            firstObject.put("username", user.username.toString())
-            firstObject.put("title", view.findViewById<EditText>(R.id.editTextListing).text.toString())
-            firstObject.put("description", view.findViewById<EditText>(R.id.editTextDescription).text.toString())
-            firstObject.put("addressStreet", view.findViewById<EditText>(R.id.editTextAddress).text.toString())
-            firstObject.put("addressCity",view.findViewById<EditText>(R.id.editTextCity).text.toString())
-            firstObject.put("addressState",view.findViewById<EditText>(R.id.editTextState).text.toString())
-            firstObject.put("addressZip",view.findViewById<EditText>(R.id.editTextZipCode).text.toString())
-            firstObject.put("dimensions",view.findViewById<EditText>(R.id.editTextDimension).text.toString())
+            usersDataObject.put("userID", user)
+            usersDataObject.put("username", user.username.toString())
+            usersDataObject.put(
+                "title",
+                view.findViewById<EditText>(R.id.editTextListing).text.toString()
+            )
+            usersDataObject.put(
+                "description",
+                view.findViewById<EditText>(R.id.editTextDescription).text.toString()
+            )
+            usersDataObject.put(
+                "addressStreet",
+                view.findViewById<EditText>(R.id.editTextAddress).text.toString()
+            )
+            usersDataObject.put(
+                "addressCity",
+                view.findViewById<EditText>(R.id.editTextCity).text.toString()
+            )
+            usersDataObject.put(
+                "addressState",
+                view.findViewById<EditText>(R.id.editTextState).text.toString()
+            )
 
-            // creating a bundle object
+
+            usersDataObject.put(
+                "addressZip",
+                Integer.parseInt(view.findViewById<EditText>(R.id.editTextZipCode).text.toString())
+                    .toString()
+            )
+            usersDataObject.put(
+                "dimensions",
+                view.findViewById<EditText>(R.id.editTextDimension).text.toString()
+            )
+
+            // creating a bundle object to hold the usersDataObject
             val bundle = Bundle()
-            bundle.putParcelable("user", firstObject)
-           // val result = firstObject
-            setFragmentResult("requestKey", bundle)
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_container, CreateListingImageFragment()).commit()
+            bundle.putParcelable("user", usersDataObject)
+
+            //passing the  bundle  to the Fragment manager
+            setFragmentResult("1", bundle)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CreateListingImageFragment()).commit()
         }
 
         view.findViewById<Button>(R.id.create_listing_details_cancel_button).setOnClickListener {
 
 
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
-
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, DashboardFragment()).commit()
 
 
         }
     }
 
 
-
-
-
-   }
+}
