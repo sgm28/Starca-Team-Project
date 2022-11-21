@@ -31,7 +31,7 @@ class EditUsernameDialogFragment : DialogFragment() {
             .setMessage("Change Username")
             .setPositiveButton("OK") {_,_ ->
                 val query = ParseUser.getQuery()
-                query.whereEqualTo("userId", ParseUser.getCurrentUser())
+                query.whereEqualTo("objectId", ParseUser.getCurrentUser().objectId)
                 query.getFirstInBackground(object: GetCallback<ParseUser>{
                     override fun done(user: ParseUser, e: ParseException?) {
                         if (e == null) {
@@ -39,6 +39,7 @@ class EditUsernameDialogFragment : DialogFragment() {
                                 "username",
                                 view?.findViewById<EditText>(R.id.etNewUsername)?.text.toString()
                             )
+                            user.saveInBackground()
                         }
                     }
                 })
