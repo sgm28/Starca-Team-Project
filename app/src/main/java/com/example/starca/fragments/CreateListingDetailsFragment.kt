@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.example.starca.R
 import com.parse.ParseObject
+import com.parse.ParseUser
 
 class CreateListingDetailsFragment : Fragment() {
 
@@ -29,8 +31,18 @@ class CreateListingDetailsFragment : Fragment() {
         view.findViewById<Button>(R.id.create_listing_details_next_button).setOnClickListener {
 
 
+            val user = ParseUser.getCurrentUser()
+            firstObject.put("userID", user)
+            firstObject.put("username", user.username.toString())
+            firstObject.put("title", view.findViewById<EditText>(R.id.editTextListing).text.toString())
+            firstObject.put("description", view.findViewById<EditText>(R.id.editTextDescription).text.toString())
+            firstObject.put("addressStreet", view.findViewById<EditText>(R.id.editTextAddress).text.toString())
+            firstObject.put("addressCity",view.findViewById<EditText>(R.id.editTextCity).text.toString())
+            firstObject.put("addressState",view.findViewById<EditText>(R.id.editTextState).text.toString())
+            firstObject.put("addressZip",view.findViewById<EditText>(R.id.editTextZipCode).text.toString())
+            firstObject.put("dimensions",view.findViewById<EditText>(R.id.editTextDimension).text.toString())
+
             // creating a bundle object
-            firstObject.put("title", "Garage")
             val bundle = Bundle()
             bundle.putParcelable("user", firstObject)
            // val result = firstObject

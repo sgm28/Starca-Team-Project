@@ -8,6 +8,22 @@
 
 
     <EditText
+        android:id="@+id/editTextDimension"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:autofillHints="text"
+        android:background="@drawable/rounded_edittext"
+        android:hint="20X40"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDimension"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
         android:inputType="number"
         android:autofillHints="postalCode"
         android:id="@+id/editTextZipCode"
@@ -33,10 +49,10 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintHorizontal_bias="0.044"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
-        app:layout_constraintVertical_bias="0.746" />
+        app:layout_constraintVertical_bias="0.817" />
 
     <EditText
         android:inputType="text"
@@ -64,10 +80,10 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
-        app:layout_constraintVertical_bias="0.518" />
+        app:layout_constraintVertical_bias="0.603" />
 
     <EditText
         android:inputType="text"
@@ -98,21 +114,22 @@
         app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
-        app:layout_constraintVertical_bias="0.298" />
+        app:layout_constraintVertical_bias="0.41" />
 
     <EditText
-        android:inputType="text"
-        android:autofillHints="postalAddress"
         android:id="@+id/editTextAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
+        android:autofillHints="postalAddress"
         android:background="@drawable/rounded_edittext"
         android:hint="123 Nike Drive"
+        android:inputType="text"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewAddress"
         tools:ignore="MissingConstraints" />
@@ -126,10 +143,10 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintHorizontal_bias="0.038"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextDescription"
-        app:layout_constraintVertical_bias="0.067" />
+        app:layout_constraintVertical_bias="0.216" />
 
     <TextView
         android:id="@+id/textViewDescription"
@@ -143,7 +160,21 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.285" />
+        app:layout_constraintVertical_bias="0.27" />
+
+    <TextView
+        android:id="@+id/textViewDimension"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deminsion"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/create_listing_details_cancel_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.396" />
 
     <Button
         android:id="@+id/create_listing_details_next_button"
@@ -164,22 +195,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <EditText
-        android:autofillHints="text"
         android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
+        android:autofillHints="text"
         android:background="@drawable/rounded_edittext"
-        android:hint="20X40"
+        android:hint="Private garage"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
         tools:ignore="MissingConstraints" />
-
 
     <EditText
         android:autofillHints="name"
