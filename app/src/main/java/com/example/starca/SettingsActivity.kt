@@ -22,74 +22,120 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         // Find the current logged in user from the database
-        val query = ParseUser.getQuery()
-        query.whereEqualTo("objectId", ParseUser.getCurrentUser().objectId)
-        query.getFirstInBackground(object: GetCallback<ParseUser> {
-
-            override fun done(user: ParseUser, e: ParseException?) {
-                if (e != null) {
-                    Log.e(TAG, "Error fetching User")
-                } else {
-
-                    val currUser = ParseUser.getCurrentUser()
-
-                    val changeProfilePhotoButton = findViewById<ImageButton>(R.id.editProfilePicture)
-                    val editUsernameButton = findViewById<Button>(R.id.editUsernameButton)
-                    val editEmailButton = findViewById<Button>(R.id.editEmailButton)
-                    val editPasswordButton = findViewById<Button>(R.id.editPasswordButton)
-                    val deleteAccountButton = findViewById<Button>(R.id.deleteAccountButton)
-                    val submitChangesButton = findViewById<Button>(R.id.submitChangesButton)
-
-                    val userFullName =  findViewById<TextView>(R.id.userFullName)
-                    val tvCurrentUsername = findViewById<TextView>(R.id.tvCurrentUsername)
-                    val tvCurrentEmail = findViewById<TextView>(R.id.tvCurrentEmail)
-                    val etCurrentBio =  findViewById<EditText>(R.id.etEditBio)
+//        val query = ParseUser.getQuery()
+//        query.whereEqualTo("objectId", ParseUser.getCurrentUser().objectId)
+//        query.getFirstInBackground(object: GetCallback<ParseUser> {
+//
+//            override fun done(user: ParseUser, e: ParseException?) {
+//                if (e != null) {
+//                    Log.e(TAG, "Error fetching User")
+//                } else {
+//
+//                    val changeProfilePhotoButton = findViewById<ImageButton>(R.id.editProfilePicture)
+//                    val editUsernameButton = findViewById<Button>(R.id.editUsernameButton)
+//                    val editEmailButton = findViewById<Button>(R.id.editEmailButton)
+//                    val editPasswordButton = findViewById<Button>(R.id.editPasswordButton)
+//                    val deleteAccountButton = findViewById<Button>(R.id.deleteAccountButton)
+//                    val submitChangesButton = findViewById<Button>(R.id.submitChangesButton)
+//
+//                    val userFullName =  findViewById<TextView>(R.id.userFullName)
+//                    val tvCurrentUsername = findViewById<TextView>(R.id.tvCurrentUsername)
+//                    val tvCurrentEmail = findViewById<TextView>(R.id.tvCurrentEmail)
+//                    val etCurrentBio =  findViewById<EditText>(R.id.etEditBio)
 
                     // Input user's name:
-                    val name = user.getString("firstName") + " " + user.getString("lastName")
-                    userFullName.text = name
-
-                    // Load the current Username
-                    tvCurrentUsername.text = user.getString("username")
-
-                    // Load the current Email
-                    tvCurrentEmail.text = user.getString("email")
-
-                    // Load the current Bio
-                    etCurrentBio.setText(user.getString("bio"))
+//                    val name = user.getString("firstName") + " " + user.getString("lastName")
+//                    userFullName.text = name
+//
+//                    // Load the current Username
+//                    tvCurrentUsername.text = user.getString("username")
+//
+//                    // Load the current Email
+//                    tvCurrentEmail.text = user.getString("email")
+//
+//                    // Load the current Bio
+//                    etCurrentBio.setText(user.getString("bio"))
 
                     // Load profile photo
-                    Glide.with(applicationContext)
-                        .load(user.getParseFile("profilePicture")?.url)
-                        .placeholder(R.drawable.ic_profile)
-                        .into(findViewById(R.id.profilePhoto))
+//                    Glide.with(applicationContext)
+//                        .load(user.getParseFile("profilePicture")?.url)
+//                        .placeholder(R.drawable.ic_profile)
+//                        .into(findViewById(R.id.profilePhoto))
 
-                    editUsernameButton.setOnClickListener {
-                        showEditUsernameDialog()
-                    }
+//                    editUsernameButton.setOnClickListener {
+//                        showEditUsernameDialog()
+//                    }
+//
+//                    editEmailButton.setOnClickListener {
+//                        showEditEmailDialog()
+//                    }
+//
+//                    editPasswordButton.setOnClickListener {
+//                        showEditPasswordDialog()
+//                    }
+//
+//
+//                    submitChangesButton.setOnClickListener {
+//                        submitChanges()
+//                    }
+//
+//                    deleteAccountButton.setOnClickListener {
+//                        deleteImages()
+//                        deleteListings()
+//                        deleteAccount()
+//                    }
+//                }
+//            }
+//        })
 
-                    editEmailButton.setOnClickListener {
-                        showEditEmailDialog()
-                    }
+        val currUser = ParseUser.getCurrentUser()
 
-                    editPasswordButton.setOnClickListener {
-                        showEditPasswordDialog()
-                    }
+        val changeProfilePhotoButton = findViewById<ImageButton>(R.id.editProfilePicture)
+        val editUsernameButton = findViewById<Button>(R.id.editUsernameButton)
+        val editEmailButton = findViewById<Button>(R.id.editEmailButton)
+        val editPasswordButton = findViewById<Button>(R.id.editPasswordButton)
+        val deleteAccountButton = findViewById<Button>(R.id.deleteAccountButton)
+        val submitChangesButton = findViewById<Button>(R.id.submitChangesButton)
+
+        val userFullName =  findViewById<TextView>(R.id.userFullName)
+        val tvCurrentUsername = findViewById<TextView>(R.id.tvCurrentUsername)
+        val tvCurrentEmail = findViewById<TextView>(R.id.tvCurrentEmail)
+        val etCurrentBio =  findViewById<EditText>(R.id.etEditBio)
+
+        val name = currUser.getString("firstName") + " " + currUser.getString("lastName")
+        userFullName.text = name
+
+        // Load the current Username
+        tvCurrentUsername.text = currUser.getString("username")
+
+        // Load the current Email
+        tvCurrentEmail.text = currUser.getString("email")
+
+        // Load the current Bio
+        etCurrentBio.setText(currUser.getString("bio"))
+
+        editUsernameButton.setOnClickListener {
+            showEditUsernameDialog()
+        }
+
+        editEmailButton.setOnClickListener {
+            showEditEmailDialog()
+        }
+
+        editPasswordButton.setOnClickListener {
+            showEditPasswordDialog()
+        }
 
 
-                    submitChangesButton.setOnClickListener {
-                        submitChanges()
-                    }
+        submitChangesButton.setOnClickListener {
+            submitChanges()
+        }
 
-                    deleteAccountButton.setOnClickListener {
-                        deleteImages()
-                        deleteListings()
-                        deleteAccount()
-                    }
-
-                }
-            }
-        })
+        deleteAccountButton.setOnClickListener {
+            deleteImages()
+            deleteListings()
+//            deleteAccount()
+        }
     }
 
     private fun showEditUsernameDialog() {

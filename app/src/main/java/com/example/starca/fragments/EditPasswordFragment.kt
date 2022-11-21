@@ -7,14 +7,18 @@ import androidx.fragment.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.starca.R
 
 class EditPasswordDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireContext())
-            .setMessage("Change Your Password")
-            .setPositiveButton("OK") {_,_ ->}
+            .setMessage("Change Password")
+            .setPositiveButton("OK") {_, _ ->
+                Toast.makeText(context, "Password Has Been Changed", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Cancel") {_,_ -> dismiss()}
             .setView(R.layout.fragment_edit_password)
             .create()
 
@@ -28,6 +32,7 @@ class EditPasswordDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
     }
 
     companion object {

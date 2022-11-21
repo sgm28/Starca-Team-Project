@@ -13,8 +13,9 @@ class EditEmailDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         AlertDialog.Builder(requireContext())
-            .setMessage("Enter New Email")
+            .setMessage("Change Email")
             .setPositiveButton("OK") {_,_ ->}
+            .setNegativeButton("Cancel") {_,_ -> dismiss()}
             .setView(R.layout.fragment_edit_email)
             .create()
 
