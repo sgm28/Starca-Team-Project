@@ -1,5 +1,6 @@
 package com.example.starca.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -53,12 +54,32 @@ class RegisterFragment : Fragment() {
             if (e == null) {
                 // User successfully created new account
                 Log.i(TAG, "Successfully registered!")
-                goToMainActivity()
+                ParseUser.logOut()
+                //goToMainActivity()
+                showAlert("Successfully Registered!", "Please verify your email before signing in.", false)
             } else {
                 Toast.makeText(requireContext(), "Error registering your account", Toast.LENGTH_SHORT).show()
+                // TODO: Show more user friendly error message
+                showAlert("Error registering your account", "Failed to register :" + e.message, true)
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun showAlert(title: String, message: String, error: Boolean){
+        val builder = AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("OK") { dialog, which ->
+                dialog.cancel()
+
+                if (!error) {
+                    //TODO: Add transition here
+                    parentFragmentManager.beginTransaction().replace(R.id.login_fragment_container, SignInFragment()).commit()
+                }
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
     private fun goToMainActivity(){
