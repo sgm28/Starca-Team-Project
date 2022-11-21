@@ -1,6 +1,7 @@
 package com.example.starca
 
 import android.app.Application
+import com.example.starca.models.Image
 import com.example.starca.models.Listing
 import com.parse.Parse
 import com.parse.ParseObject
@@ -11,6 +12,7 @@ class StarcaApplication : Application() {
 
         // Register the Listing Parse model so that we can use that class and link to the Listing table in Parse DB
         ParseObject.registerSubclass(Listing::class.java)
+        ParseObject.registerSubclass(Image::class.java)
 
         Parse.initialize(
             Parse.Configuration.Builder(this)

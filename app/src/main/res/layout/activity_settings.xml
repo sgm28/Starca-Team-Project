@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/TextAppearance.AppCompat.Large"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profilePhoto"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_profile"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        android:clickable="true"
+        android:onClick="choosePhotoSelectorDialog"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
+        android:id="@+id/editProfilePicture"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="85dp"
+        android:background="@null"
+        android:clickable="true"
+        android:onClick="choosePhotoSelectorDialog"
+        android:scaleX="-.75"
+        android:scaleY="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_outline_add_a_photo_30" />
+
+    <TextView
+        android:id="@+id/userFullName"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:text="John Doe"
+        app:layout_constraintStart_toEndOf="@+id/editProfilePicture"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etEditBio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="20dp"
+        android:ems="5"
+        android:gravity="start|top"
+        android:hint="Edit Your Bio"
+        android:inputType="text|textCapSentences|textMultiLine"
+        android:maxLength="124"
+        android:maxLines="3"
+        android:text=""
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/profilePhoto"
+        app:layout_constraintTop_toBottomOf="@+id/userFullName" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="USERNAME"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePhoto"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="25dp"
+        android:textSize="11sp"
+        android:textColor="?colorPrimary"/>
+
+    <TextView
+        android:id="@+id/tvCurrentUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="4dp"
+        android:text="Username"
+        app:layout_constraintBottom_toBottomOf="@+id/tvUserName"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/editUsernameButton"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:text="EDIT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvUserName"
+        android:textColor="@color/white"
+        android:background="?colorPrimary"/>
+
+
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="25dp"
+        android:text="EMAIL"
+        android:textColor="?colorPrimary"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserName" />
+
+    <TextView
+        android:id="@+id/tvCurrentEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="4dp"
+        android:text="Email"
+        app:layout_constraintBottom_toBottomOf="@+id/tvEmail"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/editEmailButton"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:text="EDIT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvEmail"
+        android:textColor="@color/white"
+        android:background="?colorPrimary"/>
+
+    <TextView
+        android:id="@+id/tvPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="25dp"
+        android:text="PASSWORD"
+        android:textColor="?colorPrimary"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+    <TextView
+        android:id="@+id/currentPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="4dp"
+        android:text="Password"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPassword"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/editPasswordButton"
+        android:layout_width="50dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:background="?colorPrimary"
+        android:text="EDIT"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPassword" />
+
+    <Button
+        android:id="@+id/submitChangesButton"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/rounded_buttons"
+        android:backgroundTint="#228B22"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="10dp"
+        android:text="Submit Changes"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/deleteAccountButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/deleteAccountButton"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_buttons"
+        android:paddingHorizontal="52dp"
+        android:paddingVertical="10dp"
+        android:text="Delete Account"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
