@@ -75,6 +75,7 @@ class Listing : ParseObject() {
     }
 
     companion object {
+        const val REQUEST_KEY = "1"
         const val KEY_TITLE = "title"
         const val KEY_DESCRIPTION = "description"
         const val KEY_ADDRESS_STREET = "addressStreet"

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CreateListingDetailsFragment">
 
+
+
     <Button
         android:id="@+id/create_listing_details_next_button"
         android:layout_width="0dp"

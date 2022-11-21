@@ -11,6 +11,9 @@ import com.example.starca.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.parse.ParseUser
 
+
+
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,4 +78,6 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+
 }

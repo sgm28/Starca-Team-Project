@@ -1,5 +1,6 @@
 package com.example.starca.fragments
 
+
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -17,6 +18,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 
+import androidx.fragment.app.setFragmentResultListener
+
 import com.example.starca.R
 import com.parse.ParseFile
 import com.parse.ParseObject
@@ -30,10 +33,22 @@ class CreateListingImageFragment : Fragment() {
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
-    val firstObject = ParseObject.create("Listing")
-
+    var firstObject = ParseObject.create("Listing")
     private lateinit var ivPreview: ImageView
 
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener("requestKey") { key, bundle ->
+            // Any type can be passed via to the bundle
+            firstObject = bundle.getParcelable<ParseObject>("user")
+           // val result = bundle.getString("data")
+            // Do something with the result...
+            Log.v(APP_TAG, firstObject.getString("title").toString())
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +79,9 @@ class CreateListingImageFragment : Fragment() {
             sumbitPost(user)
 
         }
+
+
+
 
     }
 
@@ -151,6 +169,11 @@ class CreateListingImageFragment : Fragment() {
             }
         }
     }
+
+
+
+
+
 
 
 }
