@@ -30,7 +30,7 @@ class CreateListingImageFragment : Fragment() {
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
-    val firstObject = ParseObject("Listing")
+    val firstObject = ParseObject.create("Listing")
 
     private lateinit var ivPreview: ImageView
 
