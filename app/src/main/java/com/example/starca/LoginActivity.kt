@@ -1,10 +1,9 @@
 package com.example.starca
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import androidx.appcompat.widget.Toolbar
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.starca.fragments.*
@@ -21,30 +20,12 @@ class LoginActivity : AppCompatActivity() {
             goToMainActivity()
         }
 
+        showCustomUI()
         val fragmentManager: FragmentManager = supportFragmentManager
 
         // Display the login fragment when user enters the app
         fragmentManager.beginTransaction().replace(R.id.login_fragment_container, SignInFragment()).commit()
 
-        // Bottom navigation view listener for switching between fragments
-        findViewById<BottomNavigationView>(R.id.login_bottom_nav_bar).setOnItemSelectedListener {
-                item ->
-
-            var currentFragment: Fragment? = null
-            when (item.itemId) {
-                R.id.login_bottom_nav_sign_in -> {
-                    currentFragment = SignInFragment()
-                }
-                R.id.login_bottom_nav_register -> {
-                    currentFragment = RegisterFragment()
-                }
-            }
-            if (currentFragment != null) {
-                fragmentManager.beginTransaction().replace(R.id.login_fragment_container, currentFragment).commit()
-            }
-            // This true signifies we handled the user interaction
-            true
-        }
     }
 
     private fun goToMainActivity(){
@@ -53,5 +34,15 @@ class LoginActivity : AppCompatActivity() {
 
         // Finish activity so we can't come back to the log in page by hitting back
         this.finish()
+    }
+
+    //TODO: replace depracated method
+    //Allows background to display on the status bar
+    private fun showCustomUI() {
+        val decorView: View = window.decorView
+        decorView.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        )
     }
 }

@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
 import com.example.starca.MainActivity
 import com.example.starca.R
 import com.parse.ParseUser
@@ -38,6 +40,13 @@ class RegisterFragment : Fragment() {
 
             registerUser(firstName, lastName, email, username, password)
         }
+
+        // Handle back press to go back to the SignIn Fragment
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                parentFragmentManager.popBackStack()
+            }
+        })
     }
 
     private fun registerUser(firstName: String, lastName: String, email: String, username: String, password: String) {
@@ -80,14 +89,6 @@ class RegisterFragment : Fragment() {
             }
         val alert = builder.create()
         alert.show()
-    }
-
-    private fun goToMainActivity(){
-        val intent = Intent(activity, MainActivity::class.java)
-        startActivity(intent)
-
-        // Finish activity so we can't come back to the log in page by hitting back
-        activity?.finish()
     }
 
     companion object {
