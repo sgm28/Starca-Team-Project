@@ -28,5 +28,7 @@ class CreateListingDetailsFragment : Fragment() {
         view.findViewById<Button>(R.id.create_listing_details_cancel_button).setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
         }
+
+
     }
 }
