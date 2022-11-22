@@ -74,6 +74,8 @@ class Listing : ParseObject() {
         put(KEY_DIMENSIONS, dimensions)
     }
 
+    // TODO: Add getter/setter for listing image
+
     companion object {
         const val KEY_TITLE = "title"
         const val KEY_DESCRIPTION = "description"
