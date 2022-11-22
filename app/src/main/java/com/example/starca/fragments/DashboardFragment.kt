@@ -84,7 +84,7 @@ class DashboardFragment : Fragment(), Parcelable {
         query.findInBackground { posts, e ->
             // don't convert this to lambda. i like to know what's being called.
             if (e != null) {
-                Log.e(TAG, "Error fetching posts ")
+                Log.e(TAG, "Error fetching posts ${e.message}")
             } else {
                 if (posts != null) {
                     for (post in posts) {
