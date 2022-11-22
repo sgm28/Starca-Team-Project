@@ -83,6 +83,8 @@ class CreateListingDetailsFragment : Fragment() {
 
 
         }
+
+
     }
 
 

@@ -2,6 +2,7 @@ package com.example.starca.fragments
 
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class MapsFragment : Fragment() {
 
         for (index: Int in 0 until dashboardData.storageLocations().size) {
             val storageLocation = dashboardData.storageLocations()[index]
+            Log.e(TAG, ": ${dashboardData.storageLocations().size}", )
             try {
 
                 val addressName = storageLocation.address
@@ -47,7 +49,6 @@ class MapsFragment : Fragment() {
                     continue
                 }
                 val locLL = LatLng(address[0].latitude, address[0].longitude)
-
 
                 val marker = googleMap.addMarker(
                     MarkerOptions().position(locLL).title(storageName)
@@ -83,7 +84,7 @@ class MapsFragment : Fragment() {
 
         val cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding)
 
-        googleMap.moveCamera(cu)
+        googleMap.animateCamera(cu)
     }
 
     override fun onCreateView(
@@ -105,6 +106,9 @@ class MapsFragment : Fragment() {
 
     }
 
+    companion object {
+        val TAG = "MapsFragment"
+    }
 
 }
 
