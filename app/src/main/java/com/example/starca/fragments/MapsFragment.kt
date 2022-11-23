@@ -29,10 +29,10 @@ class MapsFragment : Fragment() {
         val geo = Geocoder(context, Locale.getDefault())
 
         val builder = LatLngBounds.Builder()
+        var indexes: HashMap<String, Int> = HashMap<String, Int>()
 
         for (index: Int in 0 until dashboardData.storageLocations().size) {
             val storageLocation = dashboardData.storageLocations()[index]
-            Log.e(TAG, ": ${dashboardData.storageLocations().size}", )
             try {
 
                 val addressName = storageLocation.address
@@ -40,13 +40,16 @@ class MapsFragment : Fragment() {
 
                 val address = geo.getFromLocationName(addressName, 1)
 
-                if (address.size==0){
+                if (address.size == 0) {
                     Toast.makeText(
                         context,
                         "problem address index: ${storageLocation.name}",
                         Toast.LENGTH_SHORT
                     ).show()
                     continue
+                }
+                if (storageName != null) {
+                    indexes[storageName] = index
                 }
                 val locLL = LatLng(address[0].latitude, address[0].longitude)
 
@@ -56,12 +59,7 @@ class MapsFragment : Fragment() {
                 builder.include(marker!!.position);
 
                 googleMap.setOnMarkerClickListener { marker ->
-                    Toast.makeText(
-                        context,
-                        "clicked ${marker.title}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    dashboardData.parent.selectMarker(index)
+                    dashboardData.parent.selectMarker(indexes[marker.title])
                     true
                 }
 
@@ -72,10 +70,7 @@ class MapsFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
-
         }
-
         val bounds = builder.build()
 
         val width = resources.displayMetrics.widthPixels
