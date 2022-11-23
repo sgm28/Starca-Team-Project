@@ -20,6 +20,7 @@ import com.parse.ParseUser
 import com.parse.RequestPasswordResetCallback
 
 //TODO: Add progress bar when signing in or signing up
+//TODO: Add transitions between sign in and sign up fragments
 class SignInFragment : Fragment() {
 
     override fun onCreateView(

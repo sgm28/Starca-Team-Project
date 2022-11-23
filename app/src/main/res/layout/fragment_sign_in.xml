@@ -44,7 +44,8 @@
                 android:id="@+id/sign_in_username_text_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:startIconDrawable="@drawable/ic_profile"
+                android:textColorHint="#99000000"
+                app:startIconDrawable="@drawable/ic_login_profile"
                 app:layout_constraintBottom_toTopOf="@+id/sign_in_password_text_input_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -61,6 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
+                android:textColorHint="#99000000"
                 app:startIconDrawable="@drawable/ic_lock"
                 app:endIconMode="password_toggle"
                 app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
