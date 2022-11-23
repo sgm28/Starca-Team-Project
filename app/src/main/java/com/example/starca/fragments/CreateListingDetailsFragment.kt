@@ -62,7 +62,9 @@ class CreateListingDetailsFragment : Fragment() {
             )
             usersDataObject.put(
                 "dimensions",
-                view.findViewById<EditText>(R.id.editTextDimension).text.toString()
+                view.findViewById<EditText>(R.id.editTextHeight).text.toString() + " X " +
+                        view.findViewById<EditText>(R.id.editTextWidth).text.toString()  + " X " +
+                        view.findViewById<EditText>(R.id.editTextDepth).text.toString()
             )
 
             // creating a bundle object to hold the usersDataObject
