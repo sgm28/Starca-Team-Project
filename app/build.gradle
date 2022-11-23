@@ -24,13 +24,11 @@ android {
         manifestPlaceholders += [ BACK4APP_SERVER_URL: "apikeyProperties['BACK4APP_SERVER_URL']" ]
         manifestPlaceholders += [ BACK4APP_APP_ID: "apikeyProperties['BACK4APP_APP_ID']" ]
         manifestPlaceholders += [ BACK4APP_CLIENT_KEY: "apikeyProperties['BACK4APP_CLIENT_KEY']" ]
-        manifestPlaceholders += [ BACK4APP_REST_API_KEY: "apikeyProperties['BACK4APP_REST_API_KEY']"]
 
         // BuildConfig Fields (api keys, urls, etc)
         buildConfigField("String", "BACK4APP_SERVER_URL", apikeyProperties['BACK4APP_SERVER_URL'])
         buildConfigField("String", "BACK4APP_APP_ID", apikeyProperties['BACK4APP_APP_ID'])
         buildConfigField("String", "BACK4APP_CLIENT_KEY", apikeyProperties['BACK4APP_CLIENT_KEY'])
-        buildConfigField("String", "BACK4APP_REST_API_KEY", apikeyProperties['BACK4APP_REST_API_KEY'])
 
     }
 

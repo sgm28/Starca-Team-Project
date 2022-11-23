@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
@@ -55,39 +56,22 @@ class SettingsActivity : AppCompatActivity(),
         val deleteAccountButton = findViewById<Button>(R.id.deleteAccountButton)
         val submitChangesButton = findViewById<Button>(R.id.submitChangesButton)
 
-//      Find the current logged in user from the database
-        val query = ParseUser.getQuery()
-        query.whereEqualTo("objectId", ParseUser.getCurrentUser().objectId)
-        query.getFirstInBackground(object: GetCallback<ParseUser> {
+        // Load User Data
+        val name = user.getString("firstName") + " " + user.getString("lastName")
+        userFullName.text = name
 
-            override fun done(user: ParseUser, e: ParseException?) {
-                if (e != null) {
-                    Log.e(TAG, "Error fetching User")
-                } else {
+        tvCurrentUsername.text = user.getString("username")
 
-                    // Input user's name:
-                    val name = user.getString("firstName") + " " + user.getString("lastName")
-                    userFullName.text = name
+        tvCurrentPassword.text = user.getString("password")
 
-                    // Load the current Username
-                    tvCurrentUsername.text = user.getString("username")
+        tvCurrentEmail.text = user.getString("email")
 
-                    tvCurrentPassword.text = user.getString("password")
+        etCurrentBio.setText(user.getString("bio"))
 
-                    // Load the current Email
-                    tvCurrentEmail.text = user.getString("email")
-
-                    // Load the current Bio
-                    etCurrentBio.setText(user.getString("bio"))
-
-                    // Load profile photo
-                    Glide.with(applicationContext)
-                        .load(user.getParseFile("profilePicture")?.url)
-                        .placeholder(R.drawable.ic_profile)
-                        .into(findViewById(R.id.profilePhoto))
-                }
-            }
-        })
+        Glide.with(applicationContext)
+            .load(user.getParseFile("profilePicture")?.url)
+            .placeholder(R.drawable.ic_profile)
+            .into(findViewById(R.id.profilePhoto))
 
         editUsernameButton.setOnClickListener {
             showEditUsernameDialog()
@@ -177,7 +161,7 @@ class SettingsActivity : AppCompatActivity(),
         cursor!!.moveToFirst()
         val columnIndex: Int = cursor!!.getColumnIndex(projection[0])
         val filePath: String = cursor!!.getString(columnIndex)
-//        yourSelectedImage = BitmapFactory.decodeFile(filePath)
+//        val yourSelectedImage = BitmapFactory.decodeFile(photoFile!!.absolutePath)
         return cursor!!.getString(column_index)
         cursor!!.close()
     }
@@ -189,12 +173,14 @@ class SettingsActivity : AppCompatActivity(),
             val selectedImage = loadFromUri(photoUri)
             photoFile = File(imagePath)
 
+            ParseUser.getCurrentUser().put("profilePicture", ParseFile(photoFile))
+
             findViewById<CircleImageView>(R.id.profilePhoto).setImageBitmap(selectedImage)
         }
     }
 
     fun submitChanges() {
-        Toast.makeText(this@SettingsActivity, "Changes Saved!", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this@SettingsActivity, "Changes Saved!", Toast.LENGTH_SHORT).show()
 
         val user = ParseUser.getCurrentUser()
         val userName = findViewById<TextView>(R.id.tvCurrentUsername).text.toString()
@@ -213,22 +199,31 @@ class SettingsActivity : AppCompatActivity(),
             user.put("password", password)
         }
 
-        if (photoFile != null) {
-            user.put("profilePicture", ParseFile(photoFile))
-        }
+//        if (photoFile != null) {
+//            user.put("profilePicture", ParseFile(photoFile))
+//            Log.i(TAG, "The photoFile is not null")
+//        }
 
         user.saveInBackground(SaveCallback() {
             fun done(e: ParseException) {
-                if (e != null)
-                    Log.e(TAG, e.message!!)
-                else Toast.makeText(this, "Saved Successfully", Toast.LENGTH_SHORT).show()
+                if (it != null) {
+                    Log.e(TAG, it.message!!)
+                    it.printStackTrace()
+                }
+                else {
+                    Toast.makeText(applicationContext, "Saved Successfully", Toast.LENGTH_SHORT).show()
+                    Glide.with(applicationContext)
+                        .load(user.getParseFile("profilePicture")?.url)
+                        .placeholder(R.drawable.ic_profile)
+                        .into(findViewById(R.id.profilePhoto))
+                }
             }
         })
     }
 
     fun deleteImages() {
         val query: ParseQuery<Image> = ParseQuery.getQuery(Image::class.java)
-        query.whereEqualTo("userId", ParseUser.getCurrentUser())
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().objectId)
 
         query.findInBackground(object: FindCallback<Image> {
             override fun done(images: MutableList<Image>?, e: ParseException?) {
@@ -250,7 +245,7 @@ class SettingsActivity : AppCompatActivity(),
 
     fun deleteListings() {
         val query:  ParseQuery<Listing> = ParseQuery.getQuery(Listing::class.java)
-        query.whereEqualTo("userId", ParseUser.getCurrentUser())
+        query.whereEqualTo("userId", ParseUser.getCurrentUser().objectId)
 
         query.findInBackground(object: FindCallback<Listing> {
             override fun done(listings: MutableList<Listing>?, e: ParseException?) {
