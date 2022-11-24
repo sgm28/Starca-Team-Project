@@ -69,10 +69,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
+        
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.starca.fileprovider"
+            android:authorities="com.codepath.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
