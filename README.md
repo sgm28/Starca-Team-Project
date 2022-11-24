@@ -9,7 +9,7 @@
 2. [Product Spec](#Product-Spec)
 3. [Wireframes](#Wireframes)
 4. [Schema](#Schema)
-5. [Walkthroughs] (#Walkthroughs)
+5. [Walkthroughs](#Walkthroughs)
 
 ## Overview
 
@@ -31,38 +31,38 @@ Starca is a storage marketplace that allows users to either list their unusued s
 
 **Required Must-have Stories**
 
-* Users will be able to register an account
-* Users will be able to log in to their account
-* Users will be able to view listings of storage places to rent nearby
-* Users will be able to view listings in other selected areas
-* Users will be able to post listings
-  * Users will be able to post pictures (implicit intent) for listings
-  * User will be able post details on their storage listing
-* Users will be able to update their profile
-* Users will be able to delete their account
-* User will be able to post multiple pictures for listings
-* Users will have a dashboard to select listings/rentals they own
-* Users will be able to rate each other
-* User will be able to click on a listing to view more details
-* Users will be able to chat with their prospective renters/rentees
-* User will be able to request to rent a listing
-* Owners will be prompted when a user wants to rent their listing
-* User will be prompted to accept the rental once the owner accepts a request
+- [x] Users will be able to register an account
+- [x] Users will be able to log in to their account
+- [x] Users will be able to view listings of storage places to rent nearby
+- [ ] Users will be able to view listings in other selected areas
+- [x] Users will be able to post listings
+  - [x] Users will be able to post a picture (implicit intent) for listings
+  - [x] User will be able post details on their storage listing
+- [x] Users will be able to update their profile
+- [x] Users will be able to delete their account
+- [ ] User will be able to post multiple pictures for listings
+- [ ] Users will have a dashboard to select listings/rentals they own
+- [ ] Users will be able to rate each other
+- [ ] User will be able to click on a listing to view more details
+- [ ] Users will be able to chat with their prospective renters/rentees
+- [ ] User will be able to request to rent a listing
+- [ ] Owners will be prompted when a user wants to rent their listing
+- [ ] User will be prompted to accept the rental once the owner accepts a request
 
 **Optional Nice-to-have Stories**
 
-* User will be able to block other users
-* User will be able to view previously rented storage listing
-* PayPal payment
-* User will be able to click "forgot password" to recover their password
-* (Live Messaging) User will be able to see a message pop up automatically once it is received from another user
-* Highly rated users will have an icon denoting their high rating next to their profile pictures
-* User can disable maps in dashboard
-* User will have to verify their email address
-* User will see the average response time of the owners they are trying to rent from
-* User will be able to sign in with Google
-* User will see a custom alert dialog
-* User will be able to sign in with Facebook
+- [ ] User will be able to block other users
+- [ ] User will be able to view previously rented storage listing
+- [ ] PayPal payment
+- [ ] User will be able to click "forgot password" to recover their password
+- [ ] (Live Messaging) User will be able to see a message pop up automatically once it is received from another user
+- [ ] Highly rated users will have an icon denoting their high rating next to their profile pictures
+- [ ] User can disable maps in dashboard
+- [x] User will have to verify their email address
+- [ ] User will see the average response time of the owners they are trying to rent from
+- [ ] User will be able to sign in with Google
+- [ ] User will see a custom alert dialog
+- [ ] User will be able to sign in with Facebook
 
 ### 2. Screen Archetypes
 
@@ -452,7 +452,25 @@ query.getInBackground("<PARSE_OBJECT_ID_ofAccount>", (object, e) -> {
 
 ## Walkthroughs
 
+### Sprint 1
+
 <img src='https://github.com/Nova-Storage/starca/blob/master/sprintgifs/StarcaSprint1.gif' title='Sprint 1 Walkthrough' width=300 alt='Sprint 1 Walkthrough' />
+
+#### Required stories
+
+- [x] Users will be able to register an account
+- [x] Users will be able to log in to their account
+- [x] Users will be able to view listings of storage places to rent nearby
+- [x] Users will be able to post listings
+  - [x] Users will be able to post a picture (implicit intent) for listings
+  - [x] User will be able post details on their storage listing
+- [x] Users will be able to update their profile
+- [x] Users will be able to delete their account
+
+#### Stretch stories
+
+- [x] User will have to verify their email address
+
 
    - [Add list of network requests by screen ]
    - [Create basic snippets for each Parse network request]
