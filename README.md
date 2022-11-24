@@ -6,9 +6,10 @@
 
 ## Table of Contents
 1. [Overview](#Overview)
-1. [Product Spec](#Product-Spec)
-1. [Wireframes](#Wireframes)
-2. [Schema](#Schema)
+2. [Product Spec](#Product-Spec)
+3. [Wireframes](#Wireframes)
+4. [Schema](#Schema)
+5. [Walkthroughs] (#Walkthroughs)
 
 ## Overview
 
@@ -448,6 +449,10 @@ query.getInBackground("<PARSE_OBJECT_ID_ofAccount>", (object, e) -> {
   }
 });
 ```
+
+## Walkthroughs
+
+<img src='https://github.com/Nova-Storage/starca/blob/master/sprintgifs/StarcaSprint1.gif' title='Sprint 1 Walkthrough' width=300 alt='Sprint 1 Walkthrough' />
 
    - [Add list of network requests by screen ]
    - [Create basic snippets for each Parse network request]
