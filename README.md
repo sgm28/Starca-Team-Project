@@ -1,5 +1,5 @@
 # Starca
-![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/1?color=yellow&style=plastic)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/1?color=%2300&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/2?color=yellow&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/3?color=yellow&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/4?color=yellow&style=plastic)
@@ -59,6 +59,9 @@ Starca is a storage marketplace that allows users to either list their unusued s
 * User can disable maps in dashboard
 * User will have to verify their email address
 * User will see the average response time of the owners they are trying to rent from
+* User will be able to sign in with Google
+* User will see a custom alert dialog
+* User will be able to sign in with Facebook
 
 ### 2. Screen Archetypes
 
