@@ -39,10 +39,10 @@
         android:id="@+id/bottom_nav_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backgroundTint="?attr/colorPrimary"
+        app:backgroundTint="@color/white"
         app:menu="@menu/menu_bottom_navigation"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="#99FFFFFF"
+        app:itemIconTint="?attr/colorPrimary"
+        app:itemTextColor="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
