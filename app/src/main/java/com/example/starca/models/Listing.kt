@@ -1,7 +1,9 @@
 package com.example.starca.models
 
 import com.parse.ParseClassName
+import com.parse.ParseFile
 import com.parse.ParseObject
+import com.parse.ParseUser
 
 /**
  * addressStreet : String
@@ -74,7 +76,29 @@ class Listing : ParseObject() {
         put(KEY_DIMENSIONS, dimensions)
     }
 
-    // TODO: Add getter/setter for listing image
+    fun getImage(): ParseFile? {
+        return getParseFile(KEY_IMAGE)
+    }
+
+    fun setImage(image: ParseFile) {
+        put(KEY_IMAGE, image)
+    }
+
+    fun getRating(): Float? {
+        return getDouble(KEY_RATING).toFloat()
+    }
+
+    fun setRating(rating: Float) {
+        put(KEY_RATING, rating)
+    }
+
+    fun getUser(): ParseUser? {
+        return getParseUser(KEY_USER)
+    }
+
+    fun setUser(user: ParseUser) {
+        put(KEY_USER, user)
+    }
 
     companion object {
         const val REQUEST_KEY = "1"
@@ -86,5 +110,8 @@ class Listing : ParseObject() {
         const val KEY_ADDRESS_ZIP = "addressZip"
         const val KEY_AMENITIES = "amenities"
         const val KEY_DIMENSIONS = "dimensions"
+        const val KEY_IMAGE = "PictureOfListing"
+        const val KEY_RATING = "listingRating"
+        const val KEY_USER = "userID"
     }
 }
