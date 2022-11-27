@@ -86,6 +86,4 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.codepath.libraries:asynchttpclient:2.2.0'
-
-
 }
