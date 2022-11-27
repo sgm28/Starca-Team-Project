@@ -8,7 +8,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,10 +22,10 @@
 
             <ImageView
                 android:id="@+id/grid_image_iv"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:scaleType="fitXY"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintVertical_bias="0.1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -34,25 +36,49 @@
                 android:id="@+id/grid_title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textSize="18dp"
-                android:layout_margin="8dp"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/grid_image_iv"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/grid_rating_rb"
                 tools:text="Listing title" />
+
+            <TextView
+                android:id="@+id/grid_city_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintEnd_toStartOf="@+id/grid_state_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/grid_title_tv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="Elizabeth, " />
+
+            <TextView
+                android:id="@+id/grid_state_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/grid_city_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/grid_title_tv"
+                tools:text="NJ" />
 
             <RatingBar
                 android:id="@+id/grid_rating_rb"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16dp"
                 android:layout_margin="8dp"
+                android:textSize="16dp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/grid_image_iv"
-                app:layout_constraintTop_toBottomOf="@id/grid_title_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/grid_image_iv"
                 tools:rating="3.6"
                 tools:text="Listing title" />
 

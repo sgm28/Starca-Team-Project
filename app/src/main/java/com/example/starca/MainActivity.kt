@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentManager: FragmentManager = supportFragmentManager
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.inflateMenu(R.menu.menu)
+        //toolbar.inflateMenu(R.menu.menu)
 
         // Display dashboard fragment once user has signed in
         fragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
@@ -51,33 +51,5 @@ class MainActivity : AppCompatActivity() {
             // This true signifies we handled the user interaction
             true
         }
-
-        // Toolbar listener for listening to menu item clicks
-        findViewById<Toolbar>(R.id.toolbar).setOnMenuItemClickListener {
-                item ->
-
-            when (item.itemId) {
-                R.id.toolbar_logout -> {
-                    signOut()
-                    goToLoginActivity()
-                }
-            }
-            true
-        }
-
-
     }
-
-    private fun signOut(){
-        Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
-        ParseUser.logOut()
-    }
-
-    private fun goToLoginActivity(){
-        val intent = Intent(this, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-
 }

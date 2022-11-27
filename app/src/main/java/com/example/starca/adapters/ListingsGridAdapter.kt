@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.starca.R
 import com.example.starca.models.Listing
 
@@ -21,6 +22,8 @@ internal class ListingsGridAdapter (
     private lateinit var gridImage: ImageView
     private lateinit var gridTitle: TextView
     private lateinit var gridRating: RatingBar
+    private lateinit var gridCity: TextView
+    private lateinit var gridState: TextView
 
 
     override fun getCount(): Int {
@@ -49,11 +52,15 @@ internal class ListingsGridAdapter (
         gridImage = listingGridView!!.findViewById<ImageView>(R.id.grid_image_iv)
         gridTitle = listingGridView!!.findViewById<TextView>(R.id.grid_title_tv)
         gridRating = listingGridView!!.findViewById<RatingBar>(R.id.grid_rating_rb)
+        gridCity = listingGridView!!.findViewById<TextView>(R.id.grid_city_tv)
+        gridState = listingGridView!!.findViewById<TextView>(R.id.grid_state_tv)
 
         val listing = listings[position]
-        Glide.with(listingGridView.context).load(listing.getImage()?.url).into(gridImage)
+        Glide.with(listingGridView.context).load(listing.getImage()?.url).transform(RoundedCorners(40)).into(gridImage)
         gridTitle.text = listing.getTitle()
         gridRating.rating = listing.getRating()!!
+        gridCity.text = listing.getAddressCity() + ", "
+        gridState.text = listing.getAddressState()
 
         return listingGridView
     }
