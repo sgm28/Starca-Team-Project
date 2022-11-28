@@ -10,10 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
@@ -144,7 +141,6 @@ class SettingsActivity : AppCompatActivity(),
 
     // Called in activity_settings.xml on both the image avatar and update profile photo icon
     fun choosePhotoSelectorDialog(v: View) {
-//        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         val PERMISSIONS = arrayOf<String>(
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -162,10 +158,11 @@ class SettingsActivity : AppCompatActivity(),
 
         // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
-        if (intent.resolveActivity(packageManager) != null) {
-            // Bring up gallery to select a photo
-            startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
-        }
+        startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
+//        if (intent.resolveActivity(packageManager) != null) {
+//            // Bring up gallery to select a photo
+//            startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
+//        }
     }
 
     fun loadFromUri(photoUri: Uri): Bitmap? {
@@ -204,7 +201,6 @@ class SettingsActivity : AppCompatActivity(),
     }
 
     fun submitChanges() {
-//        Toast.makeText(this@SettingsActivity, "Changes Saved!", Toast.LENGTH_SHORT).show()
 
         val user = ParseUser.getCurrentUser()
         val userName = findViewById<TextView>(R.id.tvCurrentUsername).text.toString()
@@ -212,84 +208,67 @@ class SettingsActivity : AppCompatActivity(),
         val password = findViewById<TextView>(R.id.tvCurrentPassword).text.toString()
         val bio = findViewById<EditText>(R.id.etEditBio).text.toString()
 
-        // Put username
         user.put("username", userName)
-        // Put email
+
         user.put("email", email)
-        // Put bio
+
         user.put("bio", bio)
-        // Put password
-        if (password != null) {
+
+        if (password != "") {
             user.put("password", password)
         }
 
         if (photoFile != null) {
             user.put("profilePicture", ParseFile(photoFile))
-        }
+            val pFile = ParseFile(photoFile)
 
-        val pFile = ParseFile(photoFile)
-
-        pFile.saveInBackground(SaveCallback { e ->
-            if (e == null) {
-                user.saveInBackground {exception ->
-                    if (exception != null) {
-                        // Something has went wrong
-                        Log.e(TAG, "Error updating profile")
-                        exception.printStackTrace()
-                        Toast.makeText(
-                            this,
-                            "Something went wrong updating your profile!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Log.i(TAG, "Profile updated successfully")
-                        Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
+            pFile.saveInBackground(SaveCallback { e ->
+                if (e == null) {
+                    user.saveInBackground { exception ->
+                        if (exception != null) {
+                            // Something has went wrong
+                            Log.e(TAG, "Error updating profile")
+                            exception.printStackTrace()
+                            Toast.makeText(
+                                this,
+                                "Something went wrong updating your profile!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Log.i(TAG, "Profile updated successfully")
+                            Toast.makeText(
+                                this,
+                                "Profile updated successfully!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
+                } else {
+                    Log.i(TAG, "Error saving file")
+                    e.printStackTrace()
                 }
-            } else {
-                Log.i(TAG, "Error saving file")
-                e.printStackTrace()
+            })
+        } else {
+            user.saveInBackground { exception ->
+                if (exception != null) {
+                    // Something has went wrong
+                    Log.e(TAG, "Error updating profile")
+                    exception.printStackTrace()
+                    Toast.makeText(
+                        this,
+                        "Something went wrong updating your profile!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Log.i(TAG, "Profile updated successfully")
+                    Toast.makeText(
+                        this,
+                        "Profile updated successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-        })
-
-//        user.saveInBackground {exception ->
-//            if (exception != null) {
-//                // Something has went wrong
-//                Log.e(TAG, "Error updating profile")
-//                exception.printStackTrace()
-//                Toast.makeText(
-//                    this,
-//                    "Something went wrong updating your profile!",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            } else {
-//                Log.i(TAG, "Profile updated successfully")
-//                Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-//                Glide.with(applicationContext)
-//                    .load(user.getParseFile("profilePicture")?.url)
-//                    .placeholder(R.drawable.ic_profile)
-//                    .into(findViewById(R.id.profilePhoto))
-//            }
-//        }
-//        user.saveInBackground(SaveCallback() {
-//            fun done(e: ParseException) {
-//                if (it != null) {
-//                    Log.e(TAG, it.message!!)
-//                    it.printStackTrace()
-//                }
-//                else {
-//                    Toast.makeText(applicationContext, "Saved Successfully", Toast.LENGTH_SHORT).show()
-//                    Glide.with(applicationContext)
-//                        .load(user.getParseFile("profilePicture")?.url)
-//                        .placeholder(R.drawable.ic_profile)
-//                        .into(findViewById(R.id.profilePhoto))
-//                }
-//            }
-//        })
-//        Glide.with(applicationContext)
-//            .load(user.getParseFile("profilePicture")?.url)
-//            .placeholder(R.drawable.ic_profile)
-//            .into(findViewById(R.id.profilePhoto))
+        }
     }
 
     fun deleteImages() {
