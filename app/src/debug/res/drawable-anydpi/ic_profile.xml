@@ -4,7 +4,7 @@
     android:viewportWidth="24"
     android:viewportHeight="24"
     android:tint="#333333"
-    android:alpha="0.6">
+    android:alpha="1.0">
   <path
       android:fillColor="@android:color/transparent"
       android:pathData="M12,16c-2.69,0 -5.77,1.28 -6,2h12c-0.2,-0.71 -3.3,-2 -6,-2z"

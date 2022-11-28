@@ -58,6 +58,8 @@ class SettingsActivity : AppCompatActivity(),
         val deleteAccountButton = findViewById<Button>(R.id.deleteAccountButton)
         val submitChangesButton = findViewById<Button>(R.id.submitChangesButton)
 
+        val logoutButton = findViewById<ImageButton>(R.id.logout_button)
+
         // Load User Data
         val name = user.getString("firstName") + " " + user.getString("lastName")
         userFullName.text = name
@@ -89,6 +91,11 @@ class SettingsActivity : AppCompatActivity(),
 
         submitChangesButton.setOnClickListener {
             submitChanges()
+        }
+
+        logoutButton.setOnClickListener{
+            signOut()
+            goToLoginActivity()
         }
 
         deleteAccountButton.setOnClickListener {
@@ -332,8 +339,17 @@ class SettingsActivity : AppCompatActivity(),
     fun deleteAccount() {
         ParseUser.getCurrentUser().deleteInBackground()
         Toast.makeText(this@SettingsActivity, "Account and Data Deleted", Toast.LENGTH_SHORT).show()
+        signOut()
+        goToLoginActivity()
+    }
+
+    private fun signOut(){
+        Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
         ParseUser.logOut()
-        val intent = Intent(this@SettingsActivity, LoginActivity::class.java)
+    }
+
+    private fun goToLoginActivity(){
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
     }
