@@ -17,9 +17,6 @@ import com.parse.*
 import org.w3c.dom.Text
 
 /**TODO:
- *      Add listing city and state to the gridview item
- *      Make it look nice
- *      Push up changes and close issue #14
  *      Remove the top bar because it's not very useful and makes the app look less "air-y" or less flowy. Dunno how to describe
  *      Work on other stuff (and continue styling the profile. Also, add a tab to see currently renting places)
  *      Also, add a boolean (to the listing) so we can show if the listing is being rented or not

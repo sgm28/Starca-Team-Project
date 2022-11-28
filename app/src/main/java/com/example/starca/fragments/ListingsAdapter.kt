@@ -2,28 +2,27 @@ package com.example.starca.fragments
 
 
 import android.content.Context
-import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.starca.DetailFragment
 import com.example.starca.R
 import com.example.starca.models.Listing
-import java.text.SimpleDateFormat
 
 
-// just leave this here until i finish this page.
-//const val MOVIE_EXTRA = "MOVIE_EXTRA"
+const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
 class ListingsAdapter(
     private val context: Context,
-    private val listings: List<Listing>,// change this to a Listing model item
+    private val listings: List<Listing>,
 ) :
     RecyclerView.Adapter<ListingsAdapter.ViewHolder>() {
 
@@ -38,12 +37,10 @@ class ListingsAdapter(
         holder.bind(post)
     }
 
-
     override fun getItemCount() = listings.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-
 
         private val ivPoster: ImageView
         private val tvName: TextView
@@ -67,43 +64,36 @@ class ListingsAdapter(
             fun getAddressName_Simp(): String =
                 "${post.getAddressCity()}, ${post.getAddressState()} ${post.getAddressZip()}"
 
-
             tvName.text = post.getTitle()
             tvLocation.text = getAddressName_Simp()
             tvSize.text = post.getDimensions()
             tvDesc.text = post.getDescription()
 
-            // TODO: add image of storage to listings. placeholder if null.
-            //            Glide.with(itemView.context).load(post.getImage()?.url).into(ivPoster)
+            Glide.with(itemView.context).load(post.getImage()?.url).placeholder(R.drawable.starca_logo_icon).transform(RoundedCorners(20)).into(ivPoster)
 
+            ViewCompat.setTransitionName(ivPoster, "transition_dashboard_image")
+            ViewCompat.setTransitionName(tvName, "transition_dashboard_title")
         }
-
 
         override fun onClick(v: View) {
 
-            Toast.makeText(context, "clicked $adapterPosition", Toast.LENGTH_SHORT).show()
+            val listing = listings[adapterPosition]
 
-            // TODO:
-            //  add details page when i get an image to show
+            // Create bundle containing selected listing and add to detailFragment object
+            val bundle = Bundle()
+            bundle.putParcelable(LISTING_BUNDLE, listing)
+            val detailFragment = DetailFragment()
+            detailFragment.arguments = bundle
 
-            // below: working code from flixster stretch story. animates into details view. don't delete.
+            val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+            fragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
+                .addSharedElement(tvName, "transition_detail_title")
+                .replace(R.id.fragment_container, detailFragment)
+                .addToBackStack(null)
+                .commit()
 
-//            val movie = movies[adapterPosition]
-////            Toast.makeText(context, movie.title, Toast.LENGTH_SHORT).show()
-//            val intent = Intent(context, DetailActivity::class.java)
-//
-//            val p1: Pair<View, String> = Pair.create(ivPoster as View, "profile")
-//            val p2: Pair<View, String> = Pair.create(tvOverview as View, "overview")
-//            val p3: Pair<View, String> = Pair.create(tvTitle as View, "title")
-//
-//            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                activity,
-//                p1,p2,p3
-//            )
-//
-//            intent.putExtra(MOVIE_EXTRA, movie)
-//            context.startActivity(intent, options.toBundle())
-
+            //TODO: Add shared element transition
         }
     }
 }
