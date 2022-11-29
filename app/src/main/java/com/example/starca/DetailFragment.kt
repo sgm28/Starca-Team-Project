@@ -20,6 +20,7 @@ import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import org.json.JSONArray
+import org.json.JSONObject
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
@@ -112,6 +113,7 @@ class DetailFragment : Fragment() {
 
         //read flag. get request array from this listing
         val requests_arrayJSON = listing?.getJSONArray("listingRequests")
+
         if (requests_arrayJSON == null) {
             // listing array default to undefined.
 //            Toast.makeText(context, "No Array Exists", Toast.LENGTH_SHORT).show() // confirmed. it defaults to null
@@ -133,7 +135,7 @@ class DetailFragment : Fragment() {
         //i have requests now. it's a list. lets get the 1 request.
         if (requests != null) {
             for (request in requests) {
-                if (request.userId == ParseUser.getCurrentUser().objectId) {
+                if (request.objectId == ParseUser.getCurrentUser().objectId) {
                     // we now have the request for this user at this listing.
 
                     //get the status of that request
@@ -151,6 +153,14 @@ class DetailFragment : Fragment() {
                         FLAGS.REQUESTED.code -> {
                             // should just display text: "Awaiting Approval"
                             Toast.makeText(context, "Awaiting Approval", Toast.LENGTH_SHORT).show()
+                            //show cancel button
+                            button_bottomLeft.visibility=View.GONE
+                            button_bottomRight.visibility=View.VISIBLE
+                            button_bottomRight.text="Cancel Request"
+
+                            tv_requestDenied.visibility=View.VISIBLE
+                            tv_requestDenied.setTextColor(Color.BLACK)
+                            tv_requestDenied.text="Awaiting Approval..."
                         }
                         FLAGS.APPROVED.code -> {
 
