@@ -9,11 +9,12 @@ import org.json.JSONObject
 @Parcelize
 data class ListingRequest(
     val objectId: String,
-    val status: Int
+    val status: Int,
+    val listingId: String
 ) : Parcelable {
 
     companion object {
-        fun fromJsonArray(requestJSONArray: JSONArray) : MutableList<ListingRequest> {
+        fun fromJsonArray(requestJSONArray: JSONArray, listingId: String) : MutableList<ListingRequest> {
 
             val requests = mutableListOf<ListingRequest>()
             Log.e("DetailFragment", "fromJsonArray: $requestJSONArray", )
@@ -25,7 +26,8 @@ data class ListingRequest(
                 requests.add(
                     ListingRequest(
                         requestJSON.getString("objectId"),
-                        requestJSON.getInt("status")
+                        requestJSON.getInt("status"),
+                        listingId
                     )
                 )
             }

@@ -131,7 +131,7 @@ class DetailFragment : Fragment() {
 
     fun nnn(requests_arrayJSON: JSONArray) {
 
-        val requests = requests_arrayJSON?.let { ListingRequest.fromJsonArray(it) }
+        val requests = requests_arrayJSON?.let { listing?.let { it1 -> ListingRequest.fromJsonArray(it, it1.objectId) } }
         //i have requests now. it's a list. lets get the 1 request.
         if (requests != null) {
             for (request in requests) {
@@ -184,7 +184,7 @@ class DetailFragment : Fragment() {
 
             // create an listingRequest object
             val newRequest =
-                ListingRequest(ParseUser.getCurrentUser().objectId, FLAGS.REQUESTED.code)
+                ListingRequest(ParseUser.getCurrentUser().objectId, FLAGS.REQUESTED.code, listing!!.objectId)
 
             //add to request array
             requestArray.add(newRequest)
