@@ -41,7 +41,7 @@ class SettingsActivity : AppCompatActivity(),
         setContentView(R.layout.activity_settings)
 
         val user = ParseUser.getCurrentUser()
-        ParseUser.getCurrentUser().fetchIfNeeded()
+        user.fetchIfNeeded()
 
         val userFullName =  findViewById<TextView>(R.id.userFullName)
         val tvCurrentUsername = findViewById<TextView>(R.id.tvCurrentUsername)
@@ -156,13 +156,7 @@ class SettingsActivity : AppCompatActivity(),
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         )
 
-        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-        // So as long as the result is not null, it's safe to use the intent.
         startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
-//        if (intent.resolveActivity(packageManager) != null) {
-//            // Bring up gallery to select a photo
-//            startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
-//        }
     }
 
     fun loadFromUri(photoUri: Uri): Bitmap? {
@@ -210,7 +204,12 @@ class SettingsActivity : AppCompatActivity(),
 
         user.put("username", userName)
 
-        user.put("email", email)
+
+        // Check if the user updated their email.
+        // If we Put the email in without checking, it will count as changing the email and sets emailVerified to False.
+        if (email != user.email) {
+            user.put("email", email)
+        }
 
         user.put("bio", bio)
 
