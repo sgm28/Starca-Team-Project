@@ -1,21 +1,18 @@
 package com.example.starca
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
-import androidx.core.view.drawToBitmap
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.example.starca.fragments.EditEmailDialogFragment
@@ -24,6 +21,7 @@ import com.example.starca.fragments.EditUsernameDialogFragment
 import com.example.starca.models.Image
 import com.example.starca.models.Listing
 import com.parse.*
+import com.example.starca.FileUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
 import java.io.IOException
@@ -34,6 +32,7 @@ class SettingsActivity : AppCompatActivity(),
     EditEmailDialogFragment.EditEmailDialogFragmentListener,
     EditPasswordDialogFragment.EditPasswordDialogFragmentListener {
 
+    val SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1046
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
 
@@ -98,7 +97,7 @@ class SettingsActivity : AppCompatActivity(),
 
         deleteAccountButton.setOnClickListener {
             val builder : AlertDialog.Builder = AlertDialog.Builder(this)
-            builder.setMessage("Are you sure you want to delete your accont? This can't be undone.")
+            builder.setMessage("Are you sure you want to delete your account? This can't be undone.")
                 .setCancelable(false)
                 .setPositiveButton("Yes") { dialogInt, i ->
                     deleteImages()
@@ -140,54 +139,68 @@ class SettingsActivity : AppCompatActivity(),
         findViewById<TextView>(R.id.tvCurrentPassword).text = string
     }
 
-    // Launch DialogFragment to allow user to choose where to update profile photo from
     // Called in activity_settings.xml on both the image avatar and update profile photo icon
     fun choosePhotoSelectorDialog(v: View) {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, 1046)
-    }
-    fun loadFromUri(photoUri: Uri) : Bitmap {
-        lateinit var image: Bitmap
+        val PERMISSIONS = arrayOf<String>(
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        ActivityCompat.requestPermissions(
+            this,
+            PERMISSIONS,
+            1
+        )
+        MediaStore.Images.Media.TITLE
+        val intent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
 
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
+//        if (intent.resolveActivity(packageManager) != null) {
+//            // Bring up gallery to select a photo
+//            startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
+//        }
+    }
+
+    fun loadFromUri(photoUri: Uri): Bitmap? {
+        var image: Bitmap? = null
         try {
-            if (Build.VERSION.SDK_INT > 27) {
-                val source : ImageDecoder.Source = ImageDecoder.createSource(this.contentResolver, photoUri)
-                image = ImageDecoder.decodeBitmap(source)
+            // check version of Android on device
+            image = if (Build.VERSION.SDK_INT > 27) {
+                // on newer versions of Android, use the new decodeBitmap method
+                val source: ImageDecoder.Source =
+                    ImageDecoder.createSource(this.contentResolver, photoUri)
+                ImageDecoder.decodeBitmap(source)
             } else {
-                image = MediaStore.Images.Media.getBitmap(this.contentResolver, photoUri)
+                // support older versions of Android by using getBitmap
+                MediaStore.Images.Media.getBitmap(this.contentResolver, photoUri)
             }
-        } catch (e : IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
         }
         return image
     }
-    fun getPath(uri: Uri?): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor? = contentResolver.query(uri!!, projection, null, null, null)
-        val column_index: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor!!.moveToFirst()
-        val columnIndex: Int = cursor!!.getColumnIndex(projection[0])
-        val filePath: String = cursor!!.getString(columnIndex)
-//        val yourSelectedImage = BitmapFactory.decodeFile(photoFile!!.absolutePath)
-        return cursor!!.getString(column_index)
-        cursor!!.close()
-    }
+
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if ((data != null) && requestCode == 1046) {
-            val photoUri : Uri = data.data!!
-            val imagePath = getPath(photoUri)
-            val selectedImage = loadFromUri(photoUri)
-            photoFile = File(imagePath)
+        if (data != null && requestCode == SELECT_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val photoUri = data.data
 
-            ParseUser.getCurrentUser().put("profilePicture", ParseFile(photoFile))
+            // Load the image located at photoUri into selectedImage
+            val selectedImage = loadFromUri(photoUri!!)
 
+            photoFile = FileUtils().getFileFromUri(this,photoUri)
+
+            // Load the selected image into a preview
             findViewById<CircleImageView>(R.id.profilePhoto).setImageBitmap(selectedImage)
         }
     }
 
     fun submitChanges() {
-//        Toast.makeText(this@SettingsActivity, "Changes Saved!", Toast.LENGTH_SHORT).show()
 
         val user = ParseUser.getCurrentUser()
         val userName = findViewById<TextView>(R.id.tvCurrentUsername).text.toString()
@@ -195,37 +208,67 @@ class SettingsActivity : AppCompatActivity(),
         val password = findViewById<TextView>(R.id.tvCurrentPassword).text.toString()
         val bio = findViewById<EditText>(R.id.etEditBio).text.toString()
 
-        // Put username
         user.put("username", userName)
-        // Put email
+
         user.put("email", email)
-        // Put bio
+
         user.put("bio", bio)
-        // Put password
-        if (password != null) {
+
+        if (password != "") {
             user.put("password", password)
         }
 
-//        if (photoFile != null) {
-//            user.put("profilePicture", ParseFile(photoFile))
-//            Log.i(TAG, "The photoFile is not null")
-//        }
+        if (photoFile != null) {
+            user.put("profilePicture", ParseFile(photoFile))
+            val pFile = ParseFile(photoFile)
 
-        user.saveInBackground(SaveCallback() {
-            fun done(e: ParseException) {
-                if (it != null) {
-                    Log.e(TAG, it.message!!)
-                    it.printStackTrace()
+            pFile.saveInBackground(SaveCallback { e ->
+                if (e == null) {
+                    user.saveInBackground { exception ->
+                        if (exception != null) {
+                            // Something has went wrong
+                            Log.e(TAG, "Error updating profile")
+                            exception.printStackTrace()
+                            Toast.makeText(
+                                this,
+                                "Something went wrong updating your profile!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Log.i(TAG, "Profile updated successfully")
+                            Toast.makeText(
+                                this,
+                                "Profile updated successfully!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } else {
+                    Log.i(TAG, "Error saving file")
+                    e.printStackTrace()
                 }
-                else {
-                    Toast.makeText(applicationContext, "Saved Successfully", Toast.LENGTH_SHORT).show()
-                    Glide.with(applicationContext)
-                        .load(user.getParseFile("profilePicture")?.url)
-                        .placeholder(R.drawable.ic_profile)
-                        .into(findViewById(R.id.profilePhoto))
+            })
+        } else {
+            user.saveInBackground { exception ->
+                if (exception != null) {
+                    // Something has went wrong
+                    Log.e(TAG, "Error updating profile")
+                    exception.printStackTrace()
+                    Toast.makeText(
+                        this,
+                        "Something went wrong updating your profile!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Log.i(TAG, "Profile updated successfully")
+                    Toast.makeText(
+                        this,
+                        "Profile updated successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
-        })
+        }
     }
 
     fun deleteImages() {
