@@ -15,18 +15,25 @@ import com.example.starca.models.Listing
 import com.parse.ParseObject
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
+//private const val TRANSITION_TITLE_BUNDLE = "transitionTitle"
+//private const val TRANSITION_IMAGE_BUNDLE = "transitionImage"
+//private const val TRANSITION_CITY_BUNDLE = "transitionCity"
+//private const val TRANSITION_STATE_BUNDLE = "transitionState"
 
 class DetailFragment : Fragment() {
     private var listing: ParseObject? = null
+    private var transitionTitle: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            listing = it.getParcelable(LISTING_BUNDLE)
-        }
-
         postponeEnterTransition()
         sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(R.transition.shared_image)
+        arguments?.let {
+            listing = it.getParcelable(LISTING_BUNDLE)
+//            transitionTitle = it.getString(TRANSITION_TITLE_BUNDLE)
+        }
+
+
     }
 
     override fun onCreateView(
@@ -66,8 +73,9 @@ class DetailFragment : Fragment() {
         val ratingRb = view.findViewById<RatingBar>(R.id.detail_rating_rb)
         val descriptionTv = view.findViewById<TextView>(R.id.detail_description_tv)
         val imageIv = view.findViewById<ImageView>(R.id.detail_image_iv)
-        ViewCompat.setTransitionName(imageIv, "transition_detail_image")
-        ViewCompat.setTransitionName(titleTv, "transition_detail_title")
+        ViewCompat.setTransitionName(imageIv, "transition_dashboard_image")
+        ViewCompat.setTransitionName(titleTv, "transition_dashboard_title")
+        ViewCompat.setTransitionName(descriptionTv, "transition_dashboard_description")
 
         titleTv.text = listing?.getString("title")
         cityTv.text = listing?.getString("addressCity") + ", "
@@ -77,6 +85,7 @@ class DetailFragment : Fragment() {
 
         Glide.with(requireContext()).load(listing?.getParseFile("PictureOfListing")?.url).into(imageIv)
 
+        //TODO: put startPostponedEnterTransition() in glide callback
         startPostponedEnterTransition()
     }
 }

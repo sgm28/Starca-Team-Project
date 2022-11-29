@@ -60,7 +60,6 @@ class ListingsAdapter(
 
         fun bind(post: Listing) {
 
-            // no image here so far.
             fun getAddressName_Simp(): String =
                 "${post.getAddressCity()}, ${post.getAddressState()} ${post.getAddressZip()}"
 
@@ -71,8 +70,9 @@ class ListingsAdapter(
 
             Glide.with(itemView.context).load(post.getImage()?.url).placeholder(R.drawable.starca_logo_icon).transform(RoundedCorners(20)).into(ivPoster)
 
-            ViewCompat.setTransitionName(ivPoster, "transition_dashboard_image")
-            ViewCompat.setTransitionName(tvName, "transition_dashboard_title")
+            ViewCompat.setTransitionName(ivPoster, "transition_dashboard_image$adapterPosition")
+            ViewCompat.setTransitionName(tvDesc, "transition_dashboard_description$adapterPosition")
+            ViewCompat.setTransitionName(tvName, "transition_dashboard_title$adapterPosition")
         }
 
         override fun onClick(v: View) {
@@ -82,13 +82,16 @@ class ListingsAdapter(
             // Create bundle containing selected listing and add to detailFragment object
             val bundle = Bundle()
             bundle.putParcelable(LISTING_BUNDLE, listing)
+//            bundle.putString("transitionTitle", "transition_dashboard_title$adapterPosition")
             val detailFragment = DetailFragment()
             detailFragment.arguments = bundle
 
             val fragmentManager = (context as AppCompatActivity).supportFragmentManager
             fragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
-                .addSharedElement(tvName, "transition_detail_title")
+                .addSharedElement(tvName, "transition_dashboard_title")
+                .addSharedElement(ivPoster, "transition_dashboard_image")
+                .addSharedElement(tvDesc, "transition_dashboard_description")
                 .replace(R.id.fragment_container, detailFragment)
                 .addToBackStack(null)
                 .commit()
