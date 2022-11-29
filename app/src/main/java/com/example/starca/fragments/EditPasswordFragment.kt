@@ -53,11 +53,11 @@ class EditPasswordDialogFragment : DialogFragment() {
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
         etNewPassword.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE &&
-                //isValidPassword(etNewPassword.text.toString()) &&
-                etConfirmPassword.text.toString() == etNewPassword.text.toString() &&
-                etOldPassword.text.toString() == ParseUser.getCurrentUser().getString("password") &&
-                etConfirmPassword.text.toString() != "" && etOldPassword.text.toString() != "" && etNewPassword.text.toString() != ""
+            if (actionId == EditorInfo.IME_ACTION_DONE
+//                && isValidPassword(etNewPassword.text.toString()) &&
+//                etConfirmPassword.text.toString() == etNewPassword.text.toString() &&
+//                etOldPassword.text.toString() == ParseUser.getCurrentUser().getString("password") &&
+//                etConfirmPassword.text.toString() != "" && etOldPassword.text.toString() != "" && etNewPassword.text.toString() != ""
             ) {
                 val act = activity as EditPasswordDialogFragmentListener
                 act.onFinishedUpdatingPassword(etNewPassword.text.toString())
@@ -73,10 +73,10 @@ class EditPasswordDialogFragment : DialogFragment() {
 //                    tvInvalidPasswordMessage.visibility = View.VISIBLE
 //                }
 //                else
-                    if (etNewPassword.text.toString() != etConfirmPassword.text.toString()) {
-                    tvInvalidPasswordMessage.text = "New passwords don't match!!"
-                    tvInvalidPasswordMessage.visibility = View.VISIBLE
-                }
+//                    if (etNewPassword.text.toString() != etConfirmPassword.text.toString()) {
+//                    tvInvalidPasswordMessage.text = "New passwords don't match!"
+//                    tvInvalidPasswordMessage.visibility = View.VISIBLE
+//                }
                 false
             }
         }
