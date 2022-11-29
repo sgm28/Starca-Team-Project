@@ -1,5 +1,6 @@
 package com.example.starca.models
 
+import android.util.Log
 import com.parse.ParseClassName
 import com.parse.ParseFile
 import com.parse.ParseObject
@@ -100,6 +101,15 @@ class Listing : ParseObject() {
         put(KEY_USER, user)
     }
 
+    fun getListingRequests() : List<ListingRequest> {
+        return ListingRequest.fromJsonArray(getJSONArray(KEY_LISTING_REQUESTS)!!)
+//        if (getJSONArray(KEY_LISTING_REQUESTS) == null) {
+//            Log.e("Listing", "Empty JSON Array")
+//            return ArrayList<ListingRequest>()
+//        }
+//        return ListingRequest.fromJsonArray(getJSONArray(KEY_LISTING_REQUESTS)!!)
+    }
+
     companion object {
         const val REQUEST_KEY = "1"
         const val KEY_TITLE = "title"
@@ -113,5 +123,6 @@ class Listing : ParseObject() {
         const val KEY_IMAGE = "PictureOfListing"
         const val KEY_RATING = "listingRating"
         const val KEY_USER = "userID"
+        const val KEY_LISTING_REQUESTS = "listingRequests"
     }
 }
