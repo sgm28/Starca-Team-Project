@@ -11,6 +11,10 @@ import com.parse.ParseUser
 @ParseClassName("Listing")
 class Listing : ParseObject() {
 
+    fun getID(): String? {
+        return getString(KEY_ID)
+    }
+
     fun getTitle(): String? {
         return getString(KEY_TITLE)
     }
@@ -113,5 +117,6 @@ class Listing : ParseObject() {
         const val KEY_IMAGE = "PictureOfListing"
         const val KEY_RATING = "listingRating"
         const val KEY_USER = "userID"
+        const val KEY_ID = "objectId"
     }
 }
