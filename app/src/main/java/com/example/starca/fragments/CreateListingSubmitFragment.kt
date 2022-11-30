@@ -12,7 +12,10 @@ import androidx.fragment.app.setFragmentResultListener
 import com.example.starca.R
 import com.parse.ParseObject
 
-
+/**
+ * TODO: Allow users to put in their amenities here
+ *      Allow them to list their price here as well.
+ */
 class CreateListingSubmitFragment : Fragment() {
 
     //val APP_TAG = "CreateListingSubmitFragment.kt"

@@ -17,5 +17,8 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">#00000000</item>
+
+<!--        <item name="textAppearanceLabelLarge"> 33</item>-->
+<!--        <item name="shapeAppearanceSmallComponent"> 20</item>-->
     </style>
 </resources>

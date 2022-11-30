@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fullname_tv"
-        tools:text="This is my bio, I'm pretty awesome. Can't get much more awesome than me" />
+        tools:text="This is my bio, I'm pretty awesome. Can't get much more awesome than me. I'm def not a narcissist" />
 
     <RatingBar
         android:id="@+id/user_rating_rb"

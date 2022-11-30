@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/detail_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginStart="16dp"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="My Lovely Shed" />
+
+        <TextView
+            android:id="@+id/detail_city_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_image_iv"
+            app:layout_constraintEnd_toStartOf="@id/detail_state_tv"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/detail_title_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Newark, " />
+
+        <TextView
+            android:id="@+id/detail_state_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/detail_image_iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_city_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="NJ" />
+
+        <ImageView
+            android:id="@+id/detail_image_iv"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detail_title_tv"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <RatingBar
+            android:id="@+id/detail_rating_rb"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_image_iv"
+            tools:rating="4.3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/price_placeholder"
+            android:textSize="24sp"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/detail_rating_rb"
+            app:layout_constraintTop_toBottomOf="@+id/detail_image_iv"
+            tools:text="$22" />
+
+        <TextView
+            android:id="@+id/detail_amenities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_rating_rb"
+            tools:text="Amenities go here" />
+
+        <TextView
+            android:id="@+id/detail_description_tv"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_amenities"
+            tools:text="@string/tools_description" />
+
+        <TextView
+            android:id="@+id/tv_request_denied"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+
+            android:visibility="invisible"
+
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detail_description_tv"
+            tools:text="Request Denied"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="#7F0C0C"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_bottomLeft"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="14dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/rent_button_text"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+
+            android:visibility="visible"
+
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button_bottomRight"
+
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_request_denied"
+            app:layout_constraintVertical_bias="0.112" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_bottomRight"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="14dp"
+            android:layout_marginBottom="20dp"
+            android:text="Decline"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+
+            android:visibility="gone"
+
+            app:backgroundTint="#7F0C0C"
+            app:cornerRadius="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_bottomLeft"
+            app:layout_constraintTop_toBottomOf="@+id/tv_request_denied"
+            app:layout_constraintVertical_bias="0.112" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
