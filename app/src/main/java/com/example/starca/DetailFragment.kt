@@ -2,6 +2,7 @@ package com.example.starca
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.IBinder.DeathRecipient
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +15,9 @@ import com.bumptech.glide.Glide
 import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
 import com.google.gson.Gson
+import com.parse.Parse
 import com.parse.ParseObject
+import com.parse.ParseQuery
 import com.parse.ParseUser
 import com.parse.SaveCallback
 import org.json.JSONArray
@@ -34,6 +37,8 @@ class DetailFragment : Fragment() {
     lateinit var button_bottomLeft: Button
     lateinit var button_bottomRight: Button
     lateinit var tv_requestDenied: TextView
+
+    lateinit var conversationId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -257,8 +262,8 @@ class DetailFragment : Fragment() {
         Log.d(TAG, ParseUser.getCurrentUser().objectId)
 
 
-        val  listingPoster = listing!!.getUser()!!.objectId
-        val currentLoginInUser = ParseUser.getCurrentUser().objectId
+        val listingPoster = listing!!.getUser()!!
+        val currentLoginInUser = ParseUser.getCurrentUser()
         val initMessage = "Hi I am interested in the listing";
 
         val directMessage = listOf(listingPoster, currentLoginInUser)
@@ -266,13 +271,17 @@ class DetailFragment : Fragment() {
 
 
         val conversation = Conversation()
-        conversation.setUsers(directMessage as List<String>)
+        conversation.setUser(currentLoginInUser)
+        conversation.setRecipient(listingPoster)
         conversation.saveInBackground(SaveCallback {
             Toast.makeText(
                 requireContext(), "Successfully added data to Conversation table.",
                 Toast.LENGTH_SHORT
             ).show()
         })
+
+        // Get the conversation Id
+        compareConversation(currentLoginInUser, listingPoster)
 
         //Retrieve conversation pointer
 
@@ -297,6 +306,26 @@ class DetailFragment : Fragment() {
 
     }
 */
+
+    fun compareConversation(user: ParseUser, recipient: ParseUser){
+        val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
+
+        query.include(Conversation.KEY_USER)
+        query.include(Conversation.KEY_RECIPIENT)
+        query.whereEqualTo(Conversation.KEY_USER, user)
+        query.findInBackground { conversation, e ->
+            if (e != null) {
+                Log.d(TAG, "No conversation found: $e")
+            } else {
+                if (conversation != null) {
+                    Log.d(TAG, conversation.toString())
+                    conversationId = conversation[0].objectId
+                    Log.d(TAG, conversationId)
+                }
+            }
+        }
+    }
+
     companion object {
         const val TAG = "DetailFragment"
     }
