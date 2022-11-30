@@ -11,9 +11,12 @@ import android.widget.*
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.starca.models.Conversation
+import com.example.starca.models.Listing
 import com.google.gson.Gson
 import com.parse.ParseObject
 import com.parse.ParseUser
+import com.parse.SaveCallback
 import org.json.JSONArray
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
@@ -26,7 +29,7 @@ enum class FLAGS(val code: Int) {
 }
 
 class DetailFragment : Fragment() {
-    private var listing: ParseObject? = null
+    private var listing: Listing? = null
 
     lateinit var button_bottomLeft: Button
     lateinit var button_bottomRight: Button
@@ -168,10 +171,13 @@ class DetailFragment : Fragment() {
             }
         }
         // if you get here, this mean you have no requests under this listing.
-        button_bottomLeft.setOnClickListener(requests?.let { requestListing(it) })
+        button_bottomLeft.setOnClickListener(
+            requests?.let { requestListing(it) }
+        )
     }
 
     fun requestListing(requestArray: MutableList<ListingRequest>): View.OnClickListener {
+        sendToConversationTable()
         return View.OnClickListener { _ ->
             // here you will create a request. you will add it to the listing array.
             Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
@@ -221,7 +227,7 @@ class DetailFragment : Fragment() {
     }
 
     //////////////////
-    fun getUserId()
+    fun sendToConversationTable()
     {
 
 
@@ -231,28 +237,66 @@ class DetailFragment : Fragment() {
 
 
         // Get the user id of the poster - DONE
-        // Save the listingPoster, currentUser, text message  to the //Conversation Fragment  database
+        // Save the listingPoster, currentUser to Conversation Fragment  database
+            //Get callback to retrieve   conversation pointer
         // send the message automatically
-             // Save listingPoster, currentUser, messages
+             // Save message, conversationPointer
+
         // Chat fragment
              // Pull
             //  if userId = currentLoginInuser, display, the data(listingPosterFirstname, messages,)
         // That's it
+        //ParseObject message = ParseObject.create("Message");
+        //message.put(Message.USER_ID_KEY, userId);
+        //message.put(Message.BODY_KEY, data);
+        // Using new `Message` Parse-backed model now
 
 
 
-        val  listingPoster = listing?.getString("userID");
-        val currentLoginInUser = ParseUser.getCurrentUser().getString("objectId");
-        val message = "Hi I am interested in the listing";
+        Log.d(TAG,listing!!.getUser()!!.objectId)
+        Log.d(TAG, ParseUser.getCurrentUser().objectId)
+
+
+        val  listingPoster = listing!!.getUser()!!.objectId
+        val currentLoginInUser = ParseUser.getCurrentUser().objectId
+        val initMessage = "Hi I am interested in the listing";
+
+        val directMessage = listOf(listingPoster, currentLoginInUser)
 
 
 
+        val conversation = Conversation()
+        conversation.setUsers(directMessage as List<String>)
+        conversation.saveInBackground(SaveCallback {
+            Toast.makeText(
+                requireContext(), "Successfully added data to Conversation table.",
+                Toast.LENGTH_SHORT
+            ).show()
+        })
 
+        //Retrieve conversation pointer
 
 
 
     }
 
+  /*  fun sendMessage()
+    {
+        val message = Message()
+        message.setUserId(ParseUser.getCurrentUser().objectId)
+        message.setBody(initMessage)
+        message.conversationPointer(currentLoginInUser)
+        message.saveInBackground(SaveCallback {
+            Toast.makeText(
+                this@DetailFragment, "Successfully created message on Parse",
+                Toast.LENGTH_SHORT
+            ).show()
+            //refreshMessages();
+
+        })
+
+    }
+*/
     companion object {
         const val TAG = "DetailFragment"
     }
