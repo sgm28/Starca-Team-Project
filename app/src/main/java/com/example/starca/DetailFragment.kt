@@ -4,23 +4,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.starca.fragments.DashboardFragment
-import com.example.starca.fragments.MapsFragment
-import com.example.starca.models.Listing
 import com.google.gson.Gson
 import com.parse.ParseObject
-import com.parse.ParseQuery
 import com.parse.ParseUser
 import org.json.JSONArray
-import org.json.JSONObject
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
@@ -205,7 +199,7 @@ class DetailFragment : Fragment() {
                     Toast.makeText(context, "Request Submitted", Toast.LENGTH_SHORT).show()
                 }else{
                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
-                    Log.e(TAG, "requestListing: $e", )
+                    Log.e(TAG, "requestListing: $e")
                 }
             }
 
@@ -221,6 +215,42 @@ class DetailFragment : Fragment() {
 
             // you are supposed to remove the listingRequest here.
         }
+
+
+
+    }
+
+    //////////////////
+    fun getUserId()
+    {
+
+
+        //Logic
+        //  Create the Converstation table - DONE
+        // Link to message table Pointer points to Conversation ObjectID column -DONE
+
+
+        // Get the user id of the poster - DONE
+        // Save the listingPoster, currentUser, text message  to the //Conversation Fragment  database
+        // send the message automatically
+             // Save listingPoster, currentUser, messages
+        // Chat fragment
+             // Pull
+            //  if userId = currentLoginInuser, display, the data(listingPosterFirstname, messages,)
+        // That's it
+
+
+
+        val  listingPoster = listing?.getString("userID");
+        val currentLoginInUser = ParseUser.getCurrentUser().getString("objectId");
+        val message = "Hi I am interested in the listing";
+
+
+
+
+
+
+
     }
 
     companion object {
