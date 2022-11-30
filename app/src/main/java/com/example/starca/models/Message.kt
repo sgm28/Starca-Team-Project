@@ -13,7 +13,7 @@ class Message : ParseObject() {
         return getString(KEY_CONVERSATION)
     }
 
-    fun setConversation(conversationId: String) {
+    fun setConversation(conversationId: Conversation) {
         put(KEY_CONVERSATION, conversationId)
     }
 
@@ -21,12 +21,12 @@ class Message : ParseObject() {
         return getString(KEY_BODY)
     }
 
-    fun setBody(conversationId: String) {
-        put(KEY_BODY, conversationId)
+    fun setBody(message: String) {
+        put(KEY_BODY, message)
     }
 
     companion object {
         const val KEY_CONVERSATION = "conversationId"
-        const val KEY_BODY = "conversationId"
+        const val KEY_BODY = "body"
     }
 }

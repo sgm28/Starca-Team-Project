@@ -2,7 +2,6 @@ package com.example.starca
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.IBinder.DeathRecipient
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,9 +13,8 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
+import com.example.starca.models.Message
 import com.google.gson.Gson
-import com.parse.Parse
-import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import com.parse.SaveCallback
@@ -39,6 +37,7 @@ class DetailFragment : Fragment() {
     lateinit var tv_requestDenied: TextView
 
     lateinit var conversationId: String
+    lateinit var conversation : Conversation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,6 +182,7 @@ class DetailFragment : Fragment() {
 
     fun requestListing(requestArray: MutableList<ListingRequest>): View.OnClickListener {
         sendToConversationTable()
+        //sendMessage(conversationId)
         return View.OnClickListener { _ ->
             // here you will create a request. you will add it to the listing array.
             Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
@@ -242,14 +242,16 @@ class DetailFragment : Fragment() {
 
 
         // Get the user id of the poster - DONE
-        // Save the listingPoster, currentUser to Conversation Fragment  database
-            //Get callback to retrieve   conversation pointer
-        // send the message automatically
-             // Save message, conversationPointer
+        // Save the listingPoster, currentUser to Conversation Fragment  database - DONE
+           //Implement logic to prevent duplicate conversation - DONE
+        // Implement logic to prevent duplicate entry - DONE
+            //Get callback to retrieve   conversation pointer - DONE
+        // send the message automatically -DONE
+             // Save message, conversationPointer - DONE
 
         // Chat fragment
              // Pull
-            //  if userId = currentLoginInuser, display, the data(listingPosterFirstname, messages,)
+            //  if userId = currentLoginInuser display the data(listingPosterFirstname, messages,)
         // That's it
         //ParseObject message = ParseObject.create("Message");
         //message.put(Message.USER_ID_KEY, userId);
@@ -258,8 +260,8 @@ class DetailFragment : Fragment() {
 
 
 
-        Log.d(TAG,listing!!.getUser()!!.objectId)
-        Log.d(TAG, ParseUser.getCurrentUser().objectId)
+        //Log.d(TAG,listing!!.getUser()!!.objectId)
+       // Log.d(TAG, ParseUser.getCurrentUser().objectId)
 
 
         val listingPoster = listing!!.getUser()!!
@@ -270,43 +272,66 @@ class DetailFragment : Fragment() {
 
 
 
-        val conversation = Conversation()
+        conversation = Conversation()
         conversation.setUser(currentLoginInUser)
         conversation.setRecipient(listingPoster)
-        conversation.saveInBackground(SaveCallback {
-            Toast.makeText(
-                requireContext(), "Successfully added data to Conversation table.",
-                Toast.LENGTH_SHORT
-            ).show()
-        })
 
-        // Get the conversation Id
+
+        //Check to see if the conversation is in the database already.
+        //prevent duplicate entry in conversation
+
+         if (preventDuplicateConversation(currentLoginInUser, listingPoster))
+         {
+
+             conversation.saveInBackground(SaveCallback {
+                 Toast.makeText(
+                     requireContext(), "Successfully added data to Conversation table.",
+                     Toast.LENGTH_SHORT
+                 ).show()
+             })
+         }
+        else
+         {
+             Toast.makeText(
+                 requireContext(), "Users is in database already.",
+                 Toast.LENGTH_SHORT
+             ).show()
+         }
+
+
+
+
+
+
+
+
+        // Get the conversation pointer
         compareConversation(currentLoginInUser, listingPoster)
 
-        //Retrieve conversation pointer
-
 
 
     }
 
-  /*  fun sendMessage()
+    fun sendMessage(conversationObject: Conversation)
     {
         val message = Message()
-        message.setUserId(ParseUser.getCurrentUser().objectId)
+        val initMessage = "Hi I am interested in the listing";
         message.setBody(initMessage)
-        message.conversationPointer(currentLoginInUser)
-        message.saveInBackground(SaveCallback {
-            Toast.makeText(
-                this@DetailFragment, "Successfully created message on Parse",
-                Toast.LENGTH_SHORT
-            ).show()
-            //refreshMessages();
+       message.setConversation(conversationObject)
 
-        })
+        if(preventDuplicateMessage(conversationObject)) {
+            message.saveInBackground(SaveCallback {
+                Toast.makeText(
+                    requireContext(), "Successfully created message on Parse",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            })
+        }
 
     }
-*/
 
+//Function get the objectId of login in user
     fun compareConversation(user: ParseUser, recipient: ParseUser){
         val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
 
@@ -318,12 +343,57 @@ class DetailFragment : Fragment() {
                 Log.d(TAG, "No conversation found: $e")
             } else {
                 if (conversation != null) {
+
                     Log.d(TAG, conversation.toString())
                     conversationId = conversation[0].objectId
-                    Log.d(TAG, conversationId)
+                    Log.d(TAG, conversationId) //Retrieving conversation object
+                    sendMessage(conversation[0]) //Sending the conversation to sendMessage
                 }
             }
         }
+    }
+
+    private fun preventDuplicateConversation(user: ParseUser, recipient: ParseUser) : Boolean {
+        val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
+        var isInDatabase = false;
+        query.include(Conversation.KEY_USER)
+        query.include(Conversation.KEY_RECIPIENT)
+        query.whereEqualTo(Conversation.KEY_USER, user)
+        query.whereEqualTo(Conversation.KEY_RECIPIENT, recipient)
+        query.findInBackground { conversation, e ->
+            if (e != null) {
+                Log.d(TAG, "No conversation found: $e")
+            } else {
+                if (conversation != null) {
+                    Log.d(TAG, conversation.toString())
+                    conversationId = conversation[0].objectId
+                    Log.d(TAG, conversationId)
+                    Log.d(TAG, "Conversation found in the database.")
+                    isInDatabase = true;
+                }
+            }
+        }
+        return isInDatabase
+    }
+
+    private fun preventDuplicateMessage(conversationObject: Conversation) : Boolean {
+        val query: ParseQuery<Message> = ParseQuery(Message::class.java)
+        var isInDatabase = false;
+        query.include(Message.KEY_CONVERSATION)
+        query.findInBackground { conversation, e ->
+            if (e != null) {
+                Log.d(TAG, "No conversation found: $e")
+            } else {
+                if (conversation != null) {
+                    Log.d(TAG, conversation.toString())
+                    conversationId = conversation[0].objectId
+                    Log.d(TAG, conversationId)
+                    Log.d(TAG, "Duplicated message  found in the database.")
+                    isInDatabase = true;
+                }
+            }
+        }
+        return isInDatabase
     }
 
     companion object {
