@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.starca.DetailFragment
 import com.example.starca.ListingRequest
 import com.example.starca.R
 import com.example.starca.adapters.RequestsAdapter
@@ -17,6 +19,7 @@ import com.example.starca.models.Listing
 import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseQuery
+import org.json.JSONArray
 
 class OwnerListingDetailFragment : Fragment() {
 
@@ -45,7 +48,7 @@ class OwnerListingDetailFragment : Fragment() {
         rvListingRequests = view.findViewById(R.id.rvListingRequests)
         swipeContainer = view.findViewById(R.id.swipeContainer)
 
-        adapter = RequestsAdapter(requireContext(), allRequests)
+        adapter = RequestsAdapter(requireContext(), allRequests, listing!!)
         rvListingRequests.adapter = adapter
         rvListingRequests.layoutManager = LinearLayoutManager(requireContext())
 
@@ -60,28 +63,19 @@ class OwnerListingDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        rvListingRequests = view.findViewById(R.id.rvListingRequests)
-//        swipeContainer = view.findViewById(R.id.swipeContainer)
-//
-//        adapter = RequestsAdapter(requireContext(), allRequests)
-//        rvListingRequests.adapter = adapter
-//
-//        swipeContainer.setOnRefreshListener {
-//            queryRequests()
-//        }
-
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
 
         queryRequests()
-
     }
 
     fun queryRequests() {
         // Specify which class to query
         val query : ParseQuery<Listing> = ParseQuery.getQuery(Listing::class.java)
+
+        Log.i(TAG, listing?.getJSONArray("listingRequests").toString())
 
         // Add the query constraints: Equal to the selected listing and has requests
         query.whereEqualTo("objectId", listing?.objectId)
@@ -94,11 +88,19 @@ class OwnerListingDetailFragment : Fragment() {
                     e.printStackTrace()
                 } else {
                     if (listings != null) {
-                        Log.i("Testing", listings.toString())
                         val queriedListing : Listing = listings[0]
+                        val temp = listing!!.getJSONArray("listingRequests")
+                            ?.let { ListingRequest.fromJsonArray(it, listing!!.objectId) }
+
                         adapter.clear()
-                        allRequests.addAll(queriedListing.getListingRequests())
-                        adapter.notifyDataSetChanged()
+
+                        if (temp.isNullOrEmpty()) {
+                            Toast.makeText(requireContext(), "No Requests for the selected listing", Toast.LENGTH_SHORT).show()
+                        } else {
+                            allRequests.addAll(temp)
+                            adapter.notifyDataSetChanged()
+                        }
+
                         swipeContainer.isRefreshing = false
                     }
                 }
@@ -106,6 +108,6 @@ class OwnerListingDetailFragment : Fragment() {
         })
     }
     companion object {
-        const val TAG = "OwnerListingDetaiLFragment"
+        const val TAG = "OwnerListingDetailLFragment"
     }
 }

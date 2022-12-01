@@ -12,12 +12,13 @@ import com.bumptech.glide.Glide
 import com.example.starca.R
 import com.example.starca.fragments.OwnerListingDetailFragment
 import com.example.starca.ListingRequest
+import com.example.starca.models.Listing
 import com.parse.ParseException
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import de.hdodenhof.circleimageview.CircleImageView
 
-class RequestsAdapter(val context: Context, val requests: ArrayList<ListingRequest>) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
+class RequestsAdapter(val context: Context, val requests: ArrayList<ListingRequest>, val listing: Listing) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestsAdapter.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_request, parent, false)
@@ -26,7 +27,7 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
 
     override fun onBindViewHolder(holder: RequestsAdapter.ViewHolder, position: Int) {
         val request = requests[position]
-        holder.bind(request)
+        holder.bind(request, listing)
     }
 
     override fun getItemCount(): Int {
@@ -58,7 +59,7 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
             buttonAcceptRequest = itemView.findViewById(R.id.buttonAcceptRequest)
         }
 
-        fun bind(request: ListingRequest) {
+        fun bind(request: ListingRequest, listing : Listing) {
             // TODO: Put the information from the request into the views
             val query : ParseQuery<ParseUser> = ParseUser.getQuery()
             try {
@@ -73,12 +74,9 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
                 // TODO: This might cause issues with casting, double check
                 rbRequesterRating.rating = user.getDouble("rating").toFloat()
 
-                tvRequestedListingTitle.text =
-                    OwnerListingDetailFragment().listing?.getAddressStreet() + ", " +
-                            OwnerListingDetailFragment().listing?.getAddressCity() + ", " +
-                            OwnerListingDetailFragment().listing?.getAddressState() + " " +
-                            OwnerListingDetailFragment().listing?.getAddressZip()
-                tvRequestedListingAddress.text = OwnerListingDetailFragment().listing?.getTitle()
+                tvRequestedListingAddress.text =
+                    listing.getAddressStreet() + ", " + listing.getAddressCity() + ", " + listing.getAddressState() + " " + listing.getAddressZip()
+                tvRequestedListingTitle.text = listing.getTitle()
 
             } catch (e: ParseException) {
                 e.printStackTrace()

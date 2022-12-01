@@ -66,11 +66,12 @@ internal class ListingsGridAdapter (
 
         // TODO: Fix this to get requests and display them.
         listingGridView.setOnClickListener {
-            if (listings[position].getListingRequests().isEmpty()) {
-                Toast.makeText(context, "No requests for the selected listing!", Toast.LENGTH_SHORT).show()
-            } else {
-                onClick(listingGridView, listings[position])
-            }
+//            if (listings[position].getListingRequests().isEmpty()) {
+//                Toast.makeText(context, "No requests for the selected listing!", Toast.LENGTH_SHORT).show()
+//            } else {
+//                onClick(listingGridView, listings[position])
+//            }
+            onClick(listingGridView, listings[position])
         }
 
         return listingGridView
