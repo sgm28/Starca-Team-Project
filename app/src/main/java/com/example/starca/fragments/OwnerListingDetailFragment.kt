@@ -6,15 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.starca.ListingRequest
 import com.example.starca.R
-import com.example.starca.adapters.ListingsGridAdapter
 import com.example.starca.adapters.RequestsAdapter
 import com.example.starca.models.Listing
-import com.example.starca.models.ListingRequest
 import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseQuery

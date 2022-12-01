@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.starca.R
 import com.example.starca.fragments.OwnerListingDetailFragment
-import com.example.starca.models.ListingRequest
+import com.example.starca.ListingRequest
 import com.parse.ParseException
 import com.parse.ParseQuery
 import com.parse.ParseUser
@@ -62,7 +62,7 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
             // TODO: Put the information from the request into the views
             val query : ParseQuery<ParseUser> = ParseUser.getQuery()
             try {
-                val user = query[request.userId]
+                val user = query[request.objectId]
 
                 Glide.with(itemView.context)
                     .load(user.getParseFile("profilePicture")?.url)

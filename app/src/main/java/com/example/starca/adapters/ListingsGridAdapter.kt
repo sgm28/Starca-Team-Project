@@ -63,6 +63,8 @@ internal class ListingsGridAdapter (
         gridCity.text = listing.getAddressCity() + ", "
         gridState.text = listing.getAddressState()
 
+
+        // TODO: Fix this to get requests and display them.
         listingGridView.setOnClickListener {
             if (listings[position].getListingRequests().isEmpty()) {
                 Toast.makeText(context, "No requests for the selected listing!", Toast.LENGTH_SHORT).show()

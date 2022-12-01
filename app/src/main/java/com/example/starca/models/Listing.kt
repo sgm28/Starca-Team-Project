@@ -1,6 +1,7 @@
 package com.example.starca.models
 
 import android.util.Log
+import com.example.starca.ListingRequest
 import com.parse.ParseClassName
 import com.parse.ParseFile
 import com.parse.ParseObject
@@ -99,15 +100,6 @@ class Listing : ParseObject() {
 
     fun setUser(user: ParseUser) {
         put(KEY_USER, user)
-    }
-
-    fun getListingRequests() : List<ListingRequest> {
-        return ListingRequest.fromJsonArray(getJSONArray(KEY_LISTING_REQUESTS)!!)
-//        if (getJSONArray(KEY_LISTING_REQUESTS) == null) {
-//            Log.e("Listing", "Empty JSON Array")
-//            return ArrayList<ListingRequest>()
-//        }
-//        return ListingRequest.fromJsonArray(getJSONArray(KEY_LISTING_REQUESTS)!!)
     }
 
     companion object {
