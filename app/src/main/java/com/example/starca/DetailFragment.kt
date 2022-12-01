@@ -4,23 +4,21 @@ import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.starca.fragments.DashboardFragment
-import com.example.starca.fragments.MapsFragment
+import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
+import com.example.starca.models.Message
 import com.google.gson.Gson
-import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import com.parse.SaveCallback
 import org.json.JSONArray
-import org.json.JSONObject
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
@@ -32,11 +30,14 @@ enum class FLAGS(val code: Int) {
 }
 
 class DetailFragment : Fragment() {
-    private var listing: ParseObject? = null
+    private var listing: Listing? = null
 
     lateinit var button_bottomLeft: Button
     lateinit var button_bottomRight: Button
     lateinit var tv_requestDenied: TextView
+
+    //lateinit var conversationId: String
+    lateinit var conversation : Conversation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -174,10 +175,13 @@ class DetailFragment : Fragment() {
             }
         }
         // if you get here, this mean you have no requests under this listing.
-        button_bottomLeft.setOnClickListener(requests?.let { requestListing(it) })
+        button_bottomLeft.setOnClickListener(
+            requests?.let { requestListing(it) }
+        )
     }
 
     fun requestListing(requestArray: MutableList<ListingRequest>): View.OnClickListener {
+        //sendMessage(conversationId)
         return View.OnClickListener { _ ->
             // here you will create a request. you will add it to the listing array.
             Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
@@ -205,10 +209,12 @@ class DetailFragment : Fragment() {
                     Toast.makeText(context, "Request Submitted", Toast.LENGTH_SHORT).show()
                 }else{
                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
-                    Log.e(TAG, "requestListing: $e", )
+                    Log.e(TAG, "requestListing: $e")
                 }
             }
 
+            // Start sending interest message, first check for duplicate conversation
+            checkDuplicateConversation()
         }
     }
 
@@ -221,6 +227,146 @@ class DetailFragment : Fragment() {
 
             // you are supposed to remove the listingRequest here.
         }
+
+
+
+    }
+
+    //////////////////
+        //Logic
+        //  Create the Converstation table - DONE
+        // Link to message table Pointer points to Conversation ObjectID column -DONE
+
+
+        // Get the user id of the poster - DONE
+        // Save the listingPoster, currentUser to Conversation Fragment  database - DONE
+           //Implement logic to prevent duplicate conversation - DONE
+        // Implement logic to prevent duplicate entry - DONE
+            //Get callback to retrieve   conversation pointer - DONE
+        // send the message automatically -DONE
+             // Save message, conversationPointer - DONE
+
+        //TODO
+        // Chat fragment
+             // Pull
+            //  if userId = currentLoginInuser display the data(listingPosterFirstname, messages,)
+        // That's it
+        //ParseObject message = ParseObject.create("Message");
+        //message.put(Message.USER_ID_KEY, userId);
+        //message.put(Message.BODY_KEY, data);
+        // Using new `Message` Parse-backed model now
+
+
+
+        //Log.d(TAG,listing!!.getUser()!!.objectId)
+       // Log.d(TAG, ParseUser.getCurrentUser().objectId)
+
+
+
+
+        // If conversation is NOT duplicate, save conversation
+
+    fun sendMessage()
+    {
+        val message = Message()
+        val initMessage = "Hi I am interested in " + listing!!.getTitle();
+        Log.d("Message", initMessage)
+        message.setBody(initMessage)
+        message.setConversation(conversation)
+
+        message.saveInBackground(SaveCallback {
+            Toast.makeText(
+                requireContext(), "Successfully created message on Parse",
+                Toast.LENGTH_SHORT
+            ).show()
+        })
+    }
+/*
+//Function get the objectId of login in user
+    fun compareConversation(user: ParseUser, recipient: ParseUser){
+        val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
+
+        query.include(Conversation.KEY_USER)
+        query.include(Conversation.KEY_RECIPIENT)
+        query.whereEqualTo(Conversation.KEY_USER, user)
+        query.findInBackground { conversation, e ->
+            if (e != null) {
+                Log.d(TAG, "No conversation found: $e")
+            } else {
+                if (!conversation.isNullOrEmpty()) {
+                    Log.d(TAG, conversation.toString())
+                    conversationId = conversation[0].objectId
+                    Log.d(TAG, conversationId) //Retrieving conversation object
+                    sendMessage(conversation[0]) //Sending the conversation to sendMessage
+                }
+            }
+        }
+    }*/
+
+    private fun checkDuplicateConversation() {
+
+        val user = ParseUser.getCurrentUser() //current user
+        val recipient = listing!!.getUser()!! //listing owner
+
+        val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
+
+        query.include(Conversation.KEY_USER)
+        query.include(Conversation.KEY_RECIPIENT)
+        query.whereEqualTo(Conversation.KEY_USER, user)
+        query.whereEqualTo(Conversation.KEY_RECIPIENT, recipient)
+        query.findInBackground { queryConversation, e ->
+            if (e != null) {
+                Log.d(TAG, "Error fetching conversation $e")
+            } else {
+                // If conversation found, set DB conversation to current conversation
+                if (!queryConversation.isNullOrEmpty()) {
+                    conversation = queryConversation[0]
+                    sendMessage()
+                } else {
+                    // If no conversation found, create one
+                    createConversation(user, recipient)
+                }
+            }
+        }
+    }
+
+    /*
+    private fun checkDuplicateMessage() {
+        val query: ParseQuery<Message> = ParseQuery(Message::class.java)
+        query.include(Message.KEY_CONVERSATION)
+        query.findInBackground { message, e ->
+            if (e != null) {
+                Log.d(TAG, "No conversation found: $e")
+            } else {
+                if (!message.isNullOrEmpty()) {
+                    Log.d(TAG, message.toString())
+                    //conversationId = conversation[0].objectId
+                    //Log.d(TAG, conversationId)
+                    Log.d(TAG, "Duplicated message found in the database. Message not sent")
+                } else {
+                    sendMessage()
+                    Log.d(TAG, "Message sent")
+                }
+            }
+        }
+    }
+*/
+    private fun createConversation(user: ParseUser, recipient: ParseUser){
+
+        // Create new conversation
+        conversation = Conversation()
+        conversation.setUser(user)
+        conversation.setRecipient(recipient)
+        // Save conversation
+        conversation.saveInBackground{ e ->
+            if (e != null) {
+                Log.e("DetailFragment", "Error while saving post $e")
+            } else {
+                Log.d("Create", "Created the convo")
+            }
+        }
+        // Send interest message
+        sendMessage()
     }
 
     companion object {
