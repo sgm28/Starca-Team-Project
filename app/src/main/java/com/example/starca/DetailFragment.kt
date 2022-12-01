@@ -36,7 +36,7 @@ class DetailFragment : Fragment() {
     lateinit var button_bottomRight: Button
     lateinit var tv_requestDenied: TextView
 
-    lateinit var conversationId: String
+    //lateinit var conversationId: String
     lateinit var conversation : Conversation
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,7 +181,6 @@ class DetailFragment : Fragment() {
     }
 
     fun requestListing(requestArray: MutableList<ListingRequest>): View.OnClickListener {
-        sendToConversationTable()
         //sendMessage(conversationId)
         return View.OnClickListener { _ ->
             // here you will create a request. you will add it to the listing array.
@@ -214,6 +213,8 @@ class DetailFragment : Fragment() {
                 }
             }
 
+            // Start sending interest message, first check for duplicate conversation
+            checkDuplicateConversation()
         }
     }
 
@@ -232,10 +233,6 @@ class DetailFragment : Fragment() {
     }
 
     //////////////////
-    fun sendToConversationTable()
-    {
-
-
         //Logic
         //  Create the Converstation table - DONE
         // Link to message table Pointer points to Conversation ObjectID column -DONE
@@ -249,6 +246,7 @@ class DetailFragment : Fragment() {
         // send the message automatically -DONE
              // Save message, conversationPointer - DONE
 
+        //TODO
         // Chat fragment
              // Pull
             //  if userId = currentLoginInuser display the data(listingPosterFirstname, messages,)
@@ -264,73 +262,26 @@ class DetailFragment : Fragment() {
        // Log.d(TAG, ParseUser.getCurrentUser().objectId)
 
 
-        val listingPoster = listing!!.getUser()!!
-        val currentLoginInUser = ParseUser.getCurrentUser()
-        val initMessage = "Hi I am interested in the listing";
-
-        val directMessage = listOf(listingPoster, currentLoginInUser)
 
 
+        // If conversation is NOT duplicate, save conversation
 
-        conversation = Conversation()
-        conversation.setUser(currentLoginInUser)
-        conversation.setRecipient(listingPoster)
-
-
-        //Check to see if the conversation is in the database already.
-        //prevent duplicate entry in conversation
-
-         if (preventDuplicateConversation(currentLoginInUser, listingPoster))
-         {
-
-             conversation.saveInBackground(SaveCallback {
-                 Toast.makeText(
-                     requireContext(), "Successfully added data to Conversation table.",
-                     Toast.LENGTH_SHORT
-                 ).show()
-             })
-         }
-        else
-         {
-             Toast.makeText(
-                 requireContext(), "Users is in database already.",
-                 Toast.LENGTH_SHORT
-             ).show()
-         }
-
-
-
-
-
-
-
-
-        // Get the conversation pointer
-        compareConversation(currentLoginInUser, listingPoster)
-
-
-
-    }
-
-    fun sendMessage(conversationObject: Conversation)
+    fun sendMessage()
     {
         val message = Message()
-        val initMessage = "Hi I am interested in the listing";
+        val initMessage = "Hi I am interested in " + listing!!.getTitle();
+        Log.d("Message", initMessage)
         message.setBody(initMessage)
-       message.setConversation(conversationObject)
+        message.setConversation(conversation)
 
-        if(preventDuplicateMessage(conversationObject)) {
-            message.saveInBackground(SaveCallback {
-                Toast.makeText(
-                    requireContext(), "Successfully created message on Parse",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            })
-        }
-
+        message.saveInBackground(SaveCallback {
+            Toast.makeText(
+                requireContext(), "Successfully created message on Parse",
+                Toast.LENGTH_SHORT
+            ).show()
+        })
     }
-
+/*
 //Function get the objectId of login in user
     fun compareConversation(user: ParseUser, recipient: ParseUser){
         val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
@@ -342,8 +293,7 @@ class DetailFragment : Fragment() {
             if (e != null) {
                 Log.d(TAG, "No conversation found: $e")
             } else {
-                if (conversation != null) {
-
+                if (!conversation.isNullOrEmpty()) {
                     Log.d(TAG, conversation.toString())
                     conversationId = conversation[0].objectId
                     Log.d(TAG, conversationId) //Retrieving conversation object
@@ -351,49 +301,72 @@ class DetailFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 
-    private fun preventDuplicateConversation(user: ParseUser, recipient: ParseUser) : Boolean {
+    private fun checkDuplicateConversation() {
+
+        val user = ParseUser.getCurrentUser() //current user
+        val recipient = listing!!.getUser()!! //listing owner
+
         val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
-        var isInDatabase = false;
+
         query.include(Conversation.KEY_USER)
         query.include(Conversation.KEY_RECIPIENT)
         query.whereEqualTo(Conversation.KEY_USER, user)
         query.whereEqualTo(Conversation.KEY_RECIPIENT, recipient)
-        query.findInBackground { conversation, e ->
+        query.findInBackground { queryConversation, e ->
             if (e != null) {
-                Log.d(TAG, "No conversation found: $e")
+                Log.d(TAG, "Error fetching conversation $e")
             } else {
-                if (conversation != null) {
-                    Log.d(TAG, conversation.toString())
-                    conversationId = conversation[0].objectId
-                    Log.d(TAG, conversationId)
-                    Log.d(TAG, "Conversation found in the database.")
-                    isInDatabase = true;
+                // If conversation found, set DB conversation to current conversation
+                if (!queryConversation.isNullOrEmpty()) {
+                    conversation = queryConversation[0]
+                    sendMessage()
+                } else {
+                    // If no conversation found, create one
+                    createConversation(user, recipient)
                 }
             }
         }
-        return isInDatabase
     }
 
-    private fun preventDuplicateMessage(conversationObject: Conversation) : Boolean {
+    /*
+    private fun checkDuplicateMessage() {
         val query: ParseQuery<Message> = ParseQuery(Message::class.java)
-        var isInDatabase = false;
         query.include(Message.KEY_CONVERSATION)
-        query.findInBackground { conversation, e ->
+        query.findInBackground { message, e ->
             if (e != null) {
                 Log.d(TAG, "No conversation found: $e")
             } else {
-                if (conversation != null) {
-                    Log.d(TAG, conversation.toString())
-                    conversationId = conversation[0].objectId
-                    Log.d(TAG, conversationId)
-                    Log.d(TAG, "Duplicated message  found in the database.")
-                    isInDatabase = true;
+                if (!message.isNullOrEmpty()) {
+                    Log.d(TAG, message.toString())
+                    //conversationId = conversation[0].objectId
+                    //Log.d(TAG, conversationId)
+                    Log.d(TAG, "Duplicated message found in the database. Message not sent")
+                } else {
+                    sendMessage()
+                    Log.d(TAG, "Message sent")
                 }
             }
         }
-        return isInDatabase
+    }
+*/
+    private fun createConversation(user: ParseUser, recipient: ParseUser){
+
+        // Create new conversation
+        conversation = Conversation()
+        conversation.setUser(user)
+        conversation.setRecipient(recipient)
+        // Save conversation
+        conversation.saveInBackground{ e ->
+            if (e != null) {
+                Log.e("DetailFragment", "Error while saving post $e")
+            } else {
+                Log.d("Create", "Created the convo")
+            }
+        }
+        // Send interest message
+        sendMessage()
     }
 
     companion object {

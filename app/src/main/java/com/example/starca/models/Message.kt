@@ -13,7 +13,7 @@ class Message : ParseObject() {
         return getString(KEY_CONVERSATION)
     }
 
-    fun setConversation(conversationId: Conversation) {
+    fun setConversation(conversationId: ParseObject) {
         put(KEY_CONVERSATION, conversationId)
     }
 

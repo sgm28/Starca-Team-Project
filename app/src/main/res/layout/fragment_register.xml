@@ -46,7 +46,8 @@
         <EditText
             android:id="@+id/first_name_et"
             style="@style/login_edit_text_fields"
-            android:hint="First Name" />
+            android:hint="First Name"
+            android:inputType="textPersonName|textCapWords"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,6 +64,7 @@
         <EditText
             android:id="@+id/last_name_et"
             android:hint="Last Name"
+            android:inputType="textPersonName|textCapWords"
             style="@style/login_edit_text_fields" />
 
     </com.google.android.material.textfield.TextInputLayout>
