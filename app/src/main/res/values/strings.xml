@@ -44,4 +44,10 @@
     <string name="tools_description">This is my beautiful shed. Ever since I sold my Motorcycle I haven’t used this shed at all so I’m listing it here so that someone else can make use of it. I’ve cleared out everything so you have access to the entire shed.</string>
     <string name="rent_button_text">Rent</string>
     <string name="price_placeholder">Price</string>
+
+    <!-- For Message Chat -->
+    <string name="message_hint">Say anything</string>
+    <string name="send">Send</string>
+    <string name="profile_me">My Profile Pic</string>
+    <string name="profile_other">Other profile pic</string>
 </resources>
