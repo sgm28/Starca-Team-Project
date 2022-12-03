@@ -37,7 +37,7 @@ class DetailFragment : Fragment() {
     lateinit var tv_requestDenied: TextView
 
     //lateinit var conversationId: String
-    lateinit var conversation : Conversation
+    lateinit var conversation: Conversation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,41 +130,45 @@ class DetailFragment : Fragment() {
 
     }
 
-    fun nnn(requests_arrayJSON: JSONArray) {
+    // left button = cancel
+    // right button = continue
 
-        val requests = requests_arrayJSON?.let { listing?.let { it1 -> ListingRequest.fromJsonArray(it, it1.objectId) } }
+
+    fun nnn(requests_arrayJSON: JSONArray) {
+        val requests = requests_arrayJSON?.let {
+            listing?.let { it1 ->
+                ListingRequest.fromJsonArray(
+                    it,
+                    it1.objectId
+                )
+            }
+        }
         //i have requests now. it's a list. lets get the 1 request.
         if (requests != null) {
+
             for (request in requests) {
+
                 if (request.objectId == ParseUser.getCurrentUser().objectId) {
                     // we now have the request for this user at this listing.
-
+                    //Toast.makeText(context, "u: ${ParseUser.getCurrentUser().objectId} f: ${request.status}", Toast.LENGTH_SHORT).show()
                     //get the status of that request
                     when (request.status) {
                         FLAGS.DENIED.code -> {
-                            //show the denied message
-                            tv_requestDenied.visibility = View.INVISIBLE
-
-                            // show the left button only. it'll already be here by default.
-                            // change color to black
-                            button_bottomLeft.setBackgroundColor(Color.BLACK)
-                            button_bottomLeft.text = "Okay"
-                            button_bottomLeft.setOnClickListener(cancelRequest(requests))
+                            //show the denied (cancel) nav
+                            displayDeniedNav()
+                            button_bottomLeft.setOnClickListener(cancelRequest(requests, request))
                         }
                         FLAGS.REQUESTED.code -> {
-                            // should just display text: "Awaiting Approval"
                             Toast.makeText(context, "Awaiting Approval", Toast.LENGTH_SHORT).show()
-                            //show cancel button
-                            button_bottomLeft.visibility=View.GONE
-                            button_bottomRight.visibility=View.VISIBLE
-                            button_bottomRight.text="Cancel Request"
-
-                            tv_requestDenied.visibility=View.VISIBLE
-                            tv_requestDenied.setTextColor(Color.BLACK)
-                            tv_requestDenied.text="Awaiting Approval..."
+                            //show cancel nav
+                            displayAwaitingNav()
+                            button_bottomLeft.setOnClickListener(cancelRequest(requests, request))
                         }
                         FLAGS.APPROVED.code -> {
-
+                            // approved should show option to buy and option to cancel.
+                            displayApprovedNav()
+                            button_bottomLeft.setOnClickListener(cancelRequest(requests, request))
+                            button_bottomRight.setOnClickListener(buyStorage(requests, request))
                         }
                         FLAGS.BOUGHT.code -> {
 
@@ -174,13 +178,62 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+        displayRequestNav()
         // if you get here, this mean you have no requests under this listing.
-        button_bottomLeft.setOnClickListener(
+        // Give right button (continue) the ability to rent
+        button_bottomRight.setOnClickListener(
             requests?.let { requestListing(it) }
         )
     }
 
-    fun requestListing(requestArray: MutableList<ListingRequest>): View.OnClickListener {
+    private fun displayApprovedNav() {
+        //left cancel.
+        button_bottomLeft.visibility = View.VISIBLE
+        button_bottomLeft.text = "Cancel Offer"
+        button_bottomLeft.setBackgroundColor(Color.parseColor("#0C825F"))
+
+        // right continue
+        button_bottomRight.visibility = View.VISIBLE
+        button_bottomRight.text = "Rent Now"
+        button_bottomRight.setBackgroundColor(Color.parseColor("#0C825F"))
+
+        // let user know they are approved
+        tv_requestDenied.visibility = View.VISIBLE
+        tv_requestDenied.setTextColor(Color.parseColor("#0C825F"))
+        tv_requestDenied.text = "Your Request for Rental has been Approved."
+    }
+
+    private fun displayRequestNav() {
+        button_bottomRight.visibility = View.VISIBLE
+        button_bottomRight.text = "Rent"
+        button_bottomRight.setBackgroundColor(Color.parseColor("#0C825F"))
+
+        button_bottomLeft.visibility = View.GONE
+
+        tv_requestDenied.visibility = View.INVISIBLE
+    }
+
+    private fun displayDeniedNav() {
+        button_bottomLeft.setBackgroundColor(Color.BLACK)
+        button_bottomLeft.text = "Okay"
+
+        tv_requestDenied.setTextColor(Color.BLACK)
+        tv_requestDenied.visibility = View.VISIBLE
+        tv_requestDenied.text = "Request for Rental Denied."
+    }
+
+    private fun displayAwaitingNav() {
+        button_bottomLeft.visibility = View.VISIBLE
+        button_bottomLeft.text = "Cancel Request"
+
+        button_bottomRight.visibility = View.GONE
+
+        tv_requestDenied.visibility = View.VISIBLE
+        tv_requestDenied.setTextColor(Color.BLACK)
+        tv_requestDenied.text = "Awaiting Approval..."
+    }
+
+    private fun requestListing(requestArray: MutableList<ListingRequest>): View.OnClickListener {
         //sendMessage(conversationId)
         return View.OnClickListener { _ ->
             // here you will create a request. you will add it to the listing array.
@@ -188,7 +241,11 @@ class DetailFragment : Fragment() {
 
             // create an listingRequest object
             val newRequest =
-                ListingRequest(ParseUser.getCurrentUser().objectId, FLAGS.REQUESTED.code, listing!!.objectId)
+                ListingRequest(
+                    ParseUser.getCurrentUser().objectId,
+                    FLAGS.REQUESTED.code,
+                    listing!!.objectId
+                )
 
             //add to request array
             requestArray.add(newRequest)
@@ -196,78 +253,112 @@ class DetailFragment : Fragment() {
             val gson = Gson()
 
             val stArr = ArrayList<String>()
-            for(request in requestArray){
+            for (request in requestArray) {
                 stArr.add(gson.toJson(request))
             }
-
-            //Toast.makeText(context, "$jsonArray", Toast.LENGTH_LONG).show()
 
             listing?.put("listingRequests", stArr)
 
             listing?.saveInBackground { e ->
                 if (e == null) {
                     Toast.makeText(context, "Request Submitted", Toast.LENGTH_SHORT).show()
-                }else{
+                    displayAwaitingNav()
+                    button_bottomLeft.setOnClickListener(cancelRequest(requestArray, newRequest))
+                    // Start sending interest message, first check for duplicate conversation
+                    checkDuplicateConversation()
+                } else {
                     Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "requestListing: $e")
                 }
             }
-
-            // Start sending interest message, first check for duplicate conversation
-            checkDuplicateConversation()
         }
     }
 
-    fun cancelRequest(requestArray: MutableList<ListingRequest>): View.OnClickListener {
+    private fun buyStorage(
+        requestArray: MutableList<ListingRequest>,
+        request: ListingRequest
+    ) : View.OnClickListener {
+        return View.OnClickListener { _ ->
+            // you're in here because you clicked the button.
+            // this doesn't necessarily mean that you bought it. just means you went into purchasing api.
+
+            // go to purchasing api or w/e
+
+            // get back status of puchase, bought or not.
+
+            // if bought, cancel request.
+
+            // if not bought. do nothing
+        }
+    }
+
+    private fun cancelRequest(
+        requestArray: MutableList<ListingRequest>,
+        request: ListingRequest
+    ): View.OnClickListener {
         return View.OnClickListener { _ ->
             //return to original request view.
             tv_requestDenied.visibility = View.INVISIBLE
             button_bottomLeft.setBackgroundColor(Color.parseColor("#0C825F"))
             button_bottomLeft.text = "Rent"
 
-            // you are supposed to remove the listingRequest here.
+            // you are supposed to remove the listingRequest here. not the listing.
+            requestArray.remove(request)
+
+            val gson = Gson()
+
+            val stArr = ArrayList<String>()
+            for (r in requestArray) {
+                stArr.add(gson.toJson(r))
+            }
+
+            listing?.put("listingRequests", stArr)
+
+            listing?.saveInBackground { e ->
+                if (e == null) {
+                    Toast.makeText(context, "Request Removed", Toast.LENGTH_SHORT).show()
+                    displayRequestNav()
+                    // add renting functionality back to the button.
+                    button_bottomRight.setOnClickListener(requestListing(requestArray))
+                } else {
+                    Log.e(TAG, "cancelRequest: $e")
+                }
+            }
         }
-
-
-
     }
 
     //////////////////
-        //Logic
-        //  Create the Converstation table - DONE
-        // Link to message table Pointer points to Conversation ObjectID column -DONE
+    //Logic
+    //  Create the Converstation table - DONE
+    // Link to message table Pointer points to Conversation ObjectID column -DONE
 
 
-        // Get the user id of the poster - DONE
-        // Save the listingPoster, currentUser to Conversation Fragment  database - DONE
-           //Implement logic to prevent duplicate conversation - DONE
-        // Implement logic to prevent duplicate entry - DONE
-            //Get callback to retrieve   conversation pointer - DONE
-        // send the message automatically -DONE
-             // Save message, conversationPointer - DONE
+    // Get the user id of the poster - DONE
+    // Save the listingPoster, currentUser to Conversation Fragment  database - DONE
+    //Implement logic to prevent duplicate conversation - DONE
+    // Implement logic to prevent duplicate entry - DONE
+    //Get callback to retrieve   conversation pointer - DONE
+    // send the message automatically -DONE
+    // Save message, conversationPointer - DONE
 
-        //TODO
-        // Chat fragment
-             // Pull
-            //  if userId = currentLoginInuser display the data(listingPosterFirstname, messages,)
-        // That's it
-        //ParseObject message = ParseObject.create("Message");
-        //message.put(Message.USER_ID_KEY, userId);
-        //message.put(Message.BODY_KEY, data);
-        // Using new `Message` Parse-backed model now
-
-
-
-        //Log.d(TAG,listing!!.getUser()!!.objectId)
-       // Log.d(TAG, ParseUser.getCurrentUser().objectId)
+    //TODO
+    // Chat fragment
+    // Pull
+    //  if userId = currentLoginInuser display the data(listingPosterFirstname, messages,)
+    // That's it
+    //ParseObject message = ParseObject.create("Message");
+    //message.put(Message.USER_ID_KEY, userId);
+    //message.put(Message.BODY_KEY, data);
+    // Using new `Message` Parse-backed model now
 
 
+    //Log.d(TAG,listing!!.getUser()!!.objectId)
+    // Log.d(TAG, ParseUser.getCurrentUser().objectId)
 
 
-        // If conversation is NOT duplicate, save conversation
+    // If conversation is NOT duplicate, save conversation
 
-    fun sendMessage()
-    {
+    fun sendMessage() {
         val message = Message()
         val initMessage = "Hi I am interested in " + listing!!.getTitle();
         Log.d("Message", initMessage)
@@ -353,14 +444,14 @@ class DetailFragment : Fragment() {
         }
     }
 */
-    private fun createConversation(user: ParseUser, recipient: ParseUser){
+    private fun createConversation(user: ParseUser, recipient: ParseUser) {
 
         // Create new conversation
         conversation = Conversation()
         conversation.setUser(user)
         conversation.setRecipient(recipient)
         // Save conversation
-        conversation.saveInBackground{ e ->
+        conversation.saveInBackground { e ->
             if (e != null) {
                 Log.e("DetailFragment", "Error while saving post $e")
             } else {
