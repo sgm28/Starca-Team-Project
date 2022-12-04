@@ -200,6 +200,19 @@ class MessagingFragment : Fragment() {
             message.setBody(data)
             message.setUserId(ParseUser.getCurrentUser().objectId)
 
+            // If the current login in user is the user, set the recipient name as the user
+            if (ParseUser.getCurrentUser().objectId == conversation?.getUser()?.objectId)
+            {
+
+                message.setRecipent(conversation?.getUser()?.username.toString())
+            }  // If the current login in user is not the recipient, set the recipient name as the recipient
+            else
+            {
+                message.setRecipent(conversation?.getRecipient()?.username.toString())
+            }
+
+
+
             message.saveInBackground {
                 Toast.makeText(
                     context, "Successfully created message on Parse",

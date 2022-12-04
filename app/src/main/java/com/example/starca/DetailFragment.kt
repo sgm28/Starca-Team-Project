@@ -365,6 +365,9 @@ class DetailFragment : Fragment() {
         message.setBody(initMessage)
         message.setConversation(conversation)
         conversation.getUser()?.let { message.setUserId(it.objectId) }
+        //The message is from the current login in user.
+        //When the recipient will received the message, the message will displayed who sent it.
+        message.setRecipent(ParseUser.getCurrentUser().username.toString())
 
 
         message.saveInBackground(SaveCallback {

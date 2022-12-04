@@ -109,7 +109,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
                  .circleCrop() // create an effect of a round profile picture
                  .into(imageOther);
          body.setText(message.getBody());
-         name.setText("");
+         name.setText(message.getRecipent());
         //name.setText(message); // in addition to message show user ID
       }
    }

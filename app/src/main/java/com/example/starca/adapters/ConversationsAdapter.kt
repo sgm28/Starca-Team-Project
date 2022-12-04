@@ -52,7 +52,15 @@ class ConversationsAdapter(
 
         fun bind(conversation: Conversation) {
             // Load recipient data
-            val recipient: ParseUser? = conversation.getRecipient()
+            var recipient: ParseUser? = conversation.getRecipient()
+            //Determines whether the user is the requester or the recipient
+            if (recipient != null) {
+                if(ParseUser.getCurrentUser().objectId == recipient.objectId) {
+                    recipient = conversation.getUser()
+                } else if (ParseUser.getCurrentUser().objectId == conversation.getUser()?.objectId  ) {
+                    recipient = conversation.getRecipient()
+                }
+            }
             tvRecipient.text = recipient?.getString("firstName") + " " + recipient?.getString("lastName")
 
             Glide.with(itemView.context)
