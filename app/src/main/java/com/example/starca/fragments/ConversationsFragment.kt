@@ -49,6 +49,37 @@ class ConversationsFragment : Fragment() {
 
         query.include(Conversation.KEY_USER)
         query.include(Conversation.KEY_RECIPIENT)
+        //Sakar: I change get KEY_USER to KEY_RECIPIENT so the user who sent the message is diplayed.
+        query.whereEqualTo(Conversation.KEY_RECIPIENT, ParseUser.getCurrentUser())
+        query.findInBackground { conversationsList, e ->
+            if (e != null) {
+                Log.e(DashboardFragment.TAG, "Error fetching posts ${e.message}")
+            } else { //If empty list call, queryConversations2
+                if (conversationsList.isEmpty())
+                {
+                    queryConversations2()
+                    return@findInBackground
+                }
+
+                if (conversationsList != null) {
+                    Log.d("Conversations", conversationsList.toString())
+                    conversationsArrayList.addAll(conversationsList)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+//This function is call when the queryConversations returned an empty conversation list
+    private fun queryConversations2() {
+
+        // Clear the list before writing data into it
+        conversationsArrayList.clear()
+
+        val query: ParseQuery<Conversation> = ParseQuery.getQuery(Conversation::class.java)
+
+        query.include(Conversation.KEY_USER)
+        query.include(Conversation.KEY_RECIPIENT)
+        //Sakar: I change get KEY_USER to KEY_RECIPENT so the user who sent the message is diplayed.
         query.whereEqualTo(Conversation.KEY_USER, ParseUser.getCurrentUser())
         query.findInBackground { conversationsList, e ->
             if (e != null) {
