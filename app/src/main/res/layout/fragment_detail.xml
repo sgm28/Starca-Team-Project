@@ -130,13 +130,13 @@
             android:layout_height="wrap_content"
             android:paddingVertical="14dp"
             android:layout_marginBottom="20dp"
-            android:text="@string/rent_button_text"
+            android:text="CANCEL"
             android:textColor="@color/white"
             android:textSize="18sp"
 
-            android:visibility="visible"
+            android:visibility="gone"
 
-            app:backgroundTint="?attr/colorPrimary"
+            app:backgroundTint="#7F0C0C"
             app:cornerRadius="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button_bottomRight"
@@ -153,13 +153,13 @@
             android:layout_height="wrap_content"
             android:paddingVertical="14dp"
             android:layout_marginBottom="20dp"
-            android:text="Decline"
+            android:text="Do the thing"
             android:textColor="@color/white"
             android:textSize="18sp"
 
-            android:visibility="gone"
+            android:visibility="visible"
 
-            app:backgroundTint="#7F0C0C"
+            app:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
