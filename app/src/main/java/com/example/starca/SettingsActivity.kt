@@ -21,7 +21,6 @@ import com.example.starca.fragments.EditUsernameDialogFragment
 import com.example.starca.models.Image
 import com.example.starca.models.Listing
 import com.parse.*
-import com.example.starca.FileUtils
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
 import java.io.IOException

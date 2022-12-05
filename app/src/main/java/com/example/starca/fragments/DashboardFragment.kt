@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starca.R
+import com.example.starca.adapters.ListingsAdapter
 import com.example.starca.models.Listing
 import com.parse.ParseQuery
 import kotlinx.parcelize.Parcelize
