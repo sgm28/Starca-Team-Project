@@ -1,6 +1,10 @@
-package com.example.starca
+package com.example.starca.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -11,6 +15,8 @@ import android.widget.*
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.starca.ListingRequest
+import com.example.starca.R
 import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
 import com.example.starca.models.Message
@@ -19,6 +25,7 @@ import com.parse.ParseQuery
 import com.parse.ParseUser
 import com.parse.SaveCallback
 import org.json.JSONArray
+
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
@@ -96,6 +103,8 @@ class DetailFragment : Fragment() {
         ratingRb.rating = listing?.getDouble("listingRating")!!.toFloat()
         descriptionTv.text = listing?.getString("description")
 
+        builder = AlertDialog.Builder(context)
+
         Glide.with(requireContext()).load(listing?.getParseFile("PictureOfListing")?.url)
             .into(imageIv)
 
@@ -159,7 +168,6 @@ class DetailFragment : Fragment() {
                             button_bottomLeft.setOnClickListener(cancelRequest(requests, request))
                         }
                         FLAGS.REQUESTED.code -> {
-                            Toast.makeText(context, "Awaiting Approval", Toast.LENGTH_SHORT).show()
                             //show cancel nav
                             displayAwaitingNav()
                             button_bottomLeft.setOnClickListener(cancelRequest(requests, request))
@@ -190,7 +198,7 @@ class DetailFragment : Fragment() {
         //left cancel.
         button_bottomLeft.visibility = View.VISIBLE
         button_bottomLeft.text = "Cancel Offer"
-        button_bottomLeft.setBackgroundColor(Color.parseColor("#0C825F"))
+        button_bottomLeft.setBackgroundColor(Color.parseColor("#7F0C0C"))
 
         // right continue
         button_bottomRight.visibility = View.VISIBLE
@@ -214,8 +222,11 @@ class DetailFragment : Fragment() {
     }
 
     private fun displayDeniedNav() {
+        button_bottomLeft.visibility = View.VISIBLE
         button_bottomLeft.setBackgroundColor(Color.BLACK)
         button_bottomLeft.text = "Okay"
+
+        button_bottomRight.visibility = View.GONE
 
         tv_requestDenied.setTextColor(Color.BLACK)
         tv_requestDenied.visibility = View.VISIBLE
@@ -274,21 +285,42 @@ class DetailFragment : Fragment() {
         }
     }
 
+    lateinit var builder: AlertDialog.Builder
+
     private fun buyStorage(
         requestArray: MutableList<ListingRequest>,
         request: ListingRequest
-    ) : View.OnClickListener {
+    ): View.OnClickListener {
         return View.OnClickListener { _ ->
-            // you're in here because you clicked the button.
-            // this doesn't necessarily mean that you bought it. just means you went into purchasing api.
 
-            // go to purchasing api or w/e
+            // wow, kotlin supports null coalescing
+            val price = listing?.getNumber("price") ?: "199.99"
 
-            // get back status of puchase, bought or not.
+            val tryEmail = ParseUser.getCurrentUser().email
+            val email = if (ParseUser.getCurrentUser().getBoolean("emailVerified")) tryEmail else "your inbox"
 
-            // if bought, cancel request.
+            builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
+                .setCancelable(false)
+                .setPositiveButton("Confirm") { dialog, id ->
+                    Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
+                        .show()
 
-            // if not bought. do nothing
+                    //change the code.
+
+                }
+                .setNegativeButton(
+                    "Cancel"
+                ) { dialog, id ->
+                    dialog.cancel()
+                }
+
+            val alert: AlertDialog = builder.create()
+
+            alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
+            alert.show()
+
+            alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
+
         }
     }
 
@@ -456,7 +488,7 @@ class DetailFragment : Fragment() {
         // Save conversation
         conversation.saveInBackground { e ->
             if (e != null) {
-                Log.e("DetailFragment", "Error while saving post $e")
+                Log.e(TAG, "Error while saving post $e")
             } else {
                 Log.d("Create", "Created the convo")
             }

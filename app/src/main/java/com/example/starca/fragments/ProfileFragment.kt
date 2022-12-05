@@ -88,6 +88,7 @@ class ProfileFragment : Fragment() {
             if (e != null) {
                 Toast.makeText(requireContext(), "Couldn't fetch listings", Toast.LENGTH_SHORT)
                     .show()
+                Log.e("Profile Fragment", "queryListings: Couldn't fetch listings: ${e.message}", )
             } else {
                 if (listings != null) {
                     listingsArrayList.addAll(listings)

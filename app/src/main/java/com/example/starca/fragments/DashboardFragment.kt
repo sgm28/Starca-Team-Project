@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starca.R
+import com.example.starca.adapters.ListingsAdapter
 import com.example.starca.models.Listing
 import com.parse.ParseQuery
 import kotlinx.parcelize.Parcelize
@@ -93,7 +94,7 @@ class DashboardFragment : Fragment(), Parcelable {
         query.findInBackground { posts, e ->
             // don't convert this to lambda. i like to know what's being called.
             if (e != null) {
-                Log.e(TAG, "Error fetching posts ${e.message}")
+                Log.e(TAG, "Error fetching posts: ${e.message}")
             } else {
                 if (posts != null) {
                     for (post in posts) {

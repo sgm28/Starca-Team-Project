@@ -1,4 +1,4 @@
-package com.example.starca.fragments
+package com.example.starca.adapters
 
 
 import android.content.Context
@@ -13,7 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.starca.DetailFragment
+import com.example.starca.fragments.DetailFragment
 import com.example.starca.R
 import com.example.starca.models.Listing
 

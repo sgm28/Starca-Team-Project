@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.bumptech.glide.Glide
-import com.example.starca.DetailFragment
-import com.example.starca.FLAGS
+import com.example.starca.fragments.DetailFragment
+import com.example.starca.fragments.FLAGS
 import com.example.starca.R
 import com.example.starca.fragments.OwnerListingDetailFragment
 import com.example.starca.ListingRequest
