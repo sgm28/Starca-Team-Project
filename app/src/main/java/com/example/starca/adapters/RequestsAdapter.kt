@@ -1,30 +1,21 @@
 package com.example.starca.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.bumptech.glide.Glide
-import com.example.starca.DetailFragment
 import com.example.starca.FLAGS
 import com.example.starca.R
-import com.example.starca.fragments.OwnerListingDetailFragment
 import com.example.starca.ListingRequest
 import com.example.starca.models.Listing
 import com.google.gson.Gson
-import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import de.hdodenhof.circleimageview.CircleImageView
-import org.w3c.dom.Text
 
 class RequestsAdapter(val context: Context, val requests: ArrayList<ListingRequest>, val listing: Listing) : RecyclerView.Adapter<RequestsAdapter.ViewHolder>() {
 
@@ -119,8 +110,8 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
         val tvRequestedListingTitle : TextView
         val tvRequestedListingAddress : TextView
         val rbRequesterRating : RatingBar
-        val buttonRejectRequest : Button
-        val buttonAcceptRequest : Button
+        val buttonRejectRequest : ImageButton
+        val buttonAcceptRequest : ImageButton
 
         init {
             ivRequesterProfilePhoto = itemView.findViewById(R.id.ivRequesterProfilePhoto)

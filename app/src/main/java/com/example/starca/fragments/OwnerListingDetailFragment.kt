@@ -28,7 +28,7 @@ class OwnerListingDetailFragment : Fragment() {
 
     var allRequests: ArrayList<ListingRequest> = arrayListOf()
 
-    open var listing : Listing? = null
+    var listing : Listing? = null
 
     lateinit var swipeContainer : SwipeRefreshLayout
 
@@ -43,16 +43,16 @@ class OwnerListingDetailFragment : Fragment() {
             listing = it.getParcelable("LISTING_BUNDLE")
         }
 
-        rvListingRequests = view.findViewById(R.id.rvListingRequests)
-        swipeContainer = view.findViewById(R.id.swipeContainer)
-
-        adapter = RequestsAdapter(requireContext(), allRequests, listing!!)
-        rvListingRequests.adapter = adapter
-        rvListingRequests.layoutManager = LinearLayoutManager(requireContext())
-
-        swipeContainer.setOnRefreshListener {
-            queryRequests()
-        }
+//        rvListingRequests = view.findViewById(R.id.rvListingRequests)
+//        swipeContainer = view.findViewById(R.id.swipeContainer)
+//
+//        adapter = RequestsAdapter(requireContext(), allRequests, listing!!)
+//        rvListingRequests.adapter = adapter
+//        rvListingRequests.layoutManager = LinearLayoutManager(requireContext())
+//
+//        swipeContainer.setOnRefreshListener {
+//            queryRequests()
+//        }
 
         // Inflate the layout for this fragment
         return view
@@ -61,10 +61,22 @@ class OwnerListingDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
+
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light);
+
+        rvListingRequests = view.findViewById(R.id.rvListingRequests)
+
+        adapter = RequestsAdapter(requireContext(), allRequests, listing!!)
+        rvListingRequests.adapter = adapter
+        rvListingRequests.layoutManager = LinearLayoutManager(requireContext())
+
+        swipeContainer.setOnRefreshListener {
+            queryRequests()
+        }
 
         queryRequests()
 
