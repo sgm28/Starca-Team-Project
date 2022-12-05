@@ -1,4 +1,4 @@
-package com.example.starca
+package com.example.starca.models
 
 import android.os.Parcelable
 import android.util.Log

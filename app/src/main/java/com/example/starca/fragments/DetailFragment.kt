@@ -1,4 +1,4 @@
-package com.example.starca
+package com.example.starca.fragments
 
 import android.graphics.Color
 import android.os.Bundle
@@ -11,6 +11,8 @@ import android.widget.*
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.starca.models.ListingRequest
+import com.example.starca.R
 import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
 import com.example.starca.models.Message

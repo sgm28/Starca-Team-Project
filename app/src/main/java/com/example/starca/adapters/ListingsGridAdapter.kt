@@ -2,13 +2,11 @@ package com.example.starca.adapters
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.starca.R
@@ -66,11 +64,6 @@ internal class ListingsGridAdapter (
 
         // TODO: Fix this to get requests and display them.
         listingGridView.setOnClickListener {
-//            if (listings[position].getListingRequests().isEmpty()) {
-//                Toast.makeText(context, "No requests for the selected listing!", Toast.LENGTH_SHORT).show()
-//            } else {
-//                onClick(listingGridView, listings[position])
-//            }
             onClick(listingGridView, listings[position])
         }
 
@@ -79,7 +72,7 @@ internal class ListingsGridAdapter (
     }
 
 //    fun onClick(v: View, listings: ArrayList<Listing>, position: Int) {
-    fun onClick(v: View, listing: Listing) {
+private fun onClick(v: View, listing: Listing) {
 //        val listing = listings[position]
 
         val bundle = Bundle()
