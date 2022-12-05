@@ -7,11 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.starca.DetailFragment
+import com.example.starca.FLAGS
 import com.example.starca.ListingRequest
 import com.example.starca.R
 import com.example.starca.adapters.RequestsAdapter
@@ -19,7 +18,6 @@ import com.example.starca.models.Listing
 import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseQuery
-import org.json.JSONArray
 
 class OwnerListingDetailFragment : Fragment() {
 
@@ -69,6 +67,7 @@ class OwnerListingDetailFragment : Fragment() {
             android.R.color.holo_red_light);
 
         queryRequests()
+
     }
 
     fun queryRequests() {
@@ -89,14 +88,29 @@ class OwnerListingDetailFragment : Fragment() {
                 } else {
                     if (listings != null) {
                         val queriedListing : Listing = listings[0]
-                        val temp = listing!!.getJSONArray("listingRequests")
-                            ?.let { ListingRequest.fromJsonArray(it, listing!!.objectId) }
 
-                        adapter.clear()
+                        val temp : MutableList<ListingRequest>? = listing!!.getJSONArray("listingRequests")
+                            ?.let { ListingRequest.fromJsonArray(it, listing!!.objectId) }
+                        val temp2 : MutableList<ListingRequest> = mutableListOf()
+
+
+                        if (temp != null) {
+                            for (req in temp) {
+                                if (req.status == FLAGS.DENIED.code)
+                                    temp2.add(req)
+                            }
+                        }
+
+                        if (temp2.isNotEmpty()) {
+                            temp?.removeAll(temp2)
+                        }
 
                         if (temp.isNullOrEmpty()) {
-                            Toast.makeText(requireContext(), "No Requests for the selected listing", Toast.LENGTH_SHORT).show()
+                            adapter.clear()
+                            view?.findViewById<TextView>(R.id.tvNoRequests)?.visibility = View.VISIBLE
                         } else {
+                            view?.findViewById<TextView>(R.id.tvNoRequests)?.visibility = View.INVISIBLE
+                            adapter.clear()
                             allRequests.addAll(temp)
                             adapter.notifyDataSetChanged()
                         }
@@ -108,6 +122,6 @@ class OwnerListingDetailFragment : Fragment() {
         })
     }
     companion object {
-        const val TAG = "OwnerListingDetailLFragment"
+        const val TAG = "OwnerListingDetailFragment"
     }
 }
