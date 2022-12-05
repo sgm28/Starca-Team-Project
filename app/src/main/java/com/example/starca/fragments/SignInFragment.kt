@@ -37,6 +37,7 @@ class SignInFragment : Fragment() {
         view.findViewById<Button>(R.id.sign_in_button).setOnClickListener {
             val username = view.findViewById<EditText>(R.id.sign_in_username_et).text.toString()
             val password = view.findViewById<EditText>(R.id.sign_in_password_et).text.toString()
+            Log.i(TAG, "Login: U: $username P: $password")
             loginUser(username, password)
         }
 

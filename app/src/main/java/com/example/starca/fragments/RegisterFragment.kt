@@ -29,8 +29,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        
         view.findViewById<Button>(R.id.register_button).setOnClickListener {
             val firstName = view.findViewById<EditText>(R.id.first_name_et).text.toString()
             val lastName = view.findViewById<EditText>(R.id.last_name_et).text.toString()

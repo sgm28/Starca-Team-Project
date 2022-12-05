@@ -53,6 +53,8 @@
                 <EditText
                     android:id="@+id/sign_in_username_et"
                     style="@style/login_edit_text_fields"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:hint="Username" />
 
             </com.google.android.material.textfield.TextInputLayout>

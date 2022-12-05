@@ -1,5 +1,7 @@
 package com.example.starca.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -21,6 +23,7 @@ import com.parse.ParseQuery
 import com.parse.ParseUser
 import com.parse.SaveCallback
 import org.json.JSONArray
+
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
@@ -98,6 +101,8 @@ class DetailFragment : Fragment() {
         ratingRb.rating = listing?.getDouble("listingRating")!!.toFloat()
         descriptionTv.text = listing?.getString("description")
 
+        builder = AlertDialog.Builder(context)
+
         Glide.with(requireContext()).load(listing?.getParseFile("PictureOfListing")?.url)
             .into(imageIv)
 
@@ -161,7 +166,6 @@ class DetailFragment : Fragment() {
                             button_bottomLeft.setOnClickListener(cancelRequest(requests, request))
                         }
                         FLAGS.REQUESTED.code -> {
-                            Toast.makeText(context, "Awaiting Approval", Toast.LENGTH_SHORT).show()
                             //show cancel nav
                             displayAwaitingNav()
                             button_bottomLeft.setOnClickListener(cancelRequest(requests, request))
@@ -173,7 +177,7 @@ class DetailFragment : Fragment() {
                             button_bottomRight.setOnClickListener(buyStorage(requests, request))
                         }
                         FLAGS.BOUGHT.code -> {
-
+                            displayBoughtNav()
                         }
                     }
                     return
@@ -192,7 +196,7 @@ class DetailFragment : Fragment() {
         //left cancel.
         button_bottomLeft.visibility = View.VISIBLE
         button_bottomLeft.text = "Cancel Offer"
-        button_bottomLeft.setBackgroundColor(Color.parseColor("#0C825F"))
+        button_bottomLeft.setBackgroundColor(Color.parseColor("#7F0C0C"))
 
         // right continue
         button_bottomRight.visibility = View.VISIBLE
@@ -216,12 +220,25 @@ class DetailFragment : Fragment() {
     }
 
     private fun displayDeniedNav() {
+        button_bottomLeft.visibility = View.VISIBLE
         button_bottomLeft.setBackgroundColor(Color.BLACK)
         button_bottomLeft.text = "Okay"
+
+        button_bottomRight.visibility = View.GONE
 
         tv_requestDenied.setTextColor(Color.BLACK)
         tv_requestDenied.visibility = View.VISIBLE
         tv_requestDenied.text = "Request for Rental Denied."
+    }
+
+    private fun displayBoughtNav() {
+        button_bottomLeft.visibility = View.GONE
+
+        button_bottomRight.visibility = View.GONE
+
+        tv_requestDenied.setTextColor(Color.parseColor("#0C825F"))
+        tv_requestDenied.visibility = View.VISIBLE
+        tv_requestDenied.text = "Rented"
     }
 
     private fun displayAwaitingNav() {
@@ -276,22 +293,89 @@ class DetailFragment : Fragment() {
         }
     }
 
+    lateinit var builder: AlertDialog.Builder
+
     private fun buyStorage(
         requestArray: MutableList<ListingRequest>,
         request: ListingRequest
-    ) : View.OnClickListener {
+    ): View.OnClickListener {
         return View.OnClickListener { _ ->
-            // you're in here because you clicked the button.
-            // this doesn't necessarily mean that you bought it. just means you went into purchasing api.
 
-            // go to purchasing api or w/e
+            // wow, kotlin supports null coalescing
+            val price = listing?.getNumber("price") ?: "199.99"
 
-            // get back status of puchase, bought or not.
+            val tryEmail = ParseUser.getCurrentUser().email
+            val email = if (ParseUser.getCurrentUser()
+                    .getBoolean("emailVerified")
+            ) tryEmail else "your inbox"
 
-            // if bought, cancel request.
-
-            // if not bought. do nothing
+            confirmBuy(requestArray, request, price, email)
         }
+    }
+
+    private fun confirmBuy(requestArray: MutableList<ListingRequest>,
+                           request: ListingRequest, price: java.io.Serializable, email: String) {
+        builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
+            .setCancelable(false)
+            .setPositiveButton("Confirm") { dialog, id ->
+                Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
+                    .show()
+
+                //change the code.
+                setBought(requestArray, request)
+            }
+            .setNegativeButton(
+                "Cancel"
+            ) { dialog, id ->
+                dialog.cancel()
+            }
+
+        val alert: AlertDialog = builder.create()
+
+        alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
+        alert.show()
+
+        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
+    }
+
+    private fun setBought(
+        requestArray: MutableList<ListingRequest>,
+        request: ListingRequest
+    ) {
+
+        // here you will create a request. you will add it to the listing array.
+        Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
+
+        // create an listingRequest object
+        val newRequest =
+            ListingRequest(
+                ParseUser.getCurrentUser().objectId,
+                FLAGS.BOUGHT.code,
+                listing!!.objectId
+            )
+
+        //add to request array
+        requestArray.add(newRequest)
+        requestArray.remove(request)
+
+        val gson = Gson()
+
+        val stArr = ArrayList<String>()
+        for (request in requestArray) {
+            stArr.add(gson.toJson(request))
+        }
+
+        listing?.put("listingRequests", stArr)
+
+        listing?.saveInBackground { e ->
+            if (e == null) {
+                displayBoughtNav()
+            } else {
+                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "requestListing: $e")
+            }
+        }
+
     }
 
     private fun cancelRequest(
@@ -458,7 +542,7 @@ class DetailFragment : Fragment() {
         // Save conversation
         conversation.saveInBackground { e ->
             if (e != null) {
-                Log.e("DetailFragment", "Error while saving post $e")
+                Log.e(TAG, "Error while saving post $e")
             } else {
                 Log.d("Create", "Created the convo")
             }
