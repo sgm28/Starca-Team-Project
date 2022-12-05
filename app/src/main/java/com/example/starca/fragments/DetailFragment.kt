@@ -179,7 +179,7 @@ class DetailFragment : Fragment() {
                             button_bottomRight.setOnClickListener(buyStorage(requests, request))
                         }
                         FLAGS.BOUGHT.code -> {
-
+                            displayBoughtNav()
                         }
                     }
                     return
@@ -231,6 +231,16 @@ class DetailFragment : Fragment() {
         tv_requestDenied.setTextColor(Color.BLACK)
         tv_requestDenied.visibility = View.VISIBLE
         tv_requestDenied.text = "Request for Rental Denied."
+    }
+
+    private fun displayBoughtNav() {
+        button_bottomLeft.visibility = View.GONE
+
+        button_bottomRight.visibility = View.GONE
+
+        tv_requestDenied.setTextColor(Color.parseColor("#0C825F"))
+        tv_requestDenied.visibility = View.VISIBLE
+        tv_requestDenied.text = "Rented"
     }
 
     private fun displayAwaitingNav() {
@@ -297,31 +307,78 @@ class DetailFragment : Fragment() {
             val price = listing?.getNumber("price") ?: "199.99"
 
             val tryEmail = ParseUser.getCurrentUser().email
-            val email = if (ParseUser.getCurrentUser().getBoolean("emailVerified")) tryEmail else "your inbox"
+            val email = if (ParseUser.getCurrentUser()
+                    .getBoolean("emailVerified")
+            ) tryEmail else "your inbox"
 
-            builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
-                .setCancelable(false)
-                .setPositiveButton("Confirm") { dialog, id ->
-                    Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
-                        .show()
-
-                    //change the code.
-
-                }
-                .setNegativeButton(
-                    "Cancel"
-                ) { dialog, id ->
-                    dialog.cancel()
-                }
-
-            val alert: AlertDialog = builder.create()
-
-            alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
-            alert.show()
-
-            alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
-
+            confirmBuy(requestArray, request, price, email)
         }
+    }
+
+    private fun confirmBuy(requestArray: MutableList<ListingRequest>,
+                           request: ListingRequest,price: java.io.Serializable, email: String) {
+        builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
+            .setCancelable(false)
+            .setPositiveButton("Confirm") { dialog, id ->
+                Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
+                    .show()
+
+                //change the code.
+                setBought(requestArray, request)
+            }
+            .setNegativeButton(
+                "Cancel"
+            ) { dialog, id ->
+                dialog.cancel()
+            }
+
+        val alert: AlertDialog = builder.create()
+
+        alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
+        alert.show()
+
+        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
+
+    }
+
+    private fun setBought(
+        requestArray: MutableList<ListingRequest>,
+        request: ListingRequest
+    ) {
+
+        // here you will create a request. you will add it to the listing array.
+        Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
+
+        // create an listingRequest object
+        val newRequest =
+            ListingRequest(
+                ParseUser.getCurrentUser().objectId,
+                FLAGS.BOUGHT.code,
+                listing!!.objectId
+            )
+
+        //add to request array
+        requestArray.add(newRequest)
+        requestArray.remove(request)
+
+        val gson = Gson()
+
+        val stArr = ArrayList<String>()
+        for (request in requestArray) {
+            stArr.add(gson.toJson(request))
+        }
+
+        listing?.put("listingRequests", stArr)
+
+        listing?.saveInBackground { e ->
+            if (e == null) {
+                displayBoughtNav()
+            } else {
+                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "requestListing: $e")
+            }
+        }
+
     }
 
     private fun cancelRequest(
