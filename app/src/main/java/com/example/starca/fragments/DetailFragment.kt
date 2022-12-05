@@ -2,9 +2,7 @@ package com.example.starca.fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -15,7 +13,7 @@ import android.widget.*
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.example.starca.ListingRequest
+import com.example.starca.models.ListingRequest
 import com.example.starca.R
 import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
@@ -316,7 +314,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun confirmBuy(requestArray: MutableList<ListingRequest>,
-                           request: ListingRequest,price: java.io.Serializable, email: String) {
+                           request: ListingRequest, price: java.io.Serializable, email: String) {
         builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
             .setCancelable(false)
             .setPositiveButton("Confirm") { dialog, id ->
@@ -338,7 +336,6 @@ class DetailFragment : Fragment() {
         alert.show()
 
         alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
-
     }
 
     private fun setBought(

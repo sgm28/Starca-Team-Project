@@ -10,8 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.starca.fragments.FLAGS
-import com.example.starca.ListingRequest
+import com.example.starca.models.ListingRequest
 import com.example.starca.R
 import com.example.starca.adapters.RequestsAdapter
 import com.example.starca.models.Listing

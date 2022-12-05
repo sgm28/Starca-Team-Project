@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.starca.fragments.FLAGS
 import com.example.starca.R
-import com.example.starca.ListingRequest
+import com.example.starca.models.ListingRequest
 import com.example.starca.models.Listing
 import com.google.gson.Gson
 import com.parse.ParseException

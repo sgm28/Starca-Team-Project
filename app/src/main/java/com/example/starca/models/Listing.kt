@@ -1,7 +1,5 @@
 package com.example.starca.models
 
-import android.util.Log
-import com.example.starca.ListingRequest
 import com.parse.ParseClassName
 import com.parse.ParseFile
 import com.parse.ParseObject
