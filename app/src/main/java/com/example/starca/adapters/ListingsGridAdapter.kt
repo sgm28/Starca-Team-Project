@@ -1,17 +1,18 @@
 package com.example.starca.adapters
 
 import android.content.Context
-import android.text.Layout
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.starca.R
+import com.example.starca.fragments.OwnerListingDetailFragment
 import com.example.starca.models.Listing
 
 internal class ListingsGridAdapter (
@@ -62,7 +63,37 @@ internal class ListingsGridAdapter (
         gridCity.text = listing.getAddressCity() + ", "
         gridState.text = listing.getAddressState()
 
+
+        // TODO: Fix this to get requests and display them.
+        listingGridView.setOnClickListener {
+//            if (listings[position].getListingRequests().isEmpty()) {
+//                Toast.makeText(context, "No requests for the selected listing!", Toast.LENGTH_SHORT).show()
+//            } else {
+//                onClick(listingGridView, listings[position])
+//            }
+            onClick(listingGridView, listings[position])
+        }
+
         return listingGridView
+
     }
 
+//    fun onClick(v: View, listings: ArrayList<Listing>, position: Int) {
+    fun onClick(v: View, listing: Listing) {
+//        val listing = listings[position]
+
+        val bundle = Bundle()
+        bundle.putParcelable(LISTING_BUNDLE, listing)
+        val ownerListingDetailFragment = OwnerListingDetailFragment()
+        ownerListingDetailFragment.arguments = bundle
+
+        val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+        fragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, ownerListingDetailFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+    companion object {
+        val LISTING_BUNDLE = "LISTING_BUNDLE"
+    }
 }
