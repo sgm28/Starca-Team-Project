@@ -31,26 +31,26 @@
         app:layout_constraintStart_toEndOf="@+id/ivRequesterProfilePhoto"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonRejectRequest"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="225dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/rounded_buttons"
-        android:onClick="rejectRequest"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/ic_baseline_block_24"
         app:layout_constraintStart_toEndOf="@+id/ivRequesterProfilePhoto"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/buttonAcceptRequest"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/rounded_buttons"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/ic_baseline_check_circle_24"
         android:backgroundTint="#228B22"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonRejectRequest"
         app:layout_constraintTop_toTopOf="parent" />
@@ -96,10 +96,10 @@
         android:id="@+id/tvRequestStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="210dp"
-        android:visibility="invisible"
+        android:layout_marginStart="200dp"
         android:layout_marginTop="40dp"
         android:text="TextView"
+        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/ivRequesterProfilePhoto"
         app:layout_constraintTop_toTopOf="parent" />
 
