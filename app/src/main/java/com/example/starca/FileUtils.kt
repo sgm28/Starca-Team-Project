@@ -1,4 +1,5 @@
 package com.example.starca
+import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
@@ -23,6 +24,7 @@ class FileUtils {
      * @param context The context.
      * @param uri     The Uri to query.
      */
+    @SuppressLint("Range")
     @Throws(Exception::class)
     fun getFileFromUri(context: Context, uri: Uri): File {
         var path: String? = null
@@ -161,6 +163,7 @@ class FileUtils {
         return File(root, title)
     }
 
+    @SuppressLint("Range")
     fun getFileName(context: Context, uri: Uri): String? {
         var result: String? = null
         if (uri.scheme == "content") {
