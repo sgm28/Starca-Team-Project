@@ -52,6 +52,6 @@
     <string name="profile_other">Other profile pic</string>
 
     <!-- Profile Fragment -->
-    <string name="tab1_text">Listings</string>
-    <string name="tab2_text">Rented</string>
+    <string name="tab1_text">Rented</string>
+    <string name="tab2_text">Listings</string>
 </resources>

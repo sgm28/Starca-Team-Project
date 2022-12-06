@@ -5,18 +5,18 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.starca.fragments.ConversationsFragment
 import com.example.starca.fragments.ListingsChildFragment
+import com.example.starca.fragments.RentedChildFragment
 
 class ProfileViewPager2Adapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return 2
     }
 
-    //TODO: Create the rented chil fragment and replace with convo fragment here
     override fun createFragment(position: Int): Fragment {
         when (position) {
-            0 -> return ListingsChildFragment()
-            1 -> return ConversationsFragment()
+            0 -> return RentedChildFragment()
+            1 -> return ListingsChildFragment()
         }
-        return ListingsChildFragment()
+        return RentedChildFragment()
     }
 }

@@ -1,6 +1,7 @@
 package com.example.starca.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,12 @@ import com.example.starca.models.Listing
 import com.parse.ParseQuery
 import com.parse.ParseUser
 
-class ListingsChildFragment : Fragment() {
 
-    lateinit var listingsGridView: GridView
-    private lateinit var adapter: ListingsGridAdapter
-    private val listingsArrayList = ArrayList<Listing>()
+class RentedChildFragment : Fragment() {
+
+    lateinit var rentedListingsGridView: GridView
+    private lateinit var rentedAdapter: ListingsGridAdapter
+    private val rentedListingsArrayList = ArrayList<Listing>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,21 +33,23 @@ class ListingsChildFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Set up grid view
-        listingsGridView = view.findViewById(R.id.personal_listings_gv)
-        adapter = ListingsGridAdapter(requireContext(), listingsArrayList, true)
-        listingsGridView.adapter = adapter
+        rentedListingsGridView = view.findViewById(R.id.personal_listings_gv)
+        rentedAdapter = ListingsGridAdapter(requireContext(), rentedListingsArrayList, false)
+        rentedListingsGridView.adapter = rentedAdapter
 
-        queryListings()
+        // Get the user's array of rented listing IDs
+        val rentedListingIds: List<String>? = ParseUser.getCurrentUser().getList<String>("rentedListings")
+        queryRentedListings(rentedListingIds)
     }
 
-    fun queryListings() {
-        listingsArrayList.clear()
+    fun queryRentedListings(rentedListingIds: List<String>?) {
+        rentedListingsArrayList.clear()
         val query: ParseQuery<Listing> = ParseQuery(Listing::class.java)
 
         // Asking parse to also include the user that posted the Listing (since user is a pointer in the Listing table)
         query.include(Listing.KEY_USER)
-        // Returns only current user's listings
-        query.whereEqualTo(Listing.KEY_USER, ParseUser.getCurrentUser())
+        // Querying listings that are equal to the ID's in the user's rented list
+        query.whereContainedIn(Listing.KEY_ID, rentedListingIds)
         query.addDescendingOrder("createdAt")
         query.findInBackground { listings, e ->
             if (e != null) {
@@ -53,8 +57,12 @@ class ListingsChildFragment : Fragment() {
                     .show()
             } else {
                 if (listings != null) {
-                    listingsArrayList.addAll(listings)
-                    adapter.notifyDataSetChanged()
+                    for (listing in listings) {
+                        listing.getTitle()?.let { Log.d("RentedArrayList:", it) }
+                    }
+                    rentedListingsArrayList.addAll(listings)
+                    Log.d("RentedArrayList:", rentedListingsArrayList.toString())
+                    rentedAdapter.notifyDataSetChanged()
                 }
             }
         }

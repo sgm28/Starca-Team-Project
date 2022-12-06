@@ -70,6 +70,7 @@ class ProfileFragment : Fragment() {
             goToSettingsActivity()
         }
 
+        // Set up tab layout
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -85,7 +86,7 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        // Allows tab change on page swipe
+        // Allows selected-tab update on page swipe
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
