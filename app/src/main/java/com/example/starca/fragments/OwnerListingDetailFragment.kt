@@ -90,7 +90,6 @@ class OwnerListingDetailFragment : Fragment() {
 
         // Add the query constraints: Equal to the selected listing and has requests
         query.whereEqualTo("objectId", listing?.objectId)
-//        query.whereNotEqualTo("listingRequests", null)
 
         query.findInBackground(object: FindCallback<Listing> {
             override fun done(listings: MutableList<Listing>?, e: ParseException?) {
