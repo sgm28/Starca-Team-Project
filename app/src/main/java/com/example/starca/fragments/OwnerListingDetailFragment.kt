@@ -90,7 +90,6 @@ class OwnerListingDetailFragment : Fragment() {
 
         // Add the query constraints: Equal to the selected listing and has requests
         query.whereEqualTo("objectId", listing?.objectId)
-        query.whereNotEqualTo("listingRequests", null)
 
         query.findInBackground(object: FindCallback<Listing> {
             override fun done(listings: MutableList<Listing>?, e: ParseException?) {
@@ -101,14 +100,19 @@ class OwnerListingDetailFragment : Fragment() {
                     if (listings != null) {
                         val queriedListing : Listing = listings[0]
 
-                        val temp : MutableList<ListingRequest>? = listing!!.getJSONArray("listingRequests")
-                            ?.let { ListingRequest.fromJsonArray(it, listing!!.objectId) }
-                        val temp2 : MutableList<ListingRequest> = mutableListOf()
+                        var temp : MutableList<ListingRequest>? = mutableListOf()
+                        if (listing?.getJSONArray("listingRequests") == null) {
+                            temp = null
+                        } else {
+                            temp = listing!!.getJSONArray("listingRequests")
+                                ?.let { ListingRequest.fromJsonArray(it, listing!!.objectId) }
+                        }
 
+                        val temp2 : MutableList<ListingRequest> = mutableListOf()
 
                         if (temp != null) {
                             for (req in temp) {
-                                if (req.status == FLAGS.DENIED.code)
+                                if (req.status == FLAGS.DENIED.code || req.status == FLAGS.BOUGHT.code)
                                     temp2.add(req)
                             }
                         }
