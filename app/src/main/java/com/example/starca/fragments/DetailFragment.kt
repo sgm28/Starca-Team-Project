@@ -17,7 +17,6 @@ import com.example.starca.models.ListingRequest
 import com.example.starca.R
 import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
-import com.example.starca.models.ListingRequest
 import com.example.starca.models.Message
 import com.google.gson.Gson
 import com.parse.ParseQuery
@@ -322,6 +321,7 @@ class DetailFragment : Fragment() {
 
                 //change the code.
                 setBought(requestArray, request)
+                addListingToUser()
             }
             .setNegativeButton(
                 "Cancel"
@@ -412,37 +412,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    //////////////////
-    //Logic
-    //  Create the Converstation table - DONE
-    // Link to message table Pointer points to Conversation ObjectID column -DONE
-
-
-    // Get the user id of the poster - DONE
-    // Save the listingPoster, currentUser to Conversation Fragment  database - DONE
-    //Implement logic to prevent duplicate conversation - DONE
-    // Implement logic to prevent duplicate entry - DONE
-    //Get callback to retrieve   conversation pointer - DONE
-    // send the message automatically -DONE
-    // Save message, conversationPointer - DONE
-
-    //TODO
-    // Chat fragment
-    // Pull
-    //  if userId = currentLoginInuser display the data(listingPosterFirstname, messages,)
-    // That's it
-    //ParseObject message = ParseObject.create("Message");
-    //message.put(Message.USER_ID_KEY, userId);
-    //message.put(Message.BODY_KEY, data);
-    // Using new `Message` Parse-backed model now
-
-
-    //Log.d(TAG,listing!!.getUser()!!.objectId)
-    // Log.d(TAG, ParseUser.getCurrentUser().objectId)
-
-
-    // If conversation is NOT duplicate, save conversation
-
     fun sendMessage() {
         val message = Message()
         val initMessage = "Hi I am interested in " + listing!!.getTitle();
@@ -462,27 +431,6 @@ class DetailFragment : Fragment() {
             ).show()
         })
     }
-/*
-//Function get the objectId of login in user
-    fun compareConversation(user: ParseUser, recipient: ParseUser){
-        val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
-
-        query.include(Conversation.KEY_USER)
-        query.include(Conversation.KEY_RECIPIENT)
-        query.whereEqualTo(Conversation.KEY_USER, user)
-        query.findInBackground { conversation, e ->
-            if (e != null) {
-                Log.d(TAG, "No conversation found: $e")
-            } else {
-                if (!conversation.isNullOrEmpty()) {
-                    Log.d(TAG, conversation.toString())
-                    conversationId = conversation[0].objectId
-                    Log.d(TAG, conversationId) //Retrieving conversation object
-                    sendMessage(conversation[0]) //Sending the conversation to sendMessage
-                }
-            }
-        }
-    }*/
 
     private fun checkDuplicateConversation() {
 
@@ -511,27 +459,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    /*
-    private fun checkDuplicateMessage() {
-        val query: ParseQuery<Message> = ParseQuery(Message::class.java)
-        query.include(Message.KEY_CONVERSATION)
-        query.findInBackground { message, e ->
-            if (e != null) {
-                Log.d(TAG, "No conversation found: $e")
-            } else {
-                if (!message.isNullOrEmpty()) {
-                    Log.d(TAG, message.toString())
-                    //conversationId = conversation[0].objectId
-                    //Log.d(TAG, conversationId)
-                    Log.d(TAG, "Duplicated message found in the database. Message not sent")
-                } else {
-                    sendMessage()
-                    Log.d(TAG, "Message sent")
-                }
-            }
-        }
-    }
-*/
     private fun createConversation(user: ParseUser, recipient: ParseUser) {
 
         // Create new conversation
@@ -548,6 +475,29 @@ class DetailFragment : Fragment() {
         }
         // Send interest message
         sendMessage()
+    }
+
+    private fun addListingToUser(){
+        val user = ParseUser.getCurrentUser()
+        val rentedListingIds: ArrayList<String>? = ParseUser.getCurrentUser().getList<String>("rentedListings") as ArrayList<String>?
+
+        // Add listing to user's listings' ID array
+        listing!!.objectId.let { rentedListingIds?.add(it) }
+
+        if (rentedListingIds != null) {
+            user.put("rentedListings", rentedListingIds)
+
+            // Save changes
+            user.saveInBackground { e ->
+                if (e == null) {
+                    // User successfully rented the listing
+                    Log.i(TAG, "Bought listing!")
+                } else {
+                    Toast.makeText(requireContext(), "Error buying listing", Toast.LENGTH_SHORT).show()
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     companion object {

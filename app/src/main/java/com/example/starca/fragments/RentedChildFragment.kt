@@ -39,7 +39,9 @@ class RentedChildFragment : Fragment() {
 
         // Get the user's array of rented listing IDs
         val rentedListingIds: List<String>? = ParseUser.getCurrentUser().getList<String>("rentedListings")
-        queryRentedListings(rentedListingIds)
+        if (!rentedListingIds.isNullOrEmpty()) {
+            queryRentedListings(rentedListingIds)
+        }
     }
 
     fun queryRentedListings(rentedListingIds: List<String>?) {
