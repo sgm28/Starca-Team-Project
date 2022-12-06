@@ -3,6 +3,7 @@ package com.example.starca.fragments
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -313,6 +314,9 @@ class DetailFragment : Fragment() {
 
     private fun confirmBuy(requestArray: MutableList<ListingRequest>,
                            request: ListingRequest, price: java.io.Serializable, email: String) {
+        val customDialog = layoutInflater.inflate(R.layout.custom_dialog, null)
+        builder.setView(customDialog)
+        /*
         builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
             .setCancelable(false)
             .setPositiveButton("Confirm") { dialog, id ->
@@ -328,13 +332,31 @@ class DetailFragment : Fragment() {
             ) { dialog, id ->
                 dialog.cancel()
             }
+         */
 
         val alert: AlertDialog = builder.create()
 
-        alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
+        // Set up custom alert dialog
+        alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        customDialog.findViewById<TextView>(R.id.dialog_title).text = "Confirm rental of ${listing?.getTitle()}"
+        customDialog.findViewById<TextView>(R.id.dialog_message).text = "Rent ${listing?.getTitle()} for $${price} per month?"
+        customDialog.findViewById<Button>(R.id.dialog_negative_button).setOnClickListener { alert.cancel() }
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).setOnClickListener {
+            Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
+                .show()
+
+            setBought(requestArray, request)
+            addListingToUser()
+            alert.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).text = "Pay Now"
+
+        //alert.setContentView(customDialog)
+
+        //alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
         alert.show()
 
-        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
+        //alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
     }
 
     private fun setBought(
