@@ -8,11 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.starca.R
 import com.example.starca.SettingsActivity
 import com.example.starca.adapters.ListingsGridAdapter
+import com.example.starca.adapters.ProfileViewPager2Adapter
 import com.example.starca.models.Listing
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.parse.*
 import org.w3c.dom.Text
 
@@ -25,9 +29,8 @@ import org.w3c.dom.Text
 
 class ProfileFragment : Fragment() {
 
-    lateinit var listingsGridView: GridView
-    private lateinit var adapter: ListingsGridAdapter
-    val listingsArrayList = ArrayList<Listing>()
+
+    lateinit var viewPager2Adapter: ProfileViewPager2Adapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,11 +48,11 @@ class ProfileFragment : Fragment() {
         var bioTv: TextView = view.findViewById(R.id.bio_tv)
         var ratingBar: RatingBar = view.findViewById(R.id.user_rating_rb)
         var profileIv: ImageView = view.findViewById((R.id.profile_iv))
+        val tabLayout: TabLayout = view.findViewById(R.id.profile_tl)
+        val viewPager2: ViewPager2 = view.findViewById(R.id.profile_vp2)
 
-        // Set up grid view
-        listingsGridView = view.findViewById(R.id.personal_listings_gv)
-        adapter = ListingsGridAdapter(requireContext(), listingsArrayList)
-        listingsGridView.adapter = adapter
+        viewPager2Adapter = ProfileViewPager2Adapter(this)
+        viewPager2.adapter = viewPager2Adapter
 
         // Set user profile details
         val fullName: String = user.getString("firstName") + " " + user.getString("lastName")
@@ -67,34 +70,33 @@ class ProfileFragment : Fragment() {
             goToSettingsActivity()
         }
 
-        queryListings()
+        // Set up tab layout
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewPager2.currentItem = tab!!.position
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Handle tab reselect
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Handle tab unselect
+            }
+        })
+
+        // Allows selected-tab update on page swipe
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                tabLayout.getTabAt(position)?.select()
+            }
+        })
     }
 
     private fun goToSettingsActivity() {
         val intent = Intent(activity, SettingsActivity::class.java)
         startActivity(intent)
-    }
-
-    fun queryListings() {
-        listingsArrayList.clear()
-        val query: ParseQuery<Listing> = ParseQuery(Listing::class.java)
-
-        // Asking parse to also include the user that posted the Listing (since user is a pointer in the Listing table)
-        query.include(Listing.KEY_USER)
-        // Returns only current user's listings
-        query.whereEqualTo(Listing.KEY_USER, ParseUser.getCurrentUser())
-        query.addDescendingOrder("createdAt")
-        query.findInBackground { listings, e ->
-            if (e != null) {
-                Toast.makeText(requireContext(), "Couldn't fetch listings", Toast.LENGTH_SHORT)
-                    .show()
-                Log.e("Profile Fragment", "queryListings: Couldn't fetch listings: ${e.message}", )
-            } else {
-                if (listings != null) {
-                    listingsArrayList.addAll(listings)
-                    adapter.notifyDataSetChanged()
-                }
-            }
-        }
     }
 }

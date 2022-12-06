@@ -15,7 +15,8 @@ import com.example.starca.models.Listing
 
 internal class ListingsGridAdapter (
     private val context: Context,
-    private val listings: ArrayList<Listing>
+    private val listings: ArrayList<Listing>,
+    private val clickable: Boolean,
         ) : BaseAdapter() {
     private var layoutInflater: LayoutInflater? = null
     private lateinit var gridImage: ImageView
@@ -65,9 +66,16 @@ internal class ListingsGridAdapter (
         gridState.text = listing.getAddressState()
 
 
-        // TODO: Fix this to get requests and display them.
-        listingGridView.setOnClickListener {
-            onClick(listingGridView, listings[position])
+        if (clickable) {
+            // TODO: Fix this to get requests and display them.
+            listingGridView.setOnClickListener {
+//            if (listings[position].getListingRequests().isEmpty()) {
+//                Toast.makeText(context, "No requests for the selected listing!", Toast.LENGTH_SHORT).show()
+//            } else {
+//                onClick(listingGridView, listings[position])
+//            }
+                onClick(listingGridView, listings[position])
+            }
         }
 
         return listingGridView
