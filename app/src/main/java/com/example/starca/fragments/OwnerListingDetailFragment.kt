@@ -108,7 +108,7 @@ class OwnerListingDetailFragment : Fragment() {
 
                         if (temp != null) {
                             for (req in temp) {
-                                if (req.status == FLAGS.DENIED.code)
+                                if (req.status == FLAGS.DENIED.code || req.status == FLAGS.APPROVED.code)
                                     temp2.add(req)
                             }
                         }
