@@ -17,13 +17,13 @@ import com.example.starca.models.ListingRequest
 import com.example.starca.R
 import com.example.starca.models.Conversation
 import com.example.starca.models.Listing
+import com.example.starca.models.ListingRequest
 import com.example.starca.models.Message
 import com.google.gson.Gson
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import com.parse.SaveCallback
 import org.json.JSONArray
-
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
