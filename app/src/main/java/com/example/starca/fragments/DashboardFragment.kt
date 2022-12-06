@@ -22,6 +22,7 @@ import com.example.starca.R
 import com.example.starca.adapters.ListingsAdapter
 import com.example.starca.models.Listing
 import com.parse.ParseQuery
+import com.parse.ParseUser
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -99,10 +100,16 @@ class DashboardFragment : Fragment(), Parcelable {
                 if (posts != null) {
                     for (post in posts) {
 
+                        if(post.getUser()?.objectId == ParseUser.getCurrentUser().objectId){
+                            continue
+                        }
+
                         fun getAddressName_Full(): String =
                             "${post.getAddressStreet()}, ${post.getAddressCity()}, ${post.getAddressState()} ${post.getAddressZip()}"
 
                         val addressName: String? = post.getTitle()
+
+                        feedListings.add(post)
 
                         storageLocations.add(StorageLocation(addressName, getAddressName_Full()))
                         storageAddresses.add(getAddressName_Full())
@@ -118,7 +125,7 @@ class DashboardFragment : Fragment(), Parcelable {
                     fragmentManager.beginTransaction().replace(R.id.maps_container, mapsFrag)
                         .commit()
 
-                    feedListings.addAll(posts)
+//                    feedListings.addAll(posts)
 
                     adapter.notifyDataSetChanged()
 

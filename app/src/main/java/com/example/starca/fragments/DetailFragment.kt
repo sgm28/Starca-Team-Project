@@ -129,10 +129,10 @@ class DetailFragment : Fragment() {
             val newArray = JSONArray()
             listing?.put("listingRequests", newArray)
             listing?.saveInBackground {
-                nnn(newArray)
+                processListingRequests(newArray)
             }
         } else {
-            nnn(requests_arrayJSON)
+            processListingRequests(requests_arrayJSON)
         }
 
     }
@@ -140,8 +140,7 @@ class DetailFragment : Fragment() {
     // left button = cancel
     // right button = continue
 
-
-    fun nnn(requests_arrayJSON: JSONArray) {
+    private fun processListingRequests(requests_arrayJSON: JSONArray) {
         val requests = requests_arrayJSON?.let {
             listing?.let { it1 ->
                 ListingRequest.fromJsonArray(
