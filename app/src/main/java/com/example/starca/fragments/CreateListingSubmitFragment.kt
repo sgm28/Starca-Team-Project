@@ -54,15 +54,12 @@ class CreateListingSubmitFragment : Fragment() {
             //The submit post method adds hardcoded amenities values to userDataObject
             //then submits the data
             submitPost()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DashboardFragment()).commit()
-            Toast.makeText(requireContext(), "Submitted new listing!", Toast.LENGTH_SHORT).show()
-
         }
 
         view.findViewById<Button>(R.id.create_listing_submit_cancel_button).setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DashboardFragment()).commit()
+
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
+
         }
     }
 
@@ -76,11 +73,20 @@ class CreateListingSubmitFragment : Fragment() {
 
 
         usersDataObject.saveInBackground {
-            if (it != null) {
-                it.localizedMessage?.let { message -> Log.e("MainActivity", message) }
+            e ->
+            if (e != null) {
+                Log.e(TAG, "submitPost: error: ${e.message}", )
             } else {
-                Log.d("MainActivity", "Object saved.")
+                Log.i(TAG, "submitPost: Listing Submitted.")
+
+                parentFragmentManager.beginTransaction().replace(R.id.fragment_container, DashboardFragment()).commit()
+
+                Toast.makeText(requireContext(), "Submitted new listing!", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    companion object {
+        const val TAG = "CreateListingSubmitFragment"
     }
 }

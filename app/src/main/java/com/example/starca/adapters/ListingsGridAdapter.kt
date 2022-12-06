@@ -55,7 +55,10 @@ internal class ListingsGridAdapter (
         gridState = listingGridView!!.findViewById<TextView>(R.id.grid_state_tv)
 
         val listing = listings[position]
-        Glide.with(listingGridView.context).load(listing.getImage()?.url).transform(RoundedCorners(40)).into(gridImage)
+        Glide.with(listingGridView.context)
+            .load(listing.getImage()?.url)
+            .transform(RoundedCorners(40))
+            .into(gridImage)
         gridTitle.text = listing.getTitle()
         gridRating.rating = listing.getRating()!!
         gridCity.text = listing.getAddressCity() + ", "

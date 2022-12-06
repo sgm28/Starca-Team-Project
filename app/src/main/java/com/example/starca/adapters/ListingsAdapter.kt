@@ -68,7 +68,16 @@ class ListingsAdapter(
             tvSize.text = post.getDimensions()
             tvDesc.text = post.getDescription()
 
-            Glide.with(itemView.context).load(post.getImage()?.url).placeholder(R.drawable.starca_logo_icon).transform(RoundedCorners(20)).into(ivPoster)
+            Glide.with(itemView.context)
+                .load(post.getImage()?.url)
+                .placeholder(R.drawable.starca_logo_icon)
+                .transform(RoundedCorners(40))
+                .into(ivPoster)
+//
+//            Glide.with(listingGridView.context)
+//                .load(listing.getImage()?.url)
+//                .transform(RoundedCorners(40))
+//                .into(gridImage)
 
             ViewCompat.setTransitionName(ivPoster, "transition_dashboard_image$adapterPosition")
             ViewCompat.setTransitionName(tvDesc, "transition_dashboard_description$adapterPosition")

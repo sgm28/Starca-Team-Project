@@ -17,7 +17,7 @@ data class ListingRequest(
         fun fromJsonArray(requestJSONArray: JSONArray, listingId: String) : MutableList<ListingRequest> {
 
             val requests = mutableListOf<ListingRequest>()
-            Log.e("DetailFragment", "fromJsonArray: $requestJSONArray", )
+            Log.i("DetailFragment", "fromJsonArray: $requestJSONArray", )
 
             for (i in 0 until requestJSONArray.length()) {
                 val str = requestJSONArray.get(i).toString()
