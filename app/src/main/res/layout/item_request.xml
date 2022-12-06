@@ -94,11 +94,11 @@
         android:id="@+id/tvRequestStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="220dp"
         android:layout_marginTop="40dp"
-        android:text="TextView"
+        android:layout_marginEnd="10dp"
+        android:text="Awaiting Payment"
         android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@+id/ivRequesterProfilePhoto"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
