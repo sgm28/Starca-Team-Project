@@ -88,7 +88,7 @@ class DashboardFragment : Fragment(), Parcelable {
 //        query.include(Listing.KEY_USER)
 //        query.addDescendingOrder("createdAt")
 
-        query.limit = 10
+        query.limit = 20
 
         feedListings.clear()
 

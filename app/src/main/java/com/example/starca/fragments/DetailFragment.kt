@@ -3,6 +3,7 @@ package com.example.starca.fragments
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
@@ -91,6 +92,7 @@ class DetailFragment : Fragment() {
         val ratingRb = view.findViewById<RatingBar>(R.id.detail_rating_rb)
         val descriptionTv = view.findViewById<TextView>(R.id.detail_description_tv)
         val imageIv = view.findViewById<ImageView>(R.id.detail_image_iv)
+        val priceTv = view.findViewById<TextView>(R.id.detail_price_tv)
         ViewCompat.setTransitionName(imageIv, "transition_detail_image")
         ViewCompat.setTransitionName(titleTv, "transition_detail_title")
 
@@ -99,6 +101,7 @@ class DetailFragment : Fragment() {
         stateTv.text = listing?.getString("addressState")
         ratingRb.rating = listing?.getDouble("listingRating")!!.toFloat()
         descriptionTv.text = listing?.getString("description")
+        priceTv.text = "$" + listing?.getNumber("price").toString()
 
         builder = AlertDialog.Builder(context)
 
@@ -204,7 +207,7 @@ class DetailFragment : Fragment() {
         // let user know they are approved
         tv_requestDenied.visibility = View.VISIBLE
         tv_requestDenied.setTextColor(Color.parseColor("#0C825F"))
-        tv_requestDenied.text = "Your Request for Rental has been Approved."
+        tv_requestDenied.text = "Your request has been approved"
     }
 
     private fun displayRequestNav() {
@@ -313,6 +316,9 @@ class DetailFragment : Fragment() {
 
     private fun confirmBuy(requestArray: MutableList<ListingRequest>,
                            request: ListingRequest, price: java.io.Serializable, email: String) {
+        val customDialog = layoutInflater.inflate(R.layout.custom_dialog, null)
+        builder.setView(customDialog)
+        /*
         builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
             .setCancelable(false)
             .setPositiveButton("Confirm") { dialog, id ->
@@ -328,13 +334,31 @@ class DetailFragment : Fragment() {
             ) { dialog, id ->
                 dialog.cancel()
             }
+         */
 
         val alert: AlertDialog = builder.create()
 
-        alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
+        // Set up custom alert dialog
+        alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        customDialog.findViewById<TextView>(R.id.dialog_title).text = "Confirm rental of ${listing?.getTitle()}"
+        customDialog.findViewById<TextView>(R.id.dialog_message).text = "Rent ${listing?.getTitle()} for $${price} per month?"
+        customDialog.findViewById<Button>(R.id.dialog_negative_button).setOnClickListener { alert.cancel() }
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).setOnClickListener {
+            Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
+                .show()
+
+            setBought(requestArray, request)
+            addListingToUser()
+            alert.dismiss()
+        }
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).text = "Send Payment"
+
+        //alert.setContentView(customDialog)
+
+        //alert.setTitle("Confirm rental purchase of ${listing?.getTitle()}.")
         alert.show()
 
-        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
+        //alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
     }
 
     private fun setBought(
