@@ -92,6 +92,7 @@ class DetailFragment : Fragment() {
         val ratingRb = view.findViewById<RatingBar>(R.id.detail_rating_rb)
         val descriptionTv = view.findViewById<TextView>(R.id.detail_description_tv)
         val imageIv = view.findViewById<ImageView>(R.id.detail_image_iv)
+        val priceTv = view.findViewById<TextView>(R.id.detail_price_tv)
         ViewCompat.setTransitionName(imageIv, "transition_detail_image")
         ViewCompat.setTransitionName(titleTv, "transition_detail_title")
 
@@ -100,6 +101,7 @@ class DetailFragment : Fragment() {
         stateTv.text = listing?.getString("addressState")
         ratingRb.rating = listing?.getDouble("listingRating")!!.toFloat()
         descriptionTv.text = listing?.getString("description")
+        priceTv.text = "$" + listing?.getNumber("price").toString()
 
         builder = AlertDialog.Builder(context)
 
@@ -205,7 +207,7 @@ class DetailFragment : Fragment() {
         // let user know they are approved
         tv_requestDenied.visibility = View.VISIBLE
         tv_requestDenied.setTextColor(Color.parseColor("#0C825F"))
-        tv_requestDenied.text = "Your Request for Rental has been Approved."
+        tv_requestDenied.text = "Your request has been approved"
     }
 
     private fun displayRequestNav() {
@@ -349,7 +351,7 @@ class DetailFragment : Fragment() {
             addListingToUser()
             alert.dismiss()
         }
-        customDialog.findViewById<Button>(R.id.dialog_positive_button).text = "Pay Now"
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).text = "Send Payment"
 
         //alert.setContentView(customDialog)
 

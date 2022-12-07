@@ -76,6 +76,17 @@ class SignInFragment : Fragment() {
         })
     }
 
+    //TODO: recyclerview in sign up fragment fragment
+    //      update README and submit to codepath
+    //      allow user to cancel their rental
+    //      change request screen to say "requests for {myListing}" and delete the location and name from each item
+    //      change conversations to display correct image of user
+    //      check conversations and messaging
+    //      allow user to edit their listing
+    //      amenities (add a price field here)
+    //      edit profile styling
+    //      creation styling
+
     private fun showAlert(title: String, message: String){
         val builder = AlertDialog.Builder(requireContext())
 
