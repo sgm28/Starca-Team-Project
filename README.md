@@ -40,15 +40,14 @@ Starca is a storage marketplace that allows users to either list their unusued s
   - [x] User will be able post details on their storage listing
 - [x] Users will be able to update their profile
 - [x] Users will be able to delete their account
-- [ ] User will be able to post multiple pictures for listings
 - [x] User will have a profile page and will be able to view listings they own
-- [ ] Users will be able to view listings they are renting
+- [x] Users will be able to view listings they are renting
 - [ ] Users will be able to rate each other
 - [x] User will be able to click on a listing to view more details
-- [ ] Users will be able to chat with their prospective renters/rentees
+- [x] Users will be able to chat with their prospective renters/rentees
 - [x] User will be able to request to rent a listing
-- [ ] Owners will be prompted when a user wants to rent their listing
-- [ ] User will be prompted to accept the rental once the owner accepts a request
+- [x] Owners will be prompted when a user wants to rent their listing
+- [x] User will be prompted to accept the rental once the owner accepts a request
 
 **Optional Nice-to-have Stories**
 
@@ -62,8 +61,9 @@ Starca is a storage marketplace that allows users to either list their unusued s
 - [x] User will have to verify their email address
 - [ ] User will see the average response time of the owners they are trying to rent from
 - [ ] User will be able to sign in with Google
-- [ ] User will see a custom alert dialog
+- [x] User will see a custom alert dialog
 - [ ] User will be able to sign in with Facebook
+- [ ] User will be able to post multiple pictures for listings
 
 ### 2. Screen Archetypes
 
@@ -484,3 +484,18 @@ query.getInBackground("<PARSE_OBJECT_ID_ofAccount>", (object, e) -> {
 - [x] User will be able to request to rent a listing
 
 #### Stretch stories
+
+### Sprint 3
+
+<img src='https://github.com/Nova-Storage/starca/blob/master/sprintgifs/StarcaSprint3.gif' title='Sprint 3 Walkthrough' width=300 alt='Sprint 3 Walkthrough' />
+
+#### Required stories
+
+- [x] Users will be able to view listings they are renting
+- [x] Users will be able to chat with their prospective renters/rentees
+- [x] Owners will be prompted when a user wants to rent their listing
+- [x] User will be prompted to accept the rental once the owner accepts a request
+
+#### Stretch stories
+
+- [x] User will see a custom alert dialog

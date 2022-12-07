@@ -147,7 +147,7 @@
                         style="@style/login_edit_text_fields" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-                
+
                 <com.google.android.material.button.MaterialButton
                     style="@style/Widget.Material3.Button.ElevatedButton"
                     android:id="@+id/register_button"

@@ -76,9 +76,7 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: recyclerview in sign up fragment fragment
-    //      update README and submit to codepath
-    //      allow user to cancel their rental
+    //TODO: allow user to cancel their rental
     //      change request screen to say "requests for {myListing}" and delete the location and name from each item
     //      change conversations to display correct image of user
     //      check conversations and messaging
