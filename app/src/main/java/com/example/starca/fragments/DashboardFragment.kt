@@ -100,19 +100,31 @@ class DashboardFragment : Fragment(), Parcelable {
                 if (posts != null) {
                     for (post in posts) {
 
-                        if(post.getUser()?.objectId == ParseUser.getCurrentUser().objectId){
+                        //if owner of post is you, don't show.
+                        if (post.getUser()?.objectId == ParseUser.getCurrentUser().objectId) {
                             continue
                         }
 
-                        fun getAddressName_Full(): String =
+                        // reaching this part means posts will always be from other people.
+                        val otherPerson = post.getUser()
+
+                        //if owner of post is someone you blocked, don't show.
+                        if (getBlockList(otherPerson) != null) {
+                            // if other person's blocklist has you on it, u can't see anything.
+                            if (getBlockList(otherPerson)!!.contains(ParseUser.getCurrentUser().objectId)) {
+                                continue
+                            }
+                        }
+
+                        val getAddressName_Full =
                             "${post.getAddressStreet()}, ${post.getAddressCity()}, ${post.getAddressState()} ${post.getAddressZip()}"
 
                         val addressName: String? = post.getTitle()
 
                         feedListings.add(post)
 
-                        storageLocations.add(StorageLocation(addressName, getAddressName_Full()))
-                        storageAddresses.add(getAddressName_Full())
+                        storageLocations.add(StorageLocation(addressName, getAddressName_Full))
+                        storageAddresses.add(getAddressName_Full)
                     }
                     val fragmentManager: FragmentManager = childFragmentManager
 
@@ -133,10 +145,12 @@ class DashboardFragment : Fragment(), Parcelable {
                 }
             }
         }
+
+
     }
 
 
-    private fun setupSearch(){
+    private fun setupSearch() {
 
         val from = arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1)
         val to = intArrayOf(R.id.item_label)
@@ -188,7 +202,8 @@ class DashboardFragment : Fragment(), Parcelable {
                 val cursor = searchView.suggestionsAdapter.getItem(position) as Cursor
 
                 val index = cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1)
-                val safeIndex = if (index == -1) 0 else index // cursor.getString requires positive indexes only.
+                val safeIndex =
+                    if (index == -1) 0 else index // cursor.getString requires positive indexes only.
 
                 val selection = cursor.getString(safeIndex)
                 searchView.setQuery(selection, false)
@@ -204,7 +219,8 @@ class DashboardFragment : Fragment(), Parcelable {
 
 
     private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
@@ -212,6 +228,23 @@ class DashboardFragment : Fragment(), Parcelable {
         view?.let {
             activity?.hideKeyboard(it)
         }
+    }
+
+    private fun getBlockList(user: ParseUser?): ArrayList<String>? {
+
+        var jsArray = user?.getJSONArray(ConversationsFragment.KEY_BLOCK_LIST)
+
+        var blockList = ArrayList<String>()
+
+        if (jsArray == null) {
+            return null
+        }
+
+        for (i in 0 until jsArray!!.length()) {
+            blockList.add(jsArray[i].toString())
+        }
+
+        return blockList
     }
 
     companion object {
