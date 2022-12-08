@@ -24,6 +24,7 @@ import com.example.starca.models.Listing
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import kotlinx.parcelize.Parcelize
+import org.json.JSONArray
 
 @Parcelize
 class DashboardFragment : Fragment(), Parcelable {
@@ -101,7 +102,7 @@ class DashboardFragment : Fragment(), Parcelable {
                     for (post in posts) {
 
                         //if owner of post is you, don't show.
-                        if (post.getUser()?.objectId == ParseUser.getCurrentUser().objectId) {
+                        if (post.getUser()!!.objectId == ParseUser.getCurrentUser().objectId) {
                             continue
                         }
 
@@ -235,15 +236,19 @@ class DashboardFragment : Fragment(), Parcelable {
         }
     }
 
-    private fun getBlockList(user: ParseUser?): ArrayList<String>? {
+    private fun getBlockList(user: ParseUser): ArrayList<String>? {
 
-        var jsArray = user?.getJSONArray(KEY_BLOCK_LIST)
+        Log.e(TAG, "getBlockList: ${user.objectId}")
 
-        var blockList = ArrayList<String>()
+        var jsArray = JSONArray()
 
-        if (jsArray == null) {
-            return null
+        try {
+            jsArray = user.getJSONArray(KEY_BLOCK_LIST) ?: return null
+        } catch (k: java.lang.IllegalStateException) {
+            Log.e(TAG, "getBlockList: $jsArray", )
         }
+
+        val blockList = ArrayList<String>()
 
         for (i in 0 until jsArray!!.length()) {
             blockList.add(jsArray[i].toString())
