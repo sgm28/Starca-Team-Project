@@ -91,4 +91,10 @@ dependencies {
     //gson for object to json conversion
     implementation 'com.google.code.gson:gson:2.9.1'
 
+    // for Parse Live Queries
+    implementation 'com.github.parse-community:ParseLiveQuery-Android:1.2.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
 }
