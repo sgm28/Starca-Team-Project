@@ -13,13 +13,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.starca.R
 import com.example.starca.adapters.ChatAdapter
 import com.example.starca.models.Conversation
 import com.example.starca.models.Message
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import com.parse.livequery.ParseLiveQueryClient
+import com.parse.livequery.SubscriptionHandling
+import java.net.URI
+import java.net.URISyntaxException
 import java.util.concurrent.TimeUnit
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,12 +110,36 @@ class MessagingFragment : Fragment() {
         val owner = recipient!!.getString("firstName")
         refreshMessages()
         setupMessagePosting(view)
+
+        //WebsocketURl
+        var websocketUrl : String = "wss://starca.b4a.io"
+        var parseLiveQueryClient: ParseLiveQueryClient? = null
+        try {
+            parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient(URI(websocketUrl))
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+        }
+
+        val parseQuery = ParseQuery.getQuery(Message::class.java)
+        val subscriptionHandling: SubscriptionHandling<Message> = parseLiveQueryClient!!.subscribe(parseQuery)
+        // Listen for CREATE events on the Message class
+        subscriptionHandling.handleEvent(
+            SubscriptionHandling.Event.CREATE
+        ) { query: ParseQuery<Message?>?, `object`: Message? ->
+            mMessages!!.add(
+                0,
+                `object`!!
+            )
+            // RecyclerView updates  running on the UI thread
+            activity?.runOnUiThread(Runnable {
+                mAdapter!!.notifyDataSetChanged()
+                rvChat!!.scrollToPosition(0)
+            })
+        }
     }
 
 
     // Query messages from Parse so we can load them into the chat adapter
-    // Query messages from Parse so we can load them into the chat adapter
-    // Query the conversation to get the user and recipent - DONE
     fun refreshMessages() {
 
 
@@ -170,6 +200,9 @@ class MessagingFragment : Fragment() {
         }
     }
 
+
+
+
     // Set up button event handler which posts the entered message to Parse
     // Setup message field and posting
     // Setup message field and posting
@@ -222,29 +255,6 @@ class MessagingFragment : Fragment() {
             }
             etMessage!!.setText(null)
         }
-    }
-
-    // Create a handler which can run code periodically
-    val POLL_INTERVAL = TimeUnit.SECONDS.toMillis(3)
-    var myHandler = Handler()
-    var mRefreshMessagesRunnable: Runnable = object : Runnable {
-        override fun run() {
-            refreshMessages()
-            myHandler.postDelayed(this, POLL_INTERVAL)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Only start checking for new messages when the app becomes active in foreground
-        myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL)
-    }
-
-    override fun onPause() {
-        // Stop background task from refreshing messages, to avoid unnecessary traffic & battery drain
-        myHandler.removeCallbacksAndMessages(null)
-        super.onPause()
     }
 
 
