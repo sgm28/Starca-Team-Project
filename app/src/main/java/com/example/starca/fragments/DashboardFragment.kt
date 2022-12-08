@@ -21,9 +21,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.starca.R
 import com.example.starca.adapters.ListingsAdapter
 import com.example.starca.models.Listing
+import com.parse.ParseException
+import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import kotlinx.parcelize.Parcelize
+import org.json.JSONArray
 
 @Parcelize
 class DashboardFragment : Fragment(), Parcelable {
@@ -101,7 +104,7 @@ class DashboardFragment : Fragment(), Parcelable {
                     for (post in posts) {
 
                         //if owner of post is you, don't show.
-                        if (post.getUser()?.objectId == ParseUser.getCurrentUser().objectId) {
+                        if (post.getUser()!!.objectId == ParseUser.getCurrentUser().objectId) {
                             continue
                         }
 
@@ -153,7 +156,6 @@ class DashboardFragment : Fragment(), Parcelable {
 
 
     }
-
 
     private fun setupSearch() {
 
@@ -222,34 +224,37 @@ class DashboardFragment : Fragment(), Parcelable {
         })
     }
 
-
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager =
-            getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
     fun Fragment.hideKeyboard() {
         view?.let {
             activity?.hideKeyboard(it)
         }
     }
 
-    private fun getBlockList(user: ParseUser?): ArrayList<String>? {
+    private fun getBlockList(user: ParseUser): ArrayList<String>? {
 
-        var jsArray = user?.getJSONArray(KEY_BLOCK_LIST)
+        Log.e(TAG, "getBlockList: ${user.objectId}")
 
-        var blockList = ArrayList<String>()
-
-        if (jsArray == null) {
-            return null
+        var jsArray = JSONArray()
+        
+        try {
+            jsArray = user.getJSONArray(KEY_BLOCK_LIST) ?: return null
+        } catch (k: java.lang.IllegalStateException) {
+            Log.e(TAG, "getBlockList: $jsArray", )
         }
+
+        val blockList = ArrayList<String>()
 
         for (i in 0 until jsArray!!.length()) {
             blockList.add(jsArray[i].toString())
         }
 
         return blockList
+    }
+
+    private fun Context.hideKeyboard(view: View) {
+        val inputMethodManager =
+            getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     companion object {

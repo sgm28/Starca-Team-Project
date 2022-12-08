@@ -194,7 +194,7 @@ class DetailFragment : Fragment() {
         // if you get here, this mean you have no requests under this listing.
         // Give right button (continue) the ability to rent
         button_bottomRight.setOnClickListener(
-            requests?.let { requestListing(it) }
+            requests?.let { requestArray -> requestListing(requestArray) }
         )
     }
 
@@ -508,21 +508,25 @@ class DetailFragment : Fragment() {
         val user = ParseUser.getCurrentUser()
         val rentedListingIds: ArrayList<String>? = ParseUser.getCurrentUser().getList<String>("rentedListings") as ArrayList<String>?
 
-        // Add listing to user's listings' ID array
-        listing!!.objectId.let { rentedListingIds?.add(it) }
-
         if (rentedListingIds != null) {
+            // Add listing to user's listings' ID array
+            listing!!.objectId.let { rentedListingIds?.add(it) }
             user.put("rentedListings", rentedListingIds)
+        } else {
+            // User has no previous listings so create a new list
+            var newListingIdsArray = ArrayList<String>()
+            listing!!.objectId.let { newListingIdsArray.add(it) }
+            user.put("rentedListings", newListingIdsArray)
+        }
 
-            // Save changes
-            user.saveInBackground { e ->
-                if (e == null) {
-                    // User successfully rented the listing
-                    Log.i(TAG, "Bought listing!")
-                } else {
-                    Toast.makeText(requireContext(), "Error buying listing", Toast.LENGTH_SHORT).show()
-                    e.printStackTrace()
-                }
+        // Save changes
+        user.saveInBackground { e ->
+            if (e == null) {
+                // User successfully rented the listing
+                Log.i(TAG, "Bought listing!")
+            } else {
+                Toast.makeText(requireContext(), "Error buying listing", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
             }
         }
     }
