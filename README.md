@@ -1,7 +1,7 @@
 # Starca
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/1?color=%2300&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/2?color=%2300&style=plastic)
-![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/3?color=yellow&style=plastic)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/3?color=%2300&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/4?color=yellow&style=plastic)
 
 ## Table of Contents

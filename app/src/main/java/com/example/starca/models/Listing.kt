@@ -98,6 +98,14 @@ class Listing : ParseObject() {
         put(KEY_RATING, rating)
     }
 
+    fun getPrice(): Float? {
+        return getDouble(KEY_PRICE).toFloat()
+    }
+
+    fun setPrice(user: Float) {
+        put(KEY_PRICE, user)
+    }
+
     fun getUser(): ParseUser? {
         return getParseUser(KEY_USER)
     }
@@ -118,6 +126,7 @@ class Listing : ParseObject() {
         const val KEY_DIMENSIONS = "dimensions"
         const val KEY_IMAGE = "PictureOfListing"
         const val KEY_RATING = "listingRating"
+        const val KEY_PRICE = "price"
         const val KEY_USER = "userID"
         const val KEY_ID = "objectId"
     }
