@@ -103,7 +103,8 @@ class DetailFragment : Fragment() {
         stateTv.text = listing?.getString("addressState")
         ratingRb.rating = listing?.getDouble("listingRating")!!.toFloat()
         descriptionTv.text = listing?.getString("description")
-        priceTv.text = "$" + listing?.getNumber("price").toString()
+        val listingPrice = listing?.getPrice()
+        priceTv.text = String.format("$%.2f", listingPrice)
 
         builder = AlertDialog.Builder(context)
 

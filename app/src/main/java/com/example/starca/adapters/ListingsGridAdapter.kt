@@ -11,12 +11,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.starca.R
 import com.example.starca.fragments.OwnerListingDetailFragment
+import com.example.starca.fragments.RentalDetailFragment
 import com.example.starca.models.Listing
 
 internal class ListingsGridAdapter (
     private val context: Context,
     private val listings: ArrayList<Listing>,
-    private val clickable: Boolean,
+    private val clickedPersonalListing: Boolean,
         ) : BaseAdapter() {
     private var layoutInflater: LayoutInflater? = null
     private lateinit var gridImage: ImageView
@@ -66,15 +67,13 @@ internal class ListingsGridAdapter (
         gridState.text = listing.getAddressState()
 
 
-        if (clickable) {
-            // TODO: Fix this to get requests and display them.
+        if (clickedPersonalListing) {
             listingGridView.setOnClickListener {
-//            if (listings[position].getListingRequests().isEmpty()) {
-//                Toast.makeText(context, "No requests for the selected listing!", Toast.LENGTH_SHORT).show()
-//            } else {
-//                onClick(listingGridView, listings[position])
-//            }
                 onClick(listingGridView, listings[position])
+            }
+        } else {
+            listingGridView.setOnClickListener{
+                onRentalClick(listingGridView, listings[position])
             }
         }
 
@@ -82,9 +81,8 @@ internal class ListingsGridAdapter (
 
     }
 
-//    fun onClick(v: View, listings: ArrayList<Listing>, position: Int) {
-private fun onClick(v: View, listing: Listing) {
-//        val listing = listings[position]
+    //    fun onClick(v: View, listings: ArrayList<Listing>, position: Int) {
+    private fun onClick(v: View, listing: Listing) {
 
         val bundle = Bundle()
         bundle.putParcelable(LISTING_BUNDLE, listing)
@@ -97,7 +95,22 @@ private fun onClick(v: View, listing: Listing) {
             .addToBackStack(null)
             .commit()
     }
+
+    private fun onRentalClick(v: View, listing: Listing) {
+
+        val bundle = Bundle()
+        bundle.putParcelable(LISTING_BUNDLE, listing)
+        val rentalDetailFragment = RentalDetailFragment()
+        rentalDetailFragment.arguments = bundle
+
+        val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+        fragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, rentalDetailFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     companion object {
-        val LISTING_BUNDLE = "LISTING_BUNDLE"
+        const val LISTING_BUNDLE = "LISTING_BUNDLE"
     }
 }
