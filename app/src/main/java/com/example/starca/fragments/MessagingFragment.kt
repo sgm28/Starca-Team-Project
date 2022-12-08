@@ -72,8 +72,8 @@ class MessagingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val user = conversation?.getUser()
-        val recipient = conversation?.getRecipient()
+        val user = conversation?.getOtherPerson()
+        val recipient = conversation?.getYou()
 
         val messagingUserTv = view.findViewById<TextView>(R.id.messaging_user_tv)
         val messagingRecipientTv = view.findViewById<TextView>(R.id.messaging_recipient_tv)
@@ -201,14 +201,14 @@ class MessagingFragment : Fragment() {
             message.setUserId(ParseUser.getCurrentUser().objectId)
 
             // If the current login in user is the user, set the recipient name as the user
-            if (ParseUser.getCurrentUser().objectId == conversation?.getUser()?.objectId)
+            if (ParseUser.getCurrentUser().objectId == conversation?.getOtherPerson()?.objectId)
             {
 
-                message.setRecipent(conversation?.getUser()?.username.toString())
+                message.setRecipent(conversation?.getOtherPerson()?.username.toString())
             }  // If the current login in user is not the recipient, set the recipient name as the recipient
             else
             {
-                message.setRecipent(conversation?.getRecipient()?.username.toString())
+                message.setRecipent(conversation?.getYou()?.username.toString())
             }
 
 

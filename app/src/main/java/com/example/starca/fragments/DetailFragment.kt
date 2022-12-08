@@ -44,6 +44,8 @@ class DetailFragment : Fragment() {
     //lateinit var conversationId: String
     lateinit var conversation: Conversation
 
+    lateinit var builder: AlertDialog.Builder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -143,14 +145,16 @@ class DetailFragment : Fragment() {
     // right button = continue
 
     private fun processListingRequests(requests_arrayJSON: JSONArray) {
-        val requests = requests_arrayJSON?.let {
-            listing?.let { it1 ->
+
+        val requests = requests_arrayJSON?.let { jsonArray ->
+            listing?.let { li ->
                 ListingRequest.fromJsonArray(
-                    it,
-                    it1.objectId
+                    jsonArray,
+                    li.objectId
                 )
             }
         }
+
         //i have requests now. it's a list. lets get the 1 request.
         if (requests != null) {
 
@@ -293,8 +297,6 @@ class DetailFragment : Fragment() {
             }
         }
     }
-
-    lateinit var builder: AlertDialog.Builder
 
     private fun buyStorage(
         requestArray: MutableList<ListingRequest>,
@@ -442,7 +444,7 @@ class DetailFragment : Fragment() {
         Log.d("Message", initMessage)
         message.setBody(initMessage)
         message.setConversation(conversation)
-        conversation.getUser()?.let { message.setUserId(it.objectId) }
+        conversation.getOtherPerson()?.let { message.setUserId(it.objectId) }
         //The message is from the current login in user.
         //When the recipient will received the message, the message will displayed who sent it.
         message.setRecipent(ParseUser.getCurrentUser().username.toString())
@@ -487,8 +489,8 @@ class DetailFragment : Fragment() {
 
         // Create new conversation
         conversation = Conversation()
-        conversation.setUser(user)
-        conversation.setRecipient(recipient)
+        conversation.setOtherPerson(user)
+        conversation.setYou(recipient)
         // Save conversation
         conversation.saveInBackground { e ->
             if (e != null) {

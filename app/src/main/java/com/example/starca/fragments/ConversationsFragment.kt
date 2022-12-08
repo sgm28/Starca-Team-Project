@@ -1,25 +1,34 @@
 package com.example.starca.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.starca.R
 import com.example.starca.adapters.ConversationsAdapter
 import com.example.starca.models.Conversation
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import org.json.JSONArray
 
-class ConversationsFragment : Fragment() {
+class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickListener {
 
     lateinit var rvConversations: RecyclerView
     lateinit var adapter: ConversationsAdapter
+
     val conversationsArrayList = ArrayList<Conversation>()
+
+    lateinit var builder: AlertDialog.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +41,35 @@ class ConversationsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var user = ParseUser.getCurrentUser()
+
+        var blockList = getBlockList(user)
+
+        if (blockList == null) {
+            blockList = ArrayList<String>()
+            user.put(KEY_BLOCK_LIST, blockList)
+
+            user.saveInBackground { e ->
+                if (e == null) {
+                    Log.i(TAG, "getBlockList: created (initialized) blocklist.")
+                    init(view, blockList)
+                } else {
+                    Log.e(TAG, "getBlockList: $e")
+                }
+            }
+        } else {
+            init(view, blockList)
+        }
+    }
+
+    private fun init(view: View, blocklistInit: ArrayList<String>) {
+
         rvConversations = view.findViewById(R.id.conversations_rv)
-        adapter = ConversationsAdapter(requireContext(), conversationsArrayList)
+        adapter =
+            ConversationsAdapter(requireContext(), conversationsArrayList, blocklistInit, this)
         rvConversations.adapter = adapter
         rvConversations.layoutManager = LinearLayoutManager(requireContext())
+        builder = AlertDialog.Builder(context)
 
         queryConversations()
     }
@@ -53,23 +87,40 @@ class ConversationsFragment : Fragment() {
         query.whereEqualTo(Conversation.KEY_RECIPIENT, ParseUser.getCurrentUser())
         query.findInBackground { conversationsList, e ->
             if (e != null) {
-                Log.e(DashboardFragment.TAG, "Error fetching posts ${e.message}")
+                Log.e(TAG, "Error fetching posts ${e.message}")
             } else { //If empty list call, queryConversations2
-                if (conversationsList.isEmpty())
-                {
+                if (conversationsList.isEmpty()) {
                     queryConversations2()
                     return@findInBackground
                 }
 
                 if (conversationsList != null) {
                     Log.d("Conversations", conversationsList.toString())
-                    conversationsArrayList.addAll(conversationsList)
+
+                    for(singleConversationItem in conversationsList){
+                        val otherPerson = singleConversationItem.getOtherPerson()
+                        val cur_user = ParseUser.getCurrentUser().objectId
+
+                        if(otherPerson?.objectId == ParseUser.getCurrentUser().objectId) {
+                            continue
+                        }
+
+                        if (getBlockList(otherPerson) != null) {
+                            // if other person's blocklist has you on it, u can't see anything.
+                            if (getBlockList(otherPerson)!!.contains(cur_user)) {
+                                continue
+                            }
+                        }
+                        conversationsArrayList.add(singleConversationItem)
+                    }
+
                     adapter.notifyDataSetChanged()
                 }
             }
         }
     }
-//This function is call when the queryConversations returned an empty conversation list
+
+    //This function is call when the queryConversations returned an empty conversation list
     private fun queryConversations2() {
 
         // Clear the list before writing data into it
@@ -92,5 +143,185 @@ class ConversationsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onItemLongClick(v: View, pos: Int) {
+        // Function author: Drew
+
+        if (v.findViewById<View?>(R.id.tvBlocked).visibility == INVISIBLE) {
+            blockUser(pos, v)
+        } else {
+            Toast.makeText(context, "Clicked Unblock", Toast.LENGTH_SHORT)
+                .show()
+            unblockUser(pos, v)
+        }
+
+        Toast.makeText(context, "Long clicked $pos", Toast.LENGTH_SHORT).show()
+
+    }
+
+    private fun blockUser(index: Int, v: View) {
+        // Function author: Drew
+
+        val user_to_block = conversationsArrayList[index].getOtherPerson()
+        val userName = "${user_to_block?.getString("firstName")} ${user_to_block?.getString("lastName")}"
+
+        builder.setMessage("Block User: $userName?")
+            .setCancelable(true)
+            .setPositiveButton("Block $userName") { dialog, id ->
+                tryIgnore(user_to_block, v, true)
+            }
+            .setNegativeButton("Cancel") { dialog, id ->
+                dialog.cancel()
+            }
+
+        val alert: AlertDialog = builder.create()
+
+        alert.setTitle("Block User.")
+        alert.show()
+
+        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
+    }
+
+    private fun unblockUser(index: Int, v: View) {
+        // Function author: Drew
+
+        val user_to_block = conversationsArrayList[index].getOtherPerson()
+
+        tryIgnore(user_to_block, v, false)
+    }
+
+    private fun tryIgnore(
+        user_to_block: ParseUser?,
+        v: View,
+        setToAddIgnore: Boolean
+    ) {
+        // Function author: Drew
+
+        val cur_user = ParseUser.getCurrentUser()
+
+        var ignoreJsonArray = cur_user?.getJSONArray(KEY_BLOCK_LIST)
+        // i want a list of blocked users.
+
+        if (ignoreJsonArray == null) {
+            ignoreJsonArray = JSONArray()
+            cur_user?.put(KEY_BLOCK_LIST, ignoreJsonArray)
+            cur_user?.saveInBackground {
+                addIgnore(ignoreJsonArray, user_to_block, v)
+            }
+        } else {
+            if (setToAddIgnore) {
+                addIgnore(ignoreJsonArray, user_to_block, v)
+            } else {
+                removeIgnore(ignoreJsonArray, user_to_block, v)
+            }
+        }
+    }
+
+    private fun addIgnore(ignoreJsonArray: JSONArray, user_to_block: ParseUser?, v: View) {
+        // Function author: Drew
+
+        //okay. ignore list exists. convert to mutable list.
+        val cur_user = ParseUser.getCurrentUser()
+
+        val ignoreStrArray = ArrayList<String>()
+
+        for (i in 0 until ignoreJsonArray.length()) {
+            val userId_str = ignoreJsonArray.get(i).toString()
+            ignoreStrArray.add(userId_str)
+        }
+
+        ignoreStrArray.add(user_to_block!!.objectId)
+
+        cur_user?.put(KEY_BLOCK_LIST, ignoreStrArray)
+
+        cur_user?.saveInBackground { e ->
+            if (e == null) {
+
+                val userName = "${user_to_block?.getString("firstName")} ${user_to_block?.getString("lastName")}"
+                Toast.makeText(context, "Blocked $userName", Toast.LENGTH_SHORT)
+                    .show()
+                Log.i(TAG, "addIgnore: added user to ignore: ${user_to_block.objectId}")
+
+                //okay, now change the way the button looks in the list.
+                toggleBlockedVisibility(v, true)
+            } else {
+                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "addIgnore: $e")
+            }
+        }
+    }
+
+    private fun removeIgnore(ignoreJsonArray: JSONArray, user_to_block: ParseUser?, v: View) {
+        // Function author: Drew
+
+        //okay. ignore list exists. convert to mutable list.
+
+        val cur_user = ParseUser.getCurrentUser()
+
+        val ignoreStrArray = ArrayList<String>()
+
+        for (i in 0 until ignoreJsonArray.length()) {
+            val userId_str = ignoreJsonArray.get(i).toString()
+            ignoreStrArray.add(userId_str)
+        }
+
+        ignoreStrArray.remove(user_to_block!!.objectId)
+
+        cur_user?.put(KEY_BLOCK_LIST, ignoreStrArray)
+
+        cur_user?.saveInBackground { e ->
+            if (e == null) {
+
+                val userName = "${user_to_block?.getString("firstName")} ${user_to_block?.getString("lastName")}"
+                Toast.makeText(context, "Unblocked $userName", Toast.LENGTH_SHORT)
+                    .show()
+                Log.i(TAG, "removeIgnore: removed user from ignore: ${user_to_block.objectId}")
+
+                //okay, now change the way the button looks in the list.
+                toggleBlockedVisibility(v, false)
+            } else {
+                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "addIgnore: $e")
+            }
+        }
+    }
+
+
+    private fun toggleBlockedVisibility(v: View, setBlockedOn: Boolean) {
+        // Function author: Drew
+
+        val vis = if (setBlockedOn) VISIBLE else INVISIBLE
+        val col = if (setBlockedOn) Color.parseColor("#CCCCCC") else Color.WHITE
+
+        val cur = v.findViewById<TextView>(R.id.tvBlocked)
+
+        cur.visibility = vis
+        v.setBackgroundColor(col)
+
+    }
+
+    private fun getBlockList(user: ParseUser?): ArrayList<String>? {
+
+        var jsArray = user?.getJSONArray(KEY_BLOCK_LIST)
+
+        var blockList = ArrayList<String>()
+
+        if (jsArray == null) {
+            return null
+        }
+
+        for (i in 0 until jsArray!!.length()) {
+            blockList.add(jsArray[i].toString())
+        }
+
+        return blockList
+    }
+
+    companion object {
+        const val KEY_BLOCK_LIST = "blockedUsers"
+
+        val TAG = "ConversationsFragment"
+
     }
 }

@@ -10,19 +10,19 @@ import com.parse.ParseUser
 @ParseClassName("Conversation")
 class Conversation : ParseObject() {
 
-    fun getUser(): ParseUser? {
+    fun getOtherPerson(): ParseUser? {
         return getParseUser(KEY_USER)
     }
 
-    fun setUser(user: ParseUser) {
+    fun setOtherPerson(user: ParseUser) {
         put(KEY_USER, user)
     }
 
-    fun getRecipient(): ParseUser? {
+    fun getYou(): ParseUser? {
         return getParseUser(KEY_RECIPIENT)
     }
 
-    fun setRecipient(user: ParseUser) {
+    fun setYou(user: ParseUser) {
         put(KEY_RECIPIENT, user)
     }
 
