@@ -235,7 +235,7 @@ class DashboardFragment : Fragment(), Parcelable {
         Log.e(TAG, "getBlockList: ${user.objectId}")
 
         var jsArray = JSONArray()
-        
+
         try {
             jsArray = user.getJSONArray(KEY_BLOCK_LIST) ?: return null
         } catch (k: java.lang.IllegalStateException) {
