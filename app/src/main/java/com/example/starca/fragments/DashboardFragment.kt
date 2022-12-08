@@ -107,9 +107,14 @@ class DashboardFragment : Fragment(), Parcelable {
 
                         // reaching this part means posts will always be from other people.
                         val otherPerson = post.getUser()
+                        if (otherPerson == null) {
+                            Log.e(TAG, "queryPosts: Owner of ${post.getTitle()} does not exist.")
+                            continue
+                        }
 
                         //if owner of post is someone you blocked, don't show.
                         if (getBlockList(otherPerson) != null) {
+
                             // if other person's blocklist has you on it, u can't see anything.
                             if (getBlockList(otherPerson)!!.contains(ParseUser.getCurrentUser().objectId)) {
                                 continue
@@ -232,7 +237,7 @@ class DashboardFragment : Fragment(), Parcelable {
 
     private fun getBlockList(user: ParseUser?): ArrayList<String>? {
 
-        var jsArray = user?.getJSONArray(ConversationsFragment.KEY_BLOCK_LIST)
+        var jsArray = user?.getJSONArray(KEY_BLOCK_LIST)
 
         var blockList = ArrayList<String>()
 
@@ -248,6 +253,8 @@ class DashboardFragment : Fragment(), Parcelable {
     }
 
     companion object {
+        const val KEY_BLOCK_LIST = "blockedUsers"
+
         const val TAG = "DashboardFragment"
     }
 
