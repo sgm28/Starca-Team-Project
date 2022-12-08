@@ -18,10 +18,9 @@ import com.example.starca.models.Listing
 import com.parse.FindCallback
 import com.parse.ParseException
 import com.parse.ParseQuery
+import org.w3c.dom.Text
 
 class OwnerListingDetailFragment : Fragment() {
-
-
 
     lateinit var rvListingRequests : RecyclerView
     lateinit var adapter: RequestsAdapter
@@ -62,6 +61,13 @@ class OwnerListingDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
+        val titleTv = view.findViewById<TextView>(R.id.owner_listing_title_tv)
+        val addressTv = view.findViewById<TextView>(R.id.owner_listing_address_tv)
+
+        addressTv.text =
+                    listing?.getAddressStreet() + ", " + listing?.getAddressCity() + ", " + listing?.getAddressState() + " " + listing?.getAddressZip()
+        titleTv.text = listing?.getTitle()
+
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
@@ -79,7 +85,6 @@ class OwnerListingDetailFragment : Fragment() {
         }
 
         queryRequests()
-
     }
 
     fun queryRequests() {
