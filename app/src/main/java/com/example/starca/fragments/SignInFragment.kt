@@ -81,9 +81,11 @@ class SignInFragment : Fragment() {
     //      allow users to rate the listing (in rental detail fragment)
     //      change conversations to display correct image of user
     //      check conversations and messaging
+    //      add latest message as preview to conversation (do a query and return ONE message within that conversation[the latest one])
     //      edit profile styling
     //      amenities (add a price field here)
     //      creation styling
+
 
     private fun showAlert(title: String, message: String){
         val builder = AlertDialog.Builder(requireContext())
