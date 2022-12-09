@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/ivPreview"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_marginVertical="10dp"
         android:layout_marginStart="10dp"
         android:scaleType="fitXY"
@@ -32,13 +32,17 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="15dp"
-        android:text="TextView"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivPreview"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="My Listing" />
 
     <TextView
         android:id="@+id/tvLocation"
@@ -46,27 +50,33 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginStart="15dp"
-        android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/ivPreview"
-        app:layout_constraintTop_toBottomOf="@id/tvName" />
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        tools:text="Newark, NJ 07102"/>
     <TextView
         android:id="@+id/tvSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginStart="15dp"
-        android:text="TextView"
         app:layout_constraintStart_toEndOf="@+id/ivPreview"
-        app:layout_constraintTop_toBottomOf="@id/tvLocation" />
+        app:layout_constraintTop_toBottomOf="@id/tvLocation"
+        tools:text="10x10"/>
+
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
         android:layout_marginTop="5dp"
-        android:layout_marginStart="15dp"
-        android:text="TextView"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivPreview"
-        app:layout_constraintTop_toBottomOf="@id/tvSize" />
+        app:layout_constraintTop_toBottomOf="@id/tvSize"
+        tools:text="Description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

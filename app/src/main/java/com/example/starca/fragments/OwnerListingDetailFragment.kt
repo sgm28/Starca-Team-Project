@@ -6,7 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -42,17 +46,6 @@ class OwnerListingDetailFragment : Fragment() {
             listing = it.getParcelable("LISTING_BUNDLE")
         }
 
-//        rvListingRequests = view.findViewById(R.id.rvListingRequests)
-//        swipeContainer = view.findViewById(R.id.swipeContainer)
-//
-//        adapter = RequestsAdapter(requireContext(), allRequests, listing!!)
-//        rvListingRequests.adapter = adapter
-//        rvListingRequests.layoutManager = LinearLayoutManager(requireContext())
-//
-//        swipeContainer.setOnRefreshListener {
-//            queryRequests()
-//        }
-
         // Inflate the layout for this fragment
         return view
     }
@@ -63,16 +56,30 @@ class OwnerListingDetailFragment : Fragment() {
         swipeContainer = view.findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         val titleTv = view.findViewById<TextView>(R.id.owner_listing_title_tv)
         val addressTv = view.findViewById<TextView>(R.id.owner_listing_address_tv)
+        val editListingButton = view.findViewById<Button>(R.id.owner_listing_edit_button)
 
         addressTv.text =
                     listing?.getAddressStreet() + ", " + listing?.getAddressCity() + ", " + listing?.getAddressState() + " " + listing?.getAddressZip()
         titleTv.text = listing?.getTitle()
+        editListingButton.setOnClickListener {
+
+            val bundle = Bundle()
+            bundle.putParcelable(LISTING_BUNDLE, listing)
+            val editListingFragment = EditListingFragment()
+            editListingFragment.arguments = bundle
+
+            val fragmentManager: FragmentManager = parentFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, editListingFragment)
+                .addToBackStack(null)
+                .commit()
+        }
 
 
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
-            android.R.color.holo_red_light);
+            android.R.color.holo_red_light)
 
         rvListingRequests = view.findViewById(R.id.rvListingRequests)
 
@@ -144,5 +151,6 @@ class OwnerListingDetailFragment : Fragment() {
     }
     companion object {
         const val TAG = "OwnerListingDetailFragment"
+        const val LISTING_BUNDLE = "LISTING_BUNDLE"
     }
 }

@@ -30,7 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="John Doe"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -40,7 +39,8 @@
         app:layout_constraintEnd_toStartOf="@+id/tvRequestStatus"
         app:layout_constraintStart_toEndOf="@+id/ivRequesterProfilePhoto"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.4"
+        tools:text="John Doe"/>
 
     <ImageButton
         android:id="@+id/buttonRejectRequest"
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="10dp"
-        android:text="Awaiting Payment"
+        android:text="@string/wait_text"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

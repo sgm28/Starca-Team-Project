@@ -76,8 +76,8 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: change request screen to say "requests for {myListing}" and delete the location and name from each item
-    //      allow user to edit their listing
+    //TODO: allow user to edit their listing
+    //      change alert dialog for blocking user
     //      allow users to rate the listing (in rental detail fragment)
     //      change conversations to display correct image of user
     //      check conversations and messaging
