@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.starca.R
 import com.example.starca.adapters.ListingsAdapter
 import com.example.starca.models.Listing
+import com.parse.ParseException
+import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import kotlinx.parcelize.Parcelize
@@ -155,7 +157,6 @@ class DashboardFragment : Fragment(), Parcelable {
 
     }
 
-
     private fun setupSearch() {
 
         val from = arrayOf(SearchManager.SUGGEST_COLUMN_TEXT_1)
@@ -223,13 +224,6 @@ class DashboardFragment : Fragment(), Parcelable {
         })
     }
 
-
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager =
-            getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
     fun Fragment.hideKeyboard() {
         view?.let {
             activity?.hideKeyboard(it)
@@ -255,6 +249,12 @@ class DashboardFragment : Fragment(), Parcelable {
         }
 
         return blockList
+    }
+
+    private fun Context.hideKeyboard(view: View) {
+        val inputMethodManager =
+            getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     companion object {

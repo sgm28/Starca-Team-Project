@@ -194,7 +194,7 @@ class DetailFragment : Fragment() {
         // if you get here, this mean you have no requests under this listing.
         // Give right button (continue) the ability to rent
         button_bottomRight.setOnClickListener(
-            requests?.let { requestListing(it) }
+            requests?.let { requestArray -> requestListing(requestArray) }
         )
     }
 
