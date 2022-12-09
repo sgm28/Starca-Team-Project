@@ -57,8 +57,7 @@ class CreateListingDetailsFragment : Fragment() {
 
             usersDataObject.put(
                 "addressZip",
-                Integer.parseInt(view.findViewById<EditText>(R.id.editTextZipCode).text.toString())
-                    .toString()
+                view.findViewById<EditText>(R.id.editTextZipCode).text.toString()
             )
             usersDataObject.put(
                 "dimensions",
