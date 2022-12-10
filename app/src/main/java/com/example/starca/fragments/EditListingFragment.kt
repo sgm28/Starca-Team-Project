@@ -62,6 +62,9 @@ class EditListingFragment : Fragment() {
         val zipcodeTi = view.findViewById<TextInputEditText>(R.id.edit_listing_zipcode_et)
         val zipcodeLayoutTi = view.findViewById<TextInputLayout>(R.id.edit_listing_zipcode_layout_et)
 
+        val dimensionsTi = view.findViewById<TextInputEditText>(R.id.edit_listing_dimensions_et)
+        val dimensionsLayoutTi = view.findViewById<TextInputLayout>(R.id.edit_listing_dimensions_layout_et)
+
         val editListingSubmitButton = view.findViewById<Button>(R.id.edit_listing_submit_button)
         val listingImageIv = view.findViewById<ImageView>(R.id.edit_listing_image_iv)
 
@@ -72,6 +75,7 @@ class EditListingFragment : Fragment() {
         cityLayoutTi.setEndIconOnClickListener { cityTi.isEnabled = true }
         stateLayoutTi.setEndIconOnClickListener { stateTi.isEnabled = true }
         zipcodeLayoutTi.setEndIconOnClickListener { zipcodeTi.isEnabled = true }
+        dimensionsLayoutTi.setEndIconOnClickListener { dimensionsTi.isEnabled = true }
 
         // Set the edit text fields to the current value of the listing's fields
         titleTi.setText(listing?.getTitle())
@@ -80,6 +84,7 @@ class EditListingFragment : Fragment() {
         cityTi.setText(listing?.getAddressCity())
         stateTi.setText(listing?.getAddressState())
         zipcodeTi.setText(listing?.getAddressZip())
+        dimensionsTi.setText(listing?.getDimensions())
 
         Glide.with(requireContext())
             .load(listing?.getImage()?.url)
@@ -114,6 +119,10 @@ class EditListingFragment : Fragment() {
             if (zipcodeTi.isEnabled) {
                 listing?.setAddressZip(zipcodeTi.text.toString())
                 zipcodeTi.isEnabled = false
+            }
+            if (dimensionsTi.isEnabled) {
+                listing?.setDimensions(dimensionsTi.text.toString())
+                dimensionsTi.isEnabled = false
             }
             saveChanges()
         }

@@ -67,7 +67,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edit_listing_street_layout_et"
+            android:id="@+id/edit_listing_dimensions_layout_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="#99000000"
@@ -77,6 +77,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_listing_description_layout_et">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_listing_dimensions_et"
+                style="@style/login_edit_text_fields"
+                android:hint="Dimensions"
+                android:inputType="text"
+                android:maxLines="1"
+                android:enabled="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_listing_street_layout_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#99000000"
+            android:layout_marginTop="4dp"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/edit_listing_dimensions_layout_et">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_street_et"
@@ -146,8 +167,11 @@
                 android:enabled="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <!--
+        com.google.android.material.button.MaterialButton
             style="@style/Widget.Material3.Button.ElevatedButton"
+        -->
+        <Button
             android:id="@+id/edit_listing_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
