@@ -15,11 +15,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
+import com.example.starca.fragments.DetailFragment
 import com.example.starca.fragments.EditEmailDialogFragment
 import com.example.starca.fragments.EditPasswordDialogFragment
 import com.example.starca.fragments.EditUsernameDialogFragment
 import com.example.starca.models.Image
 import com.example.starca.models.Listing
+import com.example.starca.models.ListingRequest
+import com.google.gson.Gson
 import com.parse.*
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
@@ -35,11 +38,14 @@ class SettingsActivity : AppCompatActivity(),
     val photoFileName = "photo.jpg"
     var photoFile: File? = null
 
+    val user = ParseUser.getCurrentUser()
+    val CURR_USER_ID = ParseUser.getCurrentUser().objectId
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val user = ParseUser.getCurrentUser()
+//        val user = ParseUser.getCurrentUser()
         user.fetchIfNeeded()
 
         val userFullName =  findViewById<TextView>(R.id.userFullName)
@@ -99,6 +105,7 @@ class SettingsActivity : AppCompatActivity(),
             builder.setMessage("Are you sure you want to delete your account? This can't be undone.")
                 .setCancelable(false)
                 .setPositiveButton("Yes") { dialogInt, i ->
+                    deleteAllRequests()
                     deleteImages()
                     deleteListings()
                     deleteAccount()
@@ -195,7 +202,7 @@ class SettingsActivity : AppCompatActivity(),
 
     fun submitChanges() {
 
-        val user = ParseUser.getCurrentUser()
+//        val user = ParseUser.getCurrentUser()
         val userName = findViewById<TextView>(R.id.tvCurrentUsername).text.toString()
         val email = findViewById<TextView>(R.id.tvCurrentEmail).text.toString()
         val password = findViewById<TextView>(R.id.tvCurrentPassword).text.toString()
@@ -271,7 +278,7 @@ class SettingsActivity : AppCompatActivity(),
 
     fun deleteImages() {
         val query: ParseQuery<Image> = ParseQuery.getQuery(Image::class.java)
-        query.whereEqualTo("userId", ParseUser.getCurrentUser().objectId)
+        query.whereEqualTo("userId", CURR_USER_ID)
 
         query.findInBackground(object: FindCallback<Image> {
             override fun done(images: MutableList<Image>?, e: ParseException?) {
@@ -291,9 +298,69 @@ class SettingsActivity : AppCompatActivity(),
         })
     }
 
+    fun deleteAllRequests() {
+        val query: ParseQuery<Listing> = ParseQuery.getQuery(Listing::class.java)
+
+        query.findInBackground(object: FindCallback<Listing> {
+            override fun done(listings: MutableList<Listing>?, e: ParseException?) {
+                if (e != null) {
+                    Toast.makeText(this@SettingsActivity, "Error occurred in deleting requests", Toast.LENGTH_SHORT).show()
+                    Log.e(TAG, e.toString())
+                } else {
+                    if (listings != null) {
+                        for (listing in listings) {
+                            
+                            var allReqs : MutableList<ListingRequest>? = mutableListOf()
+
+                            allReqs = if (listing.getJSONArray("listingRequests") == null) {
+                                null
+                            } else {
+                                listing.getJSONArray("listingRequests")
+                                    ?.let { ListingRequest.fromJsonArray(it, listing.objectId) }
+                            }
+                            
+                            if (allReqs != null) {
+
+                                val reqsToRemove : MutableList<ListingRequest> = mutableListOf()
+
+                                for (req in allReqs) {
+                                    if (req.objectId == CURR_USER_ID) {
+                                        reqsToRemove.add(req)
+                                    }
+                                }
+
+                                if (reqsToRemove.isNotEmpty()) {
+                                    allReqs.removeAll(reqsToRemove)
+
+                                    val gson = Gson()
+
+                                    val stArr = ArrayList<String>()
+                                    for (request in allReqs) {
+                                        stArr.add(gson.toJson(request))
+                                    }
+
+                                    listing.put("listingRequests", stArr)
+
+                                    listing.saveInBackground { e ->
+                                        if (e == null) {
+                                            Log.i(TAG, "Successfully deleted a request from deleted user from a listing")
+                                        } else {
+                                            Log.e(TAG, "Error saving requests after deleting request from listing")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
     fun deleteListings() {
         val query:  ParseQuery<Listing> = ParseQuery.getQuery(Listing::class.java)
-        query.whereEqualTo("userId", ParseUser.getCurrentUser().objectId)
+        query.whereEqualTo("userId", CURR_USER_ID)
 
         query.findInBackground(object: FindCallback<Listing> {
             override fun done(listings: MutableList<Listing>?, e: ParseException?) {
