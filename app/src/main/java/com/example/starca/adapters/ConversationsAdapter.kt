@@ -79,7 +79,7 @@ class ConversationsAdapter(
                 recipient?.getString("firstName") + " " + recipient?.getString("lastName")
 
             Glide.with(itemView.context)
-                .load(conversation.getYou()?.getParseFile("profilePicture")?.url)
+                .load(conversation.getOtherPerson()?.getParseFile("profilePicture")?.url)
                 .circleCrop()
                 .into(ivRecipient)
         }

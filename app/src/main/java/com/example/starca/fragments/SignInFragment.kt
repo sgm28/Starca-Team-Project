@@ -76,9 +76,7 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: change conversations to display correct image of user
-    //      check conversations and messaging
-    //      add latest message as preview to conversation (do a query and return ONE message within that conversation[the latest one])
+    //TODO: add latest message as preview to conversation (do a query and return ONE message within that conversation[the latest one])
     //      add timestamp to messages
     //      allow users to rate the listing (in rental detail fragment)
     //      edit profile styling

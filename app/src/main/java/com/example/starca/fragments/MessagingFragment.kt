@@ -26,20 +26,11 @@ import java.net.URI
 import java.net.URISyntaxException
 import java.util.concurrent.TimeUnit
 
-
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val CONVERSATION_BUNDLE = "CONVERSATION_BUNDLE"
 
-
-
-
-
-
-
 class MessagingFragment : Fragment() {
-
-
 
     //For loading messages
     val TAG: String? = "MessagingFragment"
@@ -54,11 +45,7 @@ class MessagingFragment : Fragment() {
     var mFirstLoad = false
     var mAdapter: ChatAdapter? = null
 
-
     private var conversation: Conversation? = null
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +84,7 @@ class MessagingFragment : Fragment() {
         mFirstLoad = true
         val userId = ParseUser.getCurrentUser().objectId
         Log.d(TAG,userId)
-        mAdapter = ChatAdapter(requireContext(), userId, mMessages)
+        mAdapter = ChatAdapter(requireContext(), userId, mMessages, conversation)
         rvChat!!.adapter = mAdapter
 
         // associate the LayoutManager with the RecyclerView
@@ -135,7 +122,6 @@ class MessagingFragment : Fragment() {
         }
     }
 
-
     // Query messages from Parse so we can load them into the chat adapter
     fun refreshMessages() {
 
@@ -154,21 +140,7 @@ class MessagingFragment : Fragment() {
 
         query.findInBackground { messages, e ->
             if (e == null) {
-       //         Log.i(TAG, messages.toString())
-
-//                for (message in messages){
-//                    Log.d("Message", message.getBody()!!)
-//                }
-
-
                 mMessages!!.clear()
-//                val user= mMessages!!.get(0).getConversation()
-//                messages.get(0).setUserId(conversation?.getRecipient().toString())
-//                val recipent = conversation?.getUser()?.getString("firstName")
-//                for (s in messages)
-//                    if (s.getUserId()?.isEmpty() == true) {
-//                        recipent?.let { s.setUserId(it) }
-//                    }
                 mMessages!!.addAll(messages)
                 mAdapter!!.notifyDataSetChanged() // update adapter
                 // Scroll to the bottom of the list on initial load
@@ -191,7 +163,7 @@ class MessagingFragment : Fragment() {
         mMessages = java.util.ArrayList()
         mFirstLoad = true
         val userId = ParseUser.getCurrentUser().objectId
-        mAdapter = ChatAdapter(context, userId, mMessages)
+        mAdapter = ChatAdapter(context, userId, mMessages, conversation)
         rvChat!!.adapter = mAdapter
 
         // associate the LayoutManager with the RecylcerView
@@ -223,10 +195,6 @@ class MessagingFragment : Fragment() {
             }
 
             message.saveInBackground {
-                Toast.makeText(
-                    context, "Successfully created message on Parse",
-                    Toast.LENGTH_SHORT
-                ).show()
                 refreshMessages()
             }
             etMessage!!.setText(null)
