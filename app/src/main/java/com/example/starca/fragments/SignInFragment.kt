@@ -77,11 +77,11 @@ class SignInFragment : Fragment() {
     }
 
     //TODO: add latest message as preview to conversation (do a query and return ONE message within that conversation[the latest one])
-    //      add timestamp to messages
     //      allow users to rate the listing (in rental detail fragment)
     //      edit profile styling
     //      amenities (add a price field here)
     //      creation styling
+    //      add timestamp to messages
 
 
     private fun showAlert(title: String, message: String){

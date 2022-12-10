@@ -8,7 +8,8 @@
     android:paddingVertical="6dp"
     android:paddingStart="8dp"
     android:paddingEnd="60dp"
-    android:clipToPadding="false">
+    android:clipToPadding="false"
+    tools:background="#000000">
 
     <ImageView
         android:id="@+id/ivProfileOther"
@@ -33,5 +34,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivProfileOther"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Someone else's message"/>
+        tools:text="Someone else's message" />
 </androidx.constraintlayout.widget.ConstraintLayout>
