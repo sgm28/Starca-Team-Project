@@ -8,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.starca.R
 import com.example.starca.models.Listing
 import com.google.android.material.textfield.TextInputEditText
@@ -60,6 +63,7 @@ class EditListingFragment : Fragment() {
         val zipcodeLayoutTi = view.findViewById<TextInputLayout>(R.id.edit_listing_zipcode_layout_et)
 
         val editListingSubmitButton = view.findViewById<Button>(R.id.edit_listing_submit_button)
+        val listingImageIv = view.findViewById<ImageView>(R.id.edit_listing_image_iv)
 
         // Set up enable-editing button for each edit text field
         titleLayoutTi.setEndIconOnClickListener { titleTi.isEnabled = true }
@@ -77,7 +81,13 @@ class EditListingFragment : Fragment() {
         stateTi.setText(listing?.getAddressState())
         zipcodeTi.setText(listing?.getAddressZip())
 
-        // TODO: Save new image stuff
+        Glide.with(requireContext())
+            .load(listing?.getImage()?.url)
+            .placeholder(R.drawable.ic_profile)
+            .transform(RoundedCorners(40))
+            .into(listingImageIv)
+
+        // TODO: Update new image stuff
 
         // Save changed fields on submit
         editListingSubmitButton.setOnClickListener {

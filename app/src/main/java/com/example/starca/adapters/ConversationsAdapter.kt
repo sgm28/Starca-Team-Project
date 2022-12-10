@@ -87,7 +87,6 @@ class ConversationsAdapter(
 
         override fun onClick(p0: View?) {
 
-            Toast.makeText(context, "Clicked on a conversation", Toast.LENGTH_SHORT).show()
             val conversation = conversations[adapterPosition]
 
             // Send specific conversation object to messaging fragment

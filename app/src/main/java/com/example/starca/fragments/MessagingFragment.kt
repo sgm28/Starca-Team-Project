@@ -90,7 +90,6 @@ class MessagingFragment : Fragment() {
         messagingRecipientTv.text = "Recipient: " + recipient!!.getString("firstName")
          */
 
-
         etMessage = view.findViewById<View>(R.id.etMessage) as EditText
         ibSend = view.findViewById<View>(R.id.ibSend) as ImageButton
         rvChat = view.findViewById<View>(R.id.rvChat) as RecyclerView
@@ -101,9 +100,7 @@ class MessagingFragment : Fragment() {
         mAdapter = ChatAdapter(requireContext(), userId, mMessages)
         rvChat!!.adapter = mAdapter
 
-        // associate the LayoutManager with the RecylcerView
-
-        // associate the LayoutManager with the RecylcerView
+        // associate the LayoutManager with the RecyclerView
         val linearLayoutManager = LinearLayoutManager(requireContext())
         linearLayoutManager.reverseLayout = true
         rvChat!!.layoutManager = linearLayoutManager
@@ -141,21 +138,6 @@ class MessagingFragment : Fragment() {
 
     // Query messages from Parse so we can load them into the chat adapter
     fun refreshMessages() {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // Construct query to execute
         val query = ParseQuery.getQuery(Message::class.java)
@@ -200,11 +182,7 @@ class MessagingFragment : Fragment() {
         }
     }
 
-
-
-
     // Set up button event handler which posts the entered message to Parse
-    // Setup message field and posting
     // Setup message field and posting
     fun setupMessagePosting(view: View) {
         etMessage = view.findViewById<View>(R.id.etMessage) as EditText
@@ -244,8 +222,6 @@ class MessagingFragment : Fragment() {
                 message.setRecipent(conversation?.getYou()?.username.toString())
             }
 
-
-
             message.saveInBackground {
                 Toast.makeText(
                     context, "Successfully created message on Parse",
@@ -256,6 +232,4 @@ class MessagingFragment : Fragment() {
             etMessage!!.setText(null)
         }
     }
-
-
 }
