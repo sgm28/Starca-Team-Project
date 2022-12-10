@@ -54,4 +54,9 @@
     <!-- Profile Fragment -->
     <string name="tab1_text">Rented</string>
     <string name="tab2_text">Listings</string>
+
+    <!-- Owner Listing Requests Fragment -->
+    <string name="wait_text">Awaiting Payment</string>
+    <string name="edit_listing_button">Edit Listing</string>
+    <string name="no_requests">No requests yet</string>
 </resources>

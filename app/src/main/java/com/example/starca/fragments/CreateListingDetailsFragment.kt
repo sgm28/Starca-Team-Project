@@ -53,16 +53,14 @@ class CreateListingDetailsFragment : Fragment() {
                 "addressState",
                 view.findViewById<EditText>(R.id.editTextState).text.toString()
             )
-
-
             usersDataObject.put(
                 "addressZip",
                 view.findViewById<EditText>(R.id.editTextZipCode).text.toString()
             )
             usersDataObject.put(
                 "dimensions",
-                view.findViewById<EditText>(R.id.editTextHeight).text.toString() + " X " +
-                        view.findViewById<EditText>(R.id.editTextWidth).text.toString()  + " X " +
+                view.findViewById<EditText>(R.id.editTextHeight).text.toString() + " x " +
+                        view.findViewById<EditText>(R.id.editTextWidth).text.toString()  + " x " +
                         view.findViewById<EditText>(R.id.editTextDepth).text.toString()
             )
 
@@ -80,9 +78,5 @@ class CreateListingDetailsFragment : Fragment() {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, DashboardFragment()).commit()
         }
-
-
     }
-
-
 }

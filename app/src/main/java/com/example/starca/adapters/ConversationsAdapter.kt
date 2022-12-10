@@ -79,7 +79,7 @@ class ConversationsAdapter(
                 recipient?.getString("firstName") + " " + recipient?.getString("lastName")
 
             Glide.with(itemView.context)
-                .load(conversation.getYou()?.getParseFile("profilePicture")?.url)
+                .load(conversation.getOtherPerson()?.getParseFile("profilePicture")?.url)
                 .circleCrop()
                 .into(ivRecipient)
         }
@@ -87,7 +87,6 @@ class ConversationsAdapter(
 
         override fun onClick(p0: View?) {
 
-            Toast.makeText(context, "Clicked on a conversation", Toast.LENGTH_SHORT).show()
             val conversation = conversations[adapterPosition]
 
             // Send specific conversation object to messaging fragment

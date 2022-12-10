@@ -76,12 +76,9 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: change request screen to say "requests for {myListing}" and delete the location and name from each item
-    //      allow user to edit their listing
+    //TODO: add latest message as preview to conversation (do a query and return ONE message within that conversation[the latest one])
+    //      add timestamp to messages
     //      allow users to rate the listing (in rental detail fragment)
-    //      change conversations to display correct image of user
-    //      check conversations and messaging
-    //      add latest message as preview to conversation (do a query and return ONE message within that conversation[the latest one])
     //      edit profile styling
     //      amenities (add a price field here)
     //      creation styling

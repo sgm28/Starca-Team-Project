@@ -66,7 +66,7 @@ internal class ListingsGridAdapter (
         gridCity.text = listing.getAddressCity() + ", "
         gridState.text = listing.getAddressState()
 
-
+        // Load corresponding view depending on the gridview containing the listing (rental vs listing)
         if (clickedPersonalListing) {
             listingGridView.setOnClickListener {
                 onClick(listingGridView, listings[position])

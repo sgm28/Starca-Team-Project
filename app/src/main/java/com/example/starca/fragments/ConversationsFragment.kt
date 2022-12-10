@@ -3,6 +3,7 @@ package com.example.starca.fragments
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,8 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starca.R
@@ -166,21 +169,26 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
         val user_to_block = conversationsArrayList[index].getOtherPerson()
         val userName = "${user_to_block?.getString("firstName")} ${user_to_block?.getString("lastName")}"
 
-        builder.setMessage("Block User: $userName?")
-            .setCancelable(true)
-            .setPositiveButton("Block $userName") { dialog, id ->
-                tryIgnore(user_to_block, v, true)
-            }
-            .setNegativeButton("Cancel") { dialog, id ->
-                dialog.cancel()
-            }
+        val customDialog = layoutInflater.inflate(R.layout.custom_dialog, null)
+        builder.setView(customDialog)
 
         val alert: AlertDialog = builder.create()
+        alert.setCancelable(true)
 
-        alert.setTitle("Block User.")
+        // Set up custom alert dialog
+        alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        customDialog.findViewById<TextView>(R.id.dialog_title).text = "Block $userName"
+        customDialog.findViewById<TextView>(R.id.dialog_message).text = "Are you sure you would like to block $userName?"
+        customDialog.findViewById<Button>(R.id.dialog_negative_button).setOnClickListener { alert.cancel() }
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).setOnClickListener {
+            tryIgnore(user_to_block, v, true)
+            alert.dismiss()
+        }
+
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).setBackgroundColor(
+            ContextCompat.getColor(requireContext(), R.color.red))
+        customDialog.findViewById<Button>(R.id.dialog_positive_button).text = "Block"
         alert.show()
-
-        alert.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#7F0C0C"))
     }
 
     private fun unblockUser(index: Int, v: View) {

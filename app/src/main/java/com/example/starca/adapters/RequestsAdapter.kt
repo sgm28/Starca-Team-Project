@@ -107,8 +107,6 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
         val ivRequesterProfilePhoto : CircleImageView
         val tvRequestersName : TextView
         val tvRequestStatus : TextView
-        val tvRequestedListingTitle : TextView
-        val tvRequestedListingAddress : TextView
         val rbRequesterRating : RatingBar
         val buttonRejectRequest : ImageButton
         val buttonAcceptRequest : ImageButton
@@ -116,14 +114,11 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
         init {
             ivRequesterProfilePhoto = itemView.findViewById(R.id.ivRequesterProfilePhoto)
             tvRequestersName = itemView.findViewById(R.id.tvRequestersName)
-            tvRequestedListingTitle = itemView.findViewById(R.id.tvRequestedListingTitle)
-            tvRequestedListingAddress = itemView.findViewById(R.id.tvRequestedListingAddress)
             rbRequesterRating = itemView.findViewById(R.id.rbRequesterRating)
             buttonRejectRequest = itemView.findViewById(R.id.buttonRejectRequest)
             buttonAcceptRequest = itemView.findViewById(R.id.buttonAcceptRequest)
             tvRequestStatus = itemView.findViewById(R.id.tvRequestStatus)
         }
-
 
         fun bind(request: ListingRequest, listing : Listing) {
             val query : ParseQuery<ParseUser> = ParseUser.getQuery()
@@ -153,9 +148,6 @@ class RequestsAdapter(val context: Context, val requests: ArrayList<ListingReque
 
                 rbRequesterRating.rating = user.getDouble("rating").toFloat()
 
-                tvRequestedListingAddress.text =
-                    listing.getAddressStreet() + ", " + listing.getAddressCity() + ", " + listing.getAddressState() + " " + listing.getAddressZip()
-                tvRequestedListingTitle.text = listing.getTitle()
             } catch (e: ParseException) {
                 e.printStackTrace()
             }

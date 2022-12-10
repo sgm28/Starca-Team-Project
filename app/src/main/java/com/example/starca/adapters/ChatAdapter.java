@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
    private List<Message> mMessages;
    private Context mContext;
    private String mUserId;
+   private Conversation mConversation;
 
 
    // Create a gravatar image based on the hash value obtained from userId
@@ -56,11 +58,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
       }
       return "https://www.gravatar.com/avatar/" + hex + "?d=identicon";
    }
-   public ChatAdapter(Context context, String userId, ArrayList<Message> messages) {
+   public ChatAdapter(Context context, String userId, ArrayList<Message> messages, Conversation conversation) {
       mMessages = messages;
       this.mUserId = userId;
       Log.d("ChatAdapter", this.mUserId);
       mContext = context;
+      mConversation = conversation;
    }
 
    @Override
@@ -93,23 +96,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
    public class IncomingMessageViewHolder extends MessageViewHolder {
       ImageView imageOther;
       TextView body;
-      TextView name;
 
       public IncomingMessageViewHolder(View itemView) {
          super(itemView);
          imageOther = (ImageView) itemView.findViewById(R.id.ivProfileOther);
          body = (TextView) itemView.findViewById(R.id.tvBody);
-         name = (TextView) itemView.findViewById(R.id.tvName);
       }
 
       @Override
       public void bindMessage(Message message) {
          Glide.with(mContext)
-                 .load(getProfileUrl(message.getUserId()))
+                 .load(Objects.requireNonNull(mConversation.getOtherPerson().getParseFile("profilePicture")).getUrl())
                  .circleCrop() // create an effect of a round profile picture
                  .into(imageOther);
          body.setText(message.getBody());
-         name.setText(message.getRecipent());
         //name.setText(message); // in addition to message show user ID
       }
    }
@@ -127,7 +127,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
       @Override
       public void bindMessage(Message message) {
          Glide.with(mContext)
-                 .load(getProfileUrl(message.getUserId()))
+                 .load(Objects.requireNonNull(mConversation.getYou().getParseFile("profilePicture")).getUrl())
                  .circleCrop() // create an effect of a round profile picture
                  .into(imageMe);
          body.setText(message.getBody());
