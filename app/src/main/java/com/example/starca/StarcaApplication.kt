@@ -1,10 +1,7 @@
 package com.example.starca
 
 import android.app.Application
-import com.example.starca.models.Conversation
-import com.example.starca.models.Image
-import com.example.starca.models.Listing
-import com.example.starca.models.Message
+import com.example.starca.models.*
 import com.parse.Parse
 import com.parse.ParseObject
 
@@ -17,6 +14,7 @@ class StarcaApplication : Application() {
         ParseObject.registerSubclass(Image::class.java)
         ParseObject.registerSubclass(Conversation::class.java)
         ParseObject.registerSubclass(Message::class.java)
+        ParseObject.registerSubclass(ListingRating::class.java)
 
         Parse.initialize(
             Parse.Configuration.Builder(this)
