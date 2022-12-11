@@ -76,8 +76,7 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: allow users to rate the listing (in rental detail fragment)
-    //      edit profile styling
+    //TODO: edit profile styling
     //      amenities (add a price field here)
     //      creation styling
     //      add timestamp to messages

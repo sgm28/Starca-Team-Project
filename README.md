@@ -64,6 +64,7 @@ Starca is a storage marketplace that allows users to either list their unusued s
 - [x] User will see a custom alert dialog
 - [ ] User will be able to sign in with Facebook
 - [ ] User will be able to post multiple pictures for listings
+- [ ] User will be able to cancel their rental
 
 ### 2. Screen Archetypes
 

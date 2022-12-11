@@ -57,7 +57,7 @@ class RentalDetailFragment : Fragment() {
         val listingPrice = listing?.getPrice()
         priceTv.text = String.format("$%.2f", listingPrice)
 
-        // If user has rated this listing, fetch that ListingRating's rating and load it into the ratingBar
+        // If user has rated this listing, fetch that ListingRating's rating and load it into the rating bar, ratingRb
         getListingRating(ratingRb)
 
         endRentalButton.setOnClickListener {
@@ -194,8 +194,6 @@ class RentalDetailFragment : Fragment() {
             }
         }
     }
-
-//TODO: finish the rateListing function (where the user can rate this listing
 
     private fun rateListing(rating: Float) {
 
