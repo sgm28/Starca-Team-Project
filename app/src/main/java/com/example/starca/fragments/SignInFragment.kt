@@ -76,8 +76,7 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: edit profile styling
-    //      amenities (add a price field here)
+    //TODO: amenities (add a price field here)
     //      creation styling
     //      add timestamp to messages
     //      Handle null user names (like after a user deletes their account)
