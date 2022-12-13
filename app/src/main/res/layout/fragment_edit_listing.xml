@@ -174,11 +174,8 @@
                 android:enabled="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!--
-        com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton
             style="@style/Widget.Material3.Button.ElevatedButton"
-        -->
-        <Button
             android:id="@+id/edit_listing_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

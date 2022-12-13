@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.starca.R
+import com.example.starca.adapters.ListingsGridAdapter
 import com.example.starca.models.Listing
 import com.example.starca.models.ListingRating
 import com.example.starca.models.ListingRequest
@@ -48,6 +49,7 @@ class RentalDetailFragment : Fragment() {
         val priceTv = view.findViewById<TextView>(R.id.rental_price_tv)
         val endRentalButton = view.findViewById<Button>(R.id.rental_end_button)
         val ratingRb = view.findViewById<RatingBar>(R.id.rental_rb)
+        val rateUserButton = view.findViewById<TextView>(R.id.rental_rate_user_button)
 
         Glide.with(requireContext()).load(listing?.getParseFile("PictureOfListing")?.url)
             .into(imageIv)
@@ -56,6 +58,8 @@ class RentalDetailFragment : Fragment() {
         stateTv.text = listing?.getAddressState()
         val listingPrice = listing?.getPrice()
         priceTv.text = String.format("$%.2f", listingPrice)
+        val userFirstName = listing?.getUser()?.getString("firstName")
+        rateUserButton.text = "Rate $userFirstName"
 
         // If user has rated this listing, fetch that ListingRating's rating and load it into the rating bar, ratingRb
         getListingRating(ratingRb)
@@ -74,12 +78,25 @@ class RentalDetailFragment : Fragment() {
                 .commit()
         }
 
-        // Set up rating bar listener
+        // Set up rating bar listener for rating the listing
         ratingRb.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
             // If the user updated the ratingBar, set user's rating for this listing
             if (fromUser) {
                 rateListing(rating)
             }
+        }
+
+        rateUserButton.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(USER_TO_RATE, listing?.getUser())
+            val rateUserFragment = RateUserFragment()
+            rateUserFragment.arguments = bundle
+
+            val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, rateUserFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 
@@ -213,7 +230,7 @@ class RentalDetailFragment : Fragment() {
             if (e == null) {
                 // Successfully updated rating
                 Log.i("ListingRating", "Updated or created use rating for listing")
-                // After saving the new/updated rating, calculate this listing's new average
+                // After saving the new/updated rating, calculate this listing's new average rating
                 // and save it to the listing's rating field
                 calculateAverageRating()
             } else {
@@ -232,5 +249,6 @@ class RentalDetailFragment : Fragment() {
 
     companion object {
         const val TAG = "RentalDetailFragment"
+        const val USER_TO_RATE = "USER_TO_RATE"
     }
 }

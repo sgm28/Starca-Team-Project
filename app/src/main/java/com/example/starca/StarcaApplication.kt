@@ -15,6 +15,7 @@ class StarcaApplication : Application() {
         ParseObject.registerSubclass(Conversation::class.java)
         ParseObject.registerSubclass(Message::class.java)
         ParseObject.registerSubclass(ListingRating::class.java)
+        ParseObject.registerSubclass(UserRating::class.java)
 
         Parse.initialize(
             Parse.Configuration.Builder(this)
