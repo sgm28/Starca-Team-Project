@@ -262,7 +262,7 @@ class DetailFragment : Fragment() {
         //sendMessage(conversationId)
         return View.OnClickListener { _ ->
             // here you will create a request. you will add it to the listing array.
-            Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
 
             // create an listingRequest object
             val newRequest =
@@ -292,7 +292,7 @@ class DetailFragment : Fragment() {
                     // Start sending interest message, first check for duplicate conversation
                     checkDuplicateConversation()
                 } else {
-                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
                     Log.e(TAG, "requestListing: $e")
                 }
             }
@@ -347,8 +347,7 @@ class DetailFragment : Fragment() {
         customDialog.findViewById<TextView>(R.id.dialog_message).text = "Rent ${listing?.getTitle()} for $${price} per month?"
         customDialog.findViewById<Button>(R.id.dialog_negative_button).setOnClickListener { alert.cancel() }
         customDialog.findViewById<Button>(R.id.dialog_positive_button).setOnClickListener {
-            Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT).show()
 
             setBought(requestArray, request)
             addListingToUser()
@@ -370,7 +369,7 @@ class DetailFragment : Fragment() {
     ) {
 
         // here you will create a request. you will add it to the listing array.
-        Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Request Sent", Toast.LENGTH_SHORT).show()
 
         // create an listingRequest object
         val newRequest =
@@ -397,7 +396,7 @@ class DetailFragment : Fragment() {
             if (e == null) {
                 displayBoughtNav()
             } else {
-                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "requestListing: $e")
             }
         }
@@ -452,10 +451,10 @@ class DetailFragment : Fragment() {
 
 
         message.saveInBackground(SaveCallback {
-            Toast.makeText(
-                requireContext(), "Successfully created message on Parse",
-                Toast.LENGTH_SHORT
-            ).show()
+//            Toast.makeText(
+//                requireContext(), "Successfully created message on Parse",
+//                Toast.LENGTH_SHORT
+//            ).show()
         })
     }
 
