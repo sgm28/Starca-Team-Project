@@ -1,17 +1,12 @@
 package com.example.starca
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.starca.fragments.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.parse.ParseUser
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val fragmentManager: FragmentManager = supportFragmentManager
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        //val toolbar: Toolbar = findViewById(R.id.toolbar)
         //toolbar.inflateMenu(R.menu.menu)
 
         // Display dashboard fragment once user has signed in

@@ -1,8 +1,8 @@
 package com.example.starca.fragments
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,23 +12,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.starca.R
 import com.example.starca.SettingsActivity
-import com.example.starca.adapters.ListingsGridAdapter
 import com.example.starca.adapters.ProfileViewPager2Adapter
-import com.example.starca.models.Listing
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.parse.*
-import org.w3c.dom.Text
-
-/**TODO:
- *      Remove the top bar because it's not very useful and makes the app look less "air-y" or less flowy. Dunno how to describe
- *      Work on other stuff (and continue styling the profile. Also, add a tab to see currently renting places)
- *      Also, add a boolean (to the listing) so we can show if the listing is being rented or not
- *      Add price to the listing
- */
 
 class ProfileFragment : Fragment() {
-
 
     lateinit var viewPager2Adapter: ProfileViewPager2Adapter
 
@@ -36,6 +24,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        showCustomUI()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
@@ -95,8 +84,39 @@ class ProfileFragment : Fragment() {
         })
     }
 
+    override fun onStop() {
+        super.onStop()
+        removeCustomUI()
+    }
+
     private fun goToSettingsActivity() {
         val intent = Intent(activity, SettingsActivity::class.java)
         startActivity(intent)
+    }
+
+    // App take becomes "edge-to-edge", takes up the whole screen
+    private fun showCustomUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireActivity().window.setDecorFitsSystemWindows(true)
+        } else {
+            // Keeping deprecated "setSystemUiVisibility" for older android versions
+            val decorView: View = requireActivity().window.decorView
+            decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            )
+        }
+    }
+
+    // Remove edge-to-edge behavior
+    private fun removeCustomUI(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            requireActivity().window.setDecorFitsSystemWindows(false)
+        } else {
+            val decorView: View = requireActivity().window.decorView
+            decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            )
+        }
     }
 }

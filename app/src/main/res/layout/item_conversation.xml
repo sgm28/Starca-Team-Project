@@ -19,8 +19,10 @@
         android:id="@+id/recipient_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginEnd="16dp"
         app:layout_constraintVertical_bias="0.3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +30,23 @@
         app:layout_constraintStart_toEndOf="@+id/conversations_profile_image_iv"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="SampleUserName" />
+
+    <TextView
+        android:id="@+id/latest_message_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="14sp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintStart_toStartOf="@+id/recipient_tv"
+        app:layout_constraintTop_toBottomOf="@id/recipient_tv"
+        tools:text="Hey! Did you watch the game?!" />
 
     <TextView
         android:layout_width="match_parent"
@@ -46,15 +65,17 @@
 
         android:visibility="invisible"
 
-        android:layout_marginEnd="40dp"
-        android:textSize="20sp"
+        android:layout_marginEnd="20dp"
+        android:textSize="14sp"
         android:textStyle="bold"
 
         android:text="Blocked"
 
         android:textColor="#7F0C0C"
+        app:layout_constraintVertical_bias="0.1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Blocked"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

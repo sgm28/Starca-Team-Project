@@ -44,20 +44,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
    private String mUserId;
    private Conversation mConversation;
 
-
-   // Create a gravatar image based on the hash value obtained from userId
-   private static String getProfileUrl(final String userId) {
-      String hex = "";
-      try {
-         final MessageDigest digest = MessageDigest.getInstance("MD5");
-         final byte[] hash = digest.digest(userId.getBytes());
-         final BigInteger bigInt = new BigInteger(hash);
-         hex = bigInt.abs().toString(16);
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-      return "https://www.gravatar.com/avatar/" + hex + "?d=identicon";
-   }
    public ChatAdapter(Context context, String userId, ArrayList<Message> messages, Conversation conversation) {
       mMessages = messages;
       this.mUserId = userId;

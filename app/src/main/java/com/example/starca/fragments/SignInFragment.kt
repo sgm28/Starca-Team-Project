@@ -76,12 +76,10 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: add latest message as preview to conversation (do a query and return ONE message within that conversation[the latest one])
-    //      add timestamp to messages
-    //      allow users to rate the listing (in rental detail fragment)
-    //      edit profile styling
+    //TODO: creation styling
+    //      add background image field to user table in parse and allow user's to change it
     //      amenities (add a price field here)
-    //      creation styling
+    //      Handle null user names (like after a user deletes their account)
 
 
     private fun showAlert(title: String, message: String){

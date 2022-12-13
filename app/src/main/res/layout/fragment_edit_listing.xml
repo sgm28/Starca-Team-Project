@@ -37,6 +37,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_title_et"
                 style="@style/login_edit_text_fields"
+                android:layout_marginHorizontal="12dp"
                 android:enabled="false"
                 android:hint="@string/listing_title"
                 android:inputType="textCapSentences"
@@ -58,6 +59,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_description_et"
                 style="@style/login_edit_text_fields"
+                android:layout_marginHorizontal="12dp"
                 android:hint="Description"
                 android:inputType="textMultiLine|textCapSentences"
                 android:scrollbars="none"
@@ -81,6 +83,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_dimensions_et"
                 style="@style/login_edit_text_fields"
+                android:layout_marginHorizontal="12dp"
                 android:hint="Dimensions"
                 android:inputType="text"
                 android:maxLines="1"
@@ -102,6 +105,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_street_et"
                 style="@style/login_edit_text_fields"
+                android:layout_marginHorizontal="12dp"
                 android:hint="Street"
                 android:inputType="textCapWords"
                 android:enabled="false"/>
@@ -122,6 +126,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_city_et"
                 style="@style/login_edit_text_fields"
+                android:layout_marginHorizontal="12dp"
                 android:hint="City"
                 android:inputType="textCapSentences"
                 android:enabled="false"/>
@@ -142,6 +147,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_state_et"
                 style="@style/login_edit_text_fields"
+                android:layout_marginHorizontal="12dp"
                 android:hint="State"
                 android:inputType="textCapCharacters"
                 android:enabled="false"/>
@@ -162,16 +168,14 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_listing_zipcode_et"
                 style="@style/login_edit_text_fields"
+                android:layout_marginHorizontal="12dp"
                 android:hint="Zip Code"
                 android:inputType="number"
                 android:enabled="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!--
-        com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButton
             style="@style/Widget.Material3.Button.ElevatedButton"
-        -->
-        <Button
             android:id="@+id/edit_listing_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

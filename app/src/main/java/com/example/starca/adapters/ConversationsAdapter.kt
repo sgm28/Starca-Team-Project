@@ -3,6 +3,7 @@ package com.example.starca.adapters
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -16,6 +17,8 @@ import com.bumptech.glide.Glide
 import com.example.starca.R
 import com.example.starca.fragments.MessagingFragment
 import com.example.starca.models.Conversation
+import com.example.starca.models.Message
+import com.parse.ParseQuery
 import com.parse.ParseUser
 
 const val CONVERSATION_BUNDLE = "CONVERSATION_BUNDLE"
@@ -48,11 +51,13 @@ class ConversationsAdapter(
         private val tvRecipient: TextView
         private val ivRecipient: ImageView
         private val tvBlocked: TextView
+        private val tvLatestMessage: TextView
 
         init {
             tvRecipient = itemView.findViewById(R.id.recipient_tv)
             ivRecipient = itemView.findViewById(R.id.conversations_profile_image_iv)
             tvBlocked = itemView.findViewById(R.id.tvBlocked)
+            tvLatestMessage = itemView.findViewById(R.id.latest_message_tv)
 
             itemView.setOnClickListener(this)
             itemView.setOnLongClickListener(this)
@@ -82,6 +87,9 @@ class ConversationsAdapter(
                 .load(conversation.getOtherPerson()?.getParseFile("profilePicture")?.url)
                 .circleCrop()
                 .into(ivRecipient)
+
+            // Load the latest message for each conversation
+            getLatestMessage(conversation)
         }
 
 
@@ -108,6 +116,25 @@ class ConversationsAdapter(
             return true
         }
 
+        private fun getLatestMessage(conversation: Conversation){
+
+            var body = ""
+            val query = ParseQuery.getQuery(Message::class.java)
+
+            // get the latest message
+            query.orderByDescending("createdAt")
+            query.limit = 1
+            query.whereContains("conversationId", conversation.objectId)
+
+            query.findInBackground { messages, e ->
+                if (e == null) {
+                    body = messages[0].getBody().toString()
+                    tvLatestMessage.text = body
+                } else {
+                    Log.e("message", "Error Loading Messages$e")
+                }
+            }
+        }
     }
 
     interface OnItemLongClickListener {

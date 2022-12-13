@@ -47,10 +47,6 @@ class Message : ParseObject() {
         return getString(USER_RECIPIENT)
     }
 
-
-
-
-
     companion object {
         const val KEY_CONVERSATION = "conversationId"
         const val KEY_BODY = "body"
