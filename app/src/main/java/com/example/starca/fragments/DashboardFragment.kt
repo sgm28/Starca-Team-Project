@@ -103,6 +103,11 @@ class DashboardFragment : Fragment(), Parcelable {
                 if (posts != null) {
                     for (post in posts) {
 
+                        if(!getPostVisibilty(post)) {
+                            //Log.i(TAG, "queryPosts: ${post.getTitle()} hidden")
+                            continue
+                        }
+
                         //if owner of post is you, don't show.
                         if (post.getUser()!!.objectId == ParseUser.getCurrentUser().objectId) {
                             continue
@@ -110,6 +115,8 @@ class DashboardFragment : Fragment(), Parcelable {
 
                         // reaching this part means posts will always be from other people.
                         val otherPerson = post.getUser()
+
+                        // bug catcher. if other user is null.
                         if (otherPerson == null) {
                             Log.e(TAG, "queryPosts: Owner of ${post.getTitle()} does not exist.")
                             continue
@@ -249,6 +256,10 @@ class DashboardFragment : Fragment(), Parcelable {
         }
 
         return blockList
+    }
+
+    private fun getPostVisibilty(post: Listing) : Boolean{
+        return post.getBoolean("listingVisibility")
     }
 
     private fun Context.hideKeyboard(view: View) {
