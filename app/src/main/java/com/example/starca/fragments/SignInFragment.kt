@@ -79,7 +79,6 @@ class SignInFragment : Fragment() {
     //TODO: creation styling
     //      add background image field to user table in parse and allow user's to change it
     //      amenities (add a price field here)
-    //      add timestamp to messages
     //      Handle null user names (like after a user deletes their account)
 
 

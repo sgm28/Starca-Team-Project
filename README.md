@@ -2,7 +2,7 @@
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/1?color=%2300&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/2?color=%2300&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/3?color=%2300&style=plastic)
-![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/4?color=yellow&style=plastic)
+![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/4?color=%2300&style=plastic)
 
 ## Table of Contents
 1. [Overview](#Overview)
@@ -14,7 +14,7 @@
 ## Overview
 
 ### Description
-Starca is a storage marketplace that allows users to either list their unusued space to make some extra income or look for listed places so they can store items that are taking up lots of space in their household.
+Starca is a storage marketplace that allows users to either list their unusued space to make some extra income or look for listed places so they can store items that are cluttering their spaces.
 
 ### App Evaluation
 
@@ -42,7 +42,7 @@ Starca is a storage marketplace that allows users to either list their unusued s
 - [x] Users will be able to delete their account
 - [x] User will have a profile page and will be able to view listings they own
 - [x] Users will be able to view listings they are renting
-- [ ] Users will be able to rate each other
+- [x] User will be able to rate owner and listing
 - [x] User will be able to click on a listing to view more details
 - [x] Users will be able to chat with their prospective renters/rentees
 - [x] User will be able to request to rent a listing
@@ -51,11 +51,11 @@ Starca is a storage marketplace that allows users to either list their unusued s
 
 **Optional Nice-to-have Stories**
 
-- [ ] User will be able to block other users
+- [x] User will be able to block other users
 - [ ] User will be able to view previously rented storage listing
 - [ ] PayPal payment
 - [ ] User will be able to click "forgot password" to recover their password
-- [ ] (Live Messaging) User will be able to see a message pop up automatically once it is received from another user
+- [x] (Live Messaging) User will be able to see a message pop up automatically once it is received from another user
 - [ ] Highly rated users will have an icon denoting their high rating next to their profile pictures
 - [ ] User can disable maps in dashboard
 - [x] User will have to verify their email address
@@ -64,7 +64,7 @@ Starca is a storage marketplace that allows users to either list their unusued s
 - [x] User will see a custom alert dialog
 - [ ] User will be able to sign in with Facebook
 - [ ] User will be able to post multiple pictures for listings
-- [ ] User will be able to cancel their rental
+- [x] User will be able to cancel their rental
 
 ### 2. Screen Archetypes
 
@@ -500,3 +500,17 @@ query.getInBackground("<PARSE_OBJECT_ID_ofAccount>", (object, e) -> {
 #### Stretch stories
 
 - [x] User will see a custom alert dialog
+
+### Sprint 4
+
+<img src='https://github.com/Nova-Storage/starca/blob/master/sprintgifs/StarcaSprint4.gif' title='Sprint 4 Walkthrough' width=300 alt='Sprint 4 Walkthrough' />
+
+#### Required stories
+
+- [x] User will be able to rate owner and listing
+
+#### Stretch stories
+
+- [x] User will be able to block other users
+- [x] (Live Messaging) User will be able to see a message pop up automatically once it is received from another user
+- [x] User will be able to cancel their rental
