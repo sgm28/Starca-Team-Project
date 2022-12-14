@@ -1,29 +1,40 @@
 package com.example.starca.fragments
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.starca.FileUtils
 import com.example.starca.R
 import com.example.starca.models.Listing
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.parse.ParseFile
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import de.hdodenhof.circleimageview.CircleImageView
+import java.io.File
+import java.io.IOException
 
 private const val LISTING_BUNDLE = "LISTING_BUNDLE"
 
 class EditListingFragment : Fragment() {
     private var listing: Listing? = null
+    val SELECT_IMAGE_ACTIVITY_REQUEST_CODE = 1046
+    var photoFile: File? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +76,10 @@ class EditListingFragment : Fragment() {
         val dimensionsTi = view.findViewById<TextInputEditText>(R.id.edit_listing_dimensions_et)
         val dimensionsLayoutTi = view.findViewById<TextInputLayout>(R.id.edit_listing_dimensions_layout_et)
 
-        val editListingSubmitButton = view.findViewById<Button>(R.id.edit_listing_submit_button)
+        val chooseNewPhotoButton = view.findViewById<ImageButton>(R.id.editListingPicture)
         val listingImageIv = view.findViewById<ImageView>(R.id.edit_listing_image_iv)
+
+        val editListingSubmitButton = view.findViewById<Button>(R.id.edit_listing_submit_button)
 
         // Set up enable-editing button for each edit text field
         titleLayoutTi.setEndIconOnClickListener { titleTi.isEnabled = true }
@@ -93,6 +106,12 @@ class EditListingFragment : Fragment() {
             .into(listingImageIv)
 
         // TODO: Update new image stuff
+        chooseNewPhotoButton.setOnClickListener {
+            choosePhotoSelectorDialog()
+        }
+        listingImageIv.setOnClickListener{
+            choosePhotoSelectorDialog()
+        }
 
         // Save changed fields on submit
         editListingSubmitButton.setOnClickListener {
@@ -124,7 +143,64 @@ class EditListingFragment : Fragment() {
                 listing?.setDimensions(dimensionsTi.text.toString())
                 dimensionsTi.isEnabled = false
             }
+            if (photoFile != null) {
+                listing?.setImage(ParseFile(photoFile))
+            }
+
             saveChanges()
+        }
+    }
+
+    fun choosePhotoSelectorDialog() {
+        val PERMISSIONS = arrayOf<String>(
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            PERMISSIONS,
+            1
+        )
+        MediaStore.Images.Media.TITLE
+        val intent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+
+        startActivityForResult(intent, SELECT_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+    fun loadFromUri(photoUri: Uri): Bitmap? {
+        var image: Bitmap? = null
+        try {
+            // check version of Android on device
+            image = if (Build.VERSION.SDK_INT > 27) {
+                // on newer versions of Android, use the new decodeBitmap method
+                val source: ImageDecoder.Source =
+                    ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
+                ImageDecoder.decodeBitmap(source)
+            } else {
+                // support older versions of Android by using getBitmap
+                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, photoUri)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return image
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (data != null && requestCode == SELECT_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val photoUri = data.data
+
+            // Load the image located at photoUri into selectedImage
+            val selectedImage = loadFromUri(photoUri!!)
+
+            photoFile = FileUtils().getFileFromUri(requireContext(),photoUri)
+
+            // Load the selected image into a preview
+            requireView().findViewById<ImageView>(R.id.edit_listing_image_iv).setImageBitmap(selectedImage)
         }
     }
 
