@@ -12,8 +12,6 @@ import com.bumptech.glide.Glide;
 import com.example.starca.R;
 import com.example.starca.models.Message;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.starca.models.Conversation;
-import com.parse.Parse;
 
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHolder> {
@@ -92,7 +89,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
       @Override
       public void bindMessage(Message message) {
          Glide.with(mContext)
-                 .load(Objects.requireNonNull(mConversation.getOtherPerson().getParseFile("profilePicture")).getUrl())
+                 .load(Objects.requireNonNull(mConversation.getYou().getParseFile("profilePicture")).getUrl())
                  .circleCrop() // create an effect of a round profile picture
                  .into(imageOther);
          body.setText(message.getBody());
@@ -113,7 +110,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
       @Override
       public void bindMessage(Message message) {
          Glide.with(mContext)
-                 .load(Objects.requireNonNull(mConversation.getYou().getParseFile("profilePicture")).getUrl())
+                 .load(Objects.requireNonNull(mConversation.getOtherPerson().getParseFile("profilePicture")).getUrl())
                  .circleCrop() // create an effect of a round profile picture
                  .into(imageMe);
          body.setText(message.getBody());

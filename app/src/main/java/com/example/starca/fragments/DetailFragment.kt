@@ -1,7 +1,6 @@
 package com.example.starca.fragments
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -250,6 +249,7 @@ class DetailFragment : Fragment() {
     private fun displayAwaitingNav() {
         button_bottomLeft.visibility = View.VISIBLE
         button_bottomLeft.text = "Cancel Request"
+        button_bottomLeft.setBackgroundColor(Color.parseColor("#7F0C0C"))
 
         button_bottomRight.visibility = View.GONE
 
@@ -317,35 +317,23 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun confirmBuy(requestArray: MutableList<ListingRequest>,
-                           request: ListingRequest, price: java.io.Serializable, email: String) {
+    private fun confirmBuy(
+        requestArray: MutableList<ListingRequest>,
+        request: ListingRequest, price: java.io.Serializable, email: String
+    ) {
         val customDialog = layoutInflater.inflate(R.layout.custom_dialog, null)
         builder.setView(customDialog)
-        /*
-        builder.setMessage("Rent ${listing?.getTitle()} for ${price} per month?")
-            .setCancelable(false)
-            .setPositiveButton("Confirm") { dialog, id ->
-                Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT)
-                    .show()
-
-                //change the code.
-                setBought(requestArray, request)
-                addListingToUser()
-            }
-            .setNegativeButton(
-                "Cancel"
-            ) { dialog, id ->
-                dialog.cancel()
-            }
-         */
 
         val alert: AlertDialog = builder.create()
 
         // Set up custom alert dialog
         alert.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        customDialog.findViewById<TextView>(R.id.dialog_title).text = "Confirm rental of ${listing?.getTitle()}"
-        customDialog.findViewById<TextView>(R.id.dialog_message).text = "Rent ${listing?.getTitle()} for $${price} per month?"
-        customDialog.findViewById<Button>(R.id.dialog_negative_button).setOnClickListener { alert.cancel() }
+        customDialog.findViewById<TextView>(R.id.dialog_title).text =
+            "Confirm rental of ${listing?.getTitle()}"
+        customDialog.findViewById<TextView>(R.id.dialog_message).text =
+            "Rent ${listing?.getTitle()} for $${price} per month?"
+        customDialog.findViewById<Button>(R.id.dialog_negative_button)
+            .setOnClickListener { alert.cancel() }
         customDialog.findViewById<Button>(R.id.dialog_positive_button).setOnClickListener {
             Toast.makeText(context, "receipt sent to ${email}.", Toast.LENGTH_SHORT).show()
 
@@ -427,7 +415,7 @@ class DetailFragment : Fragment() {
 
             listing?.saveInBackground { e ->
                 if (e == null) {
-                    Toast.makeText(context, "Request Removed", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "Request Removed", Toast.LENGTH_SHORT).show()
                     displayRequestNav()
                     // add renting functionality back to the button.
                     button_bottomRight.setOnClickListener(requestListing(requestArray))
@@ -438,13 +426,13 @@ class DetailFragment : Fragment() {
         }
     }
 
-    fun sendMessage() {
+    private fun sendMessage() {
         val message = Message()
-        val initMessage = "Hi I am interested in " + listing!!.getTitle();
+        val initMessage = "Hi I am interested in " + listing!!.getTitle() + ".";
         Log.d("Message", initMessage)
         message.setBody(initMessage)
         message.setConversation(conversation)
-        conversation.getOtherPerson()?.let { message.setUserId(it.objectId) }
+        conversation.getYou()?.let { message.setUserId(it.objectId) }
         //The message is from the current login in user.
         //When the recipient will received the message, the message will displayed who sent it.
         message.setRecipent(ParseUser.getCurrentUser().username.toString())
@@ -460,15 +448,15 @@ class DetailFragment : Fragment() {
 
     private fun checkDuplicateConversation() {
 
-        val user = ParseUser.getCurrentUser() //current user
-        val recipient = listing!!.getUser()!! //listing owner
+        val you = ParseUser.getCurrentUser() //current user
+        val otherPerson = listing!!.getUser()!! //listing owner
 
         val query: ParseQuery<Conversation> = ParseQuery(Conversation::class.java)
 
         query.include(Conversation.KEY_USER)
         query.include(Conversation.KEY_RECIPIENT)
-        query.whereEqualTo(Conversation.KEY_USER, user)
-        query.whereEqualTo(Conversation.KEY_RECIPIENT, recipient)
+        query.whereEqualTo(Conversation.KEY_USER, you)
+        query.whereEqualTo(Conversation.KEY_RECIPIENT, otherPerson)
         query.findInBackground { queryConversation, e ->
             if (e != null) {
                 Log.d(TAG, "Error fetching conversation $e")
@@ -479,7 +467,7 @@ class DetailFragment : Fragment() {
                     sendMessage()
                 } else {
                     // If no conversation found, create one
-                    createConversation(user, recipient)
+                    createConversation(you, otherPerson)
                 }
             }
         }
@@ -489,8 +477,8 @@ class DetailFragment : Fragment() {
 
         // Create new conversation
         conversation = Conversation()
-        conversation.setOtherPerson(user)
-        conversation.setYou(recipient)
+        conversation.setYou(user)
+        conversation.setOtherPerson(recipient)
         // Save conversation
         conversation.saveInBackground { e ->
             if (e != null) {
@@ -503,9 +491,10 @@ class DetailFragment : Fragment() {
         sendMessage()
     }
 
-    private fun addListingToUser(){
+    private fun addListingToUser() {
         val user = ParseUser.getCurrentUser()
-        val rentedListingIds: ArrayList<String>? = ParseUser.getCurrentUser().getList<String>("rentedListings") as ArrayList<String>?
+        val rentedListingIds: ArrayList<String>? =
+            ParseUser.getCurrentUser().getList<String>("rentedListings") as ArrayList<String>?
 
         if (rentedListingIds != null) {
             // Add listing to user's listings' ID array

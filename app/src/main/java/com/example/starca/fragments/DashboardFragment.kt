@@ -79,6 +79,7 @@ class DashboardFragment : Fragment(), Parcelable {
     fun selectMarker(index: Int?) {
         if (index != null) {
 //            Toast.makeText(context, "clicked $name :: index: $index", Toast.LENGTH_SHORT).show()
+
             rvListings.smoothScrollToPosition(index)
         } else {
             Log.e(TAG, "selectMarker: Selected Marker without index")
@@ -103,7 +104,7 @@ class DashboardFragment : Fragment(), Parcelable {
                 if (posts != null) {
                     for (post in posts) {
 
-                        if(!getPostVisibilty(post)) {
+                        if (!getPostVisibilty(post)) {
                             //Log.i(TAG, "queryPosts: ${post.getTitle()} hidden")
                             continue
                         }
@@ -115,6 +116,7 @@ class DashboardFragment : Fragment(), Parcelable {
 
                         // reaching this part means posts will always be from other people.
                         val otherPerson = post.getUser()
+                        val you = ParseUser.getCurrentUser()
 
                         // bug catcher. if other user is null.
                         if (otherPerson == null) {
@@ -126,9 +128,13 @@ class DashboardFragment : Fragment(), Parcelable {
                         if (getBlockList(otherPerson) != null) {
 
                             // if other person's blocklist has you on it, u can't see anything.
-                            if (getBlockList(otherPerson)!!.contains(ParseUser.getCurrentUser().objectId)) {
+                            if (getBlockList(otherPerson)!!.contains(you.objectId)) {
                                 continue
                             }
+                        }
+
+                        if (getBlockList(you)!!.contains(otherPerson.objectId)) {
+                            continue
                         }
 
                         val getAddressName_Full =
@@ -182,7 +188,14 @@ class DashboardFragment : Fragment(), Parcelable {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+
+
+                val ii = storageAddresses.indexOf(query)
 //                Toast.makeText(context, "$query", Toast.LENGTH_SHORT).show()
+
+                if (ii != -1) {
+                    scrollToPos(ii)
+                }
 
                 return false
             }
@@ -213,22 +226,27 @@ class DashboardFragment : Fragment(), Parcelable {
 
                 hideKeyboard()
 
-                val cursor = searchView.suggestionsAdapter.getItem(position) as Cursor
-
-                val index = cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1)
-                val safeIndex =
-                    if (index == -1) 0 else index // cursor.getString requires positive indexes only.
-
-                val selection = cursor.getString(safeIndex)
-                searchView.setQuery(selection, false)
-
-                val ii = storageAddresses.indexOf(selection)
-
-                selectMarker(ii)
+                scrollToPos(position)
 
                 return true
             }
         })
+    }
+
+    fun scrollToPos(position: Int) {
+        val cursor = searchView.suggestionsAdapter.getItem(position) as Cursor
+
+        val index = cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1)
+        val safeIndex =
+            if (index == -1) 0 else index // cursor.getString requires positive indexes only.
+
+        val selection = cursor.getString(safeIndex)
+        searchView.setQuery(selection, false)
+
+        val ii = storageAddresses.indexOf(selection)
+
+        selectMarker(ii)
+        //Toast.makeText(context, "$ii", Toast.LENGTH_SHORT).show()
     }
 
     fun Fragment.hideKeyboard() {
@@ -246,7 +264,7 @@ class DashboardFragment : Fragment(), Parcelable {
         try {
             jsArray = user.getJSONArray(KEY_BLOCK_LIST) ?: return null
         } catch (k: java.lang.IllegalStateException) {
-            Log.e(TAG, "getBlockList: $jsArray", )
+            Log.e(TAG, "getBlockList: $jsArray")
         }
 
         val blockList = ArrayList<String>()
@@ -258,7 +276,7 @@ class DashboardFragment : Fragment(), Parcelable {
         return blockList
     }
 
-    private fun getPostVisibilty(post: Listing) : Boolean{
+    private fun getPostVisibilty(post: Listing): Boolean {
         return post.getBoolean("listingVisibility")
     }
 
