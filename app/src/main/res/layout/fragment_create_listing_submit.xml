@@ -6,34 +6,68 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.CreateListingSubmitFragment">
 
-    <!-- TODO: remove this TextView, add image stuff -->
     <TextView
+        android:id="@+id/create_listing_submit_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit/Amenities stuff goes here"
-        android:textSize="42dp"
-        android:gravity="center"
+        android:text="Finalize your listing"
+        android:textSize="36dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_submit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
 
-    <Button
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/create_listing_price_layout_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColorHint="#99000000"
+        app:startIconDrawable="@drawable/ic_dollar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/create_listing_submit_tv">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/create_listing_price_et"
+            style="@style/login_edit_text_fields"
+            android:layout_marginHorizontal="12dp"
+            android:hint="Listing Price"
+            android:inputType="number"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:id="@+id/create_listing_submit_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:paddingVertical="14dp"
         android:text="Submit"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/create_listing_submit_cancel_button" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:id="@+id/create_listing_submit_cancel_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:paddingVertical="14dp"
         android:text="Cancel"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:backgroundTint="?attr/colorTertiary"
+        app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

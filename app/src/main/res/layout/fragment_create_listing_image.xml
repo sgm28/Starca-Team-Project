@@ -6,44 +6,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.CreateListingImageFragment">
 
-    <!-- TODO: remove this TextView, add image stuff -->
-
-    <Button
-        android:id="@+id/create_listing_image_next_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="104dp"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/create_listing_image_cancel_button" />
-
-    <Button
-        android:id="@+id/create_listing_image_cancel_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="A preview of the image the user uploaded"
         android:src="@drawable/imagepreview"
-        app:layout_constraintBottom_toTopOf="@+id/uploadImageButton"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars"
-        android:contentDescription="A preview of the image the user uploaded"/>
+        tools:src="@tools:sample/avatars" />
 
     <Button
-
-
         android:id="@+id/uploadImageButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -51,9 +28,42 @@
         android:text="Upload Image"
         android:textColor="@android:color/white"
         android:textSize="20sp"
+        app:layout_constraintVertical_bias="0.2"
         app:layout_constraintBottom_toTopOf="@+id/create_listing_image_next_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:id="@+id/create_listing_image_cancel_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:paddingVertical="14dp"
+        android:text="Cancel"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:backgroundTint="?attr/colorTertiary"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button.ElevatedButton"
+        android:id="@+id/create_listing_image_next_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:paddingVertical="14dp"
+        android:text="Next"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:backgroundTint="?attr/colorPrimary"
+        app:cornerRadius="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/create_listing_image_cancel_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
