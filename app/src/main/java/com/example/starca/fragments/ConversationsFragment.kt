@@ -87,7 +87,7 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
 
         query.include(Conversation.KEY_USER)
         query.include(Conversation.KEY_RECIPIENT)
-        //Sakar: I change get KEY_USER to KEY_RECIPIENT so the user who sent the message is diplayed.
+        //Sakar: I change get KEY_USER to KEY_RECIPIENT so the user who sent the message is displayed.
         query.whereEqualTo(Conversation.KEY_RECIPIENT, ParseUser.getCurrentUser())
         query.findInBackground { conversationsList, e ->
             if (e != null) {
@@ -98,6 +98,7 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
                     return@findInBackground
                 }
 
+                queryConversations2()
                 if (conversationsList != null) {
                     Log.d("Conversations", conversationsList.toString())
 
@@ -127,6 +128,7 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
     //This function is call when the queryConversations returned an empty conversation list
     private fun queryConversations2() {
 
+        Log.d("Conversation", "Called queryConversation2")
         // Clear the list before writing data into it
         conversationsArrayList.clear()
 
