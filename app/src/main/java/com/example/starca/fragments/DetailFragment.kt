@@ -456,8 +456,8 @@ class DetailFragment : Fragment() {
 
         query.include(Conversation.KEY_USER)
         query.include(Conversation.KEY_RECIPIENT)
-        query.whereContainedIn(Conversation.KEY_USER, listOf(user, recipient))
-        query.whereContainedIn(Conversation.KEY_RECIPIENT, listOf(user, recipient))
+        query.whereContainedIn(Conversation.KEY_USER, listOf(you, otherPerson))
+        query.whereContainedIn(Conversation.KEY_RECIPIENT, listOf(you, otherPerson))
         query.findInBackground { queryConversation, e ->
             if (e != null) {
                 Log.d(TAG, "Error fetching conversation $e")
