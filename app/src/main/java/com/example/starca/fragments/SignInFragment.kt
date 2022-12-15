@@ -76,7 +76,8 @@ class SignInFragment : Fragment() {
         })
     }
 
-    //TODO: creation styling
+    //TODO: fix chat adapter
+    //      creation styling
     //      add background image field to user table in parse and allow user's to change it
     //      amenities (add a price field here)
     //      Handle null user names (like after a user deletes their account)

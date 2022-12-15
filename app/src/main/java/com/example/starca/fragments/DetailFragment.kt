@@ -1,6 +1,7 @@
 package com.example.starca.fragments
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -455,14 +456,15 @@ class DetailFragment : Fragment() {
 
         query.include(Conversation.KEY_USER)
         query.include(Conversation.KEY_RECIPIENT)
-        query.whereEqualTo(Conversation.KEY_USER, you)
-        query.whereEqualTo(Conversation.KEY_RECIPIENT, otherPerson)
+        query.whereContainedIn(Conversation.KEY_USER, listOf(you, otherPerson))
+        query.whereContainedIn(Conversation.KEY_RECIPIENT, listOf(you, otherPerson))
         query.findInBackground { queryConversation, e ->
             if (e != null) {
                 Log.d(TAG, "Error fetching conversation $e")
             } else {
                 // If conversation found, set DB conversation to current conversation
                 if (!queryConversation.isNullOrEmpty()) {
+                    Log.d("Conversation", "Found conversation" + queryConversation[0].getConversationId())
                     conversation = queryConversation[0]
                     sendMessage()
                 } else {

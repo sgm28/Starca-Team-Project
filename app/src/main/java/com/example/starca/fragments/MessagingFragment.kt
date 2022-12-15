@@ -23,8 +23,6 @@ import com.parse.livequery.SubscriptionHandling
 import java.net.URI
 import java.net.URISyntaxException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val CONVERSATION_BUNDLE = "CONVERSATION_BUNDLE"
 
 class MessagingFragment : Fragment() {
@@ -163,7 +161,7 @@ class MessagingFragment : Fragment() {
         mAdapter = ChatAdapter(context, userId, mMessages, conversation)
         rvChat!!.adapter = mAdapter
 
-        // associate the LayoutManager with the RecylcerView
+        // associate the LayoutManager with the RecyclerView
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.reverseLayout = true
         rvChat!!.layoutManager = linearLayoutManager

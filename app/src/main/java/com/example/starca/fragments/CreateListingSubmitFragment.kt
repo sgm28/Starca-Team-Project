@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.setFragmentResultListener
 import com.example.starca.R
+import com.google.android.material.textfield.TextInputEditText
 import com.parse.ParseObject
 
 /**
@@ -53,7 +55,7 @@ class CreateListingSubmitFragment : Fragment() {
             //Call the submit post method
             //The submit post method adds hardcoded amenities values to userDataObject
             //then submits the data
-            submitPost()
+            submitPost(view)
         }
 
         view.findViewById<Button>(R.id.create_listing_submit_cancel_button).setOnClickListener {
@@ -63,10 +65,13 @@ class CreateListingSubmitFragment : Fragment() {
         }
     }
 
-    private fun submitPost() {
+    private fun submitPost(view: View) {
 
         val listOfStrings = listOf("heat", "air condition", "web camera")
         usersDataObject.put("amenities", listOfStrings)
+
+        val listingPrice = view.findViewById<TextInputEditText>(R.id.create_listing_price_et).text.toString().toFloat()
+        usersDataObject.put("price", listingPrice)
         ///////////////////TESTING PURPOSE//////////////////////////////////
         // Log.d(APP_TAG, userAddress)
         // Log.d(APP_TAG, usersDataObject.getString("addressZip").toString())
