@@ -10,7 +10,6 @@ import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -64,27 +63,28 @@ class ConversationsAdapter(
         }
 
         fun bind(conversation: Conversation) {
-            // Load recipient data
-            var recipient: ParseUser? = conversation.getYou()
+
+            var otherPerson: ParseUser? = conversation.getOtherPerson()
+
             //Determines whether the user is the requester or the recipient
-            if (recipient != null) {
-                if (ParseUser.getCurrentUser().objectId == recipient.objectId) {
-                    recipient = conversation.getOtherPerson()
-                } else if (ParseUser.getCurrentUser().objectId == conversation.getOtherPerson()?.objectId) {
-                    recipient = conversation.getYou()
+            if (otherPerson != null) {
+                if (ParseUser.getCurrentUser().objectId == otherPerson.objectId) {
+                    otherPerson = conversation.getYou()
+                } else if (ParseUser.getCurrentUser().objectId == conversation.getYou()?.objectId) {
+                    otherPerson = conversation.getOtherPerson()
                 }
             }
 
             tvBlocked.visibility =
-                if (blockList.contains(recipient?.objectId)) VISIBLE else INVISIBLE
+                if (blockList.contains(otherPerson?.objectId)) VISIBLE else INVISIBLE
 
-            itemView.setBackgroundColor(if (blockList.contains(recipient?.objectId)) Color.parseColor("#CCCCCC") else Color.WHITE)
+            itemView.setBackgroundColor(if (blockList.contains(otherPerson?.objectId)) Color.parseColor("#CCCCCC") else Color.WHITE)
 
-            tvRecipient.text =
-                recipient?.getString("firstName") + " " + recipient?.getString("lastName")
+            tvRecipient.text ="${otherPerson?.getString("firstName")} ${otherPerson?.getString("lastName")}"
+
 
             Glide.with(itemView.context)
-                .load(conversation.getOtherPerson()?.getParseFile("profilePicture")?.url)
+                .load(conversation.getYou()?.getParseFile("profilePicture")?.url)
                 .circleCrop()
                 .into(ivRecipient)
 

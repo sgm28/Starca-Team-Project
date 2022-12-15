@@ -1,7 +1,6 @@
 package com.example.starca.fragments
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +22,6 @@ import com.parse.livequery.ParseLiveQueryClient
 import com.parse.livequery.SubscriptionHandling
 import java.net.URI
 import java.net.URISyntaxException
-import java.util.concurrent.TimeUnit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,8 +62,8 @@ class MessagingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val user = conversation?.getOtherPerson()
-        val recipient = conversation?.getYou()
+        val user = conversation?.getYou()
+        val recipient = conversation?.getOtherPerson()
 
         val messagingUserTv = view.findViewById<TextView>(R.id.messaging_user_tv)
         val messagingRecipientTv = view.findViewById<TextView>(R.id.messaging_recipient_tv)
@@ -184,14 +181,14 @@ class MessagingFragment : Fragment() {
             message.setUserId(ParseUser.getCurrentUser().objectId)
 
             // If the current login in user is the user, set the recipient name as the user
-            if (ParseUser.getCurrentUser().objectId == conversation?.getOtherPerson()?.objectId)
+            if (ParseUser.getCurrentUser().objectId == conversation?.getYou()?.objectId)
             {
 
-                message.setRecipent(conversation?.getOtherPerson()?.username.toString())
+                message.setRecipent(conversation?.getYou()?.username.toString())
             }  // If the current login in user is not the recipient, set the recipient name as the recipient
             else
             {
-                message.setRecipent(conversation?.getYou()?.username.toString())
+                message.setRecipent(conversation?.getOtherPerson()?.username.toString())
             }
 
             message.saveInBackground {

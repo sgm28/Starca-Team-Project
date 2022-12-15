@@ -1,7 +1,6 @@
 package com.example.starca.fragments
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -29,9 +28,9 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
     lateinit var rvConversations: RecyclerView
     lateinit var adapter: ConversationsAdapter
 
-    val conversationsArrayList = ArrayList<Conversation>()
+    private val conversationsArrayList = ArrayList<Conversation>()
 
-    lateinit var builder: AlertDialog.Builder
+    lateinit var blockUsers_alertBuilder: AlertDialog.Builder
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,15 +43,17 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var user = ParseUser.getCurrentUser()
+        var you = ParseUser.getCurrentUser()
 
-        var blockList = getBlockList(user)
+        var blockList = getBlockList(you)
+
+//        Toast.makeText(context, "$blockList", Toast.LENGTH_SHORT).show()
 
         if (blockList == null) {
             blockList = ArrayList<String>()
-            user.put(KEY_BLOCK_LIST, blockList)
+            you.put(KEY_BLOCK_LIST, blockList)
 
-            user.saveInBackground { e ->
+            you.saveInBackground { e ->
                 if (e == null) {
                     Log.i(TAG, "getBlockList: created (initialized) blocklist.")
                     init(view, blockList)
@@ -72,7 +73,7 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
             ConversationsAdapter(requireContext(), conversationsArrayList, blocklistInit, this)
         rvConversations.adapter = adapter
         rvConversations.layoutManager = LinearLayoutManager(requireContext())
-        builder = AlertDialog.Builder(context)
+        blockUsers_alertBuilder = AlertDialog.Builder(context)
 
         queryConversations()
     }
@@ -154,12 +155,12 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
         if (v.findViewById<View?>(R.id.tvBlocked).visibility == INVISIBLE) {
             blockUser(pos, v)
         } else {
-            Toast.makeText(context, "Clicked Unblock", Toast.LENGTH_SHORT)
-                .show()
+//            Toast.makeText(context, "Clicked Unblock", Toast.LENGTH_SHORT)
+//                .show()
             unblockUser(pos, v)
         }
 
-        Toast.makeText(context, "Long clicked $pos", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "Long clicked $pos", Toast.LENGTH_SHORT).show()
 
     }
 
@@ -170,9 +171,9 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
         val userName = "${user_to_block?.getString("firstName")} ${user_to_block?.getString("lastName")}"
 
         val customDialog = layoutInflater.inflate(R.layout.custom_dialog, null)
-        builder.setView(customDialog)
+        blockUsers_alertBuilder.setView(customDialog)
 
-        val alert: AlertDialog = builder.create()
+        val alert: AlertDialog = blockUsers_alertBuilder.create()
         alert.setCancelable(true)
 
         // Set up custom alert dialog
@@ -275,6 +276,9 @@ class ConversationsFragment : Fragment(), ConversationsAdapter.OnItemLongClickLi
         }
 
         ignoreStrArray.remove(user_to_block!!.objectId)
+
+//        ignoreStrArray.clear()
+//        Toast.makeText(context, "cleansed", Toast.LENGTH_SHORT).show()
 
         cur_user?.put(KEY_BLOCK_LIST, ignoreStrArray)
 

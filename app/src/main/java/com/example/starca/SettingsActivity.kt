@@ -388,7 +388,7 @@ class SettingsActivity : AppCompatActivity(),
     }
 
     private fun signOut(){
-        Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Signed out", Toast.LENGTH_SHORT).show()
         ParseUser.logOut()
     }
 

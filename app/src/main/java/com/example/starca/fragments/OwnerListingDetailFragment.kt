@@ -182,7 +182,7 @@ class OwnerListingDetailFragment : Fragment() {
     }
 
     private fun setPostVisibility(post: Listing, setVisibile: Boolean) {
-        Toast.makeText(context, "set vis: $setVisibile", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "set vis: $setVisibile", Toast.LENGTH_SHORT).show()
         post.put(KEY_LISTING_VISIBILITY, setVisibile)
     }
 
