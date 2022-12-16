@@ -4,6 +4,8 @@
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/3?color=%2300&style=plastic)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Nova-Storage/starca/4?color=%2300&style=plastic)
 
+<img src='https://github.com/Nova-Storage/starca/blob/master/sprintgifs/StarcaMVP.gif' title='Sprint MVP Walkthrough' width=300 alt='Sprint MVP Walkthrough' />
+
 ## Table of Contents
 1. [Overview](#Overview)
 2. [Product Spec](#Product-Spec)
